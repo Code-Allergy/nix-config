@@ -78,6 +78,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nixos-generators
+    cifs-utils
     vim
     git
     virt-manager
@@ -85,6 +86,16 @@
     pamixer
   ];
   programs.thunar.enable = true;
+
+  fileSystems."/mnt/ryan" = {
+    device = "//192.168.1.112/Ryan";
+    fsType = "cifs";
+    options = let
+      # prevent hang on network split
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+
+    in ["${automount_opts},credentials=/etc/nixos/smb-creds.txt,uid=1000,gid=100"]
+  }
 
   fonts = {
     fonts = with pkgs; [
