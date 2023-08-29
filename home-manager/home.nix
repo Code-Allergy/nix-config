@@ -14,6 +14,9 @@
       # ./fish.nix
       ./firefox.nix
       ./fish
+      ./rofi
+      ./development.nix
+      ./gaming.nix
       # ./qtile
   ];
 
@@ -22,13 +25,6 @@
     overlays = [
       # If you want to use overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
     ];
     # Configure your nixpkgs instance
     config = {
@@ -107,7 +103,7 @@
     };
   };
 
-  programs.command-not-found.enable = true;
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
@@ -115,15 +111,17 @@
     enable = true;
     # enableAliases = true;
   };
-  programs.firefox.enable = true;
   programs.kitty.enable = true;
 
-  programs.rofi.enable = true;
+
   programs.starship.enable = true;
   programs.starship.enableBashIntegration = true;
 
-  services.kdeconnect.enable = true;
-  services.syncthing.enable = true;
+  # command not found hook
+  programs.command-not-found.enable = true;
+
+
+
 
   programs.zoxide.enable = true;
   programs.zoxide.enableBashIntegration = true;
@@ -150,15 +148,25 @@
       '';
     
   };
+
+  programs.rofi.enable = true;
+
+  services.autorandr.enable = true;
+  services.kdeconnect.enable = true;
+  services.syncthing.enable = true;
+  #services.batsignal.enable = true;
+  services.dunst.enable = true;
+  services.flameshot.enable = true;
+  services.gpg-agent.enable = true;
   
 
   # for virt-manager
   dconf.settings = {
-  "org/virt-manager/virt-manager/connections" = {
-    autoconnect = ["qemu:///system"];
-    uris = ["qemu:///system"];
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
   };
-};
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";

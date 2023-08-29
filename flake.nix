@@ -9,7 +9,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO: Add any other flake you might need
+    nur.url = github:nix-community/NUR;
     # hardware.url = "github:nixos/nixos-hardware";
 
     # Shameless plug: looking for a way to nixify your themes and make
@@ -17,15 +17,17 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, nur, ... }@inputs: {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      blubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; }; # Pass flake inputs to our config
+    nixosConfigurations.blubbus = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; }; # Pass flake inputs to our config
+      modules = [
+        nur.nixosModules.nur
+
         # > Our main nixos configuration file <
-        modules = [ ./nixos/configuration.nix ];
-      };
+        ./nixos/configuration.nix ];
     };
 
     # Standalone home-manager configuration entrypoint

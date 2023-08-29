@@ -48,8 +48,23 @@
   users.users.ryan = {
     isNormalUser = true;
     description = "ryan";
-    extraGroups = [ "networkmanager" "wheel" "podman" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" "libvirtd" "audio" ];
   };
+
+  # audio 
+
+  # security.rtkit.enable = true;
+  # services.pipewire = {
+  #   enable = true;
+  #   alsa.enable = true;
+  #   alsa.support32Bit = true;
+  #   pulse.enable = true;
+  # };
+
+  # hardware.pulseaudio = {
+  #   enable = false;
+  #   package = pkgs.pulseaudioFull;
+  # };
 
 
   # Enable automatic login for the user.
@@ -70,28 +85,35 @@
     pamixer
   ];
 
-  fonts.fonts = with pkgs; [
-    montserrat
-    roboto
-    roboto-mono
-    fira-code
-    fira-code-symbols
-    (nerdfonts.override { fonts = [ "FiraCode" "IBMPlexMono" "RobotoMono"]; })
-  ];
+  fonts = {
+    fonts = with pkgs; [
+      montserrat
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+      roboto
+      roboto-mono
+      
+      fira-code
+      fira-code-symbols
+      (nerdfonts.override { fonts = [ "FiraCode" "IBMPlexMono" "RobotoMono"]; })
+    ];
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        # serif
+        sansSerif = [ "Montserrat" ];
+        monospace = [ "BlexMono Nerd Font" ];
+      };
+    };
+  };
 
 
   # Network config
   networking = {
     hostName = "blubbus";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi.powersave = true;
+    };
 
     firewall = {
       allowedTCPPorts = [  ];
@@ -108,24 +130,32 @@
     };
   };
 
-
-
   virtualisation = {
     podman = {
       enable = true;
       dockerCompat = true;
       dockerSocket.enable = true;
     };
+
     libvirtd = {
       enable = true;
       qemu.ovmf.enable = true;
     };
-    anbox.enable = true;
+    spiceUSBRedirection.enable = true;
+    # anbox.enable = true;
   };
-  services.qemuGuest.enable = true;
+  # services.qemuGuest.enable = true;
 
   # required for podman
   programs.dconf.enable = true;
 
-  system.stateVersion = "23.05"; # https://nixos.org/nixos/options.html
+  system = {
+    autoUpgrade = {
+      enable = true;
+      allowReboot = false;
+      dates = "7:30";
+    };
+    
+    stateVersion = "23.05"; # https://nixos.org/nixos/options.html
+  };
 }
