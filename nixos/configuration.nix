@@ -56,14 +56,27 @@
   services.getty.autologinUser = "ryan";
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  vim
-  git
-  virt-manager
+    nixos-generators
+    vim
+    git
+    virt-manager
+    pulseaudio
+    pamixer
+  ];
+
+  fonts.fonts = with pkgs; [
+    montserrat
+    roboto
+    roboto-mono
+    fira-code
+    fira-code-symbols
+    (nerdfonts.override { fonts = [ "FiraCode" "IBMPlexMono" "RobotoMono"]; })
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -91,9 +104,11 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      PasswordAuthentication = false;
+#      PasswordAuthentication = false;
     };
   };
+
+
 
   virtualisation = {
     podman = {
@@ -108,6 +123,8 @@
     anbox.enable = true;
   };
   services.qemuGuest.enable = true;
+
+  # required for podman
   programs.dconf.enable = true;
 
   system.stateVersion = "23.05"; # https://nixos.org/nixos/options.html

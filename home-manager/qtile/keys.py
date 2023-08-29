@@ -5,7 +5,7 @@ from libqtile.lazy import lazy
 from libqtile import layout, bar, widget, hook
 
 mod = "mod4"
-terminal = "kitty"
+terminal = "wezterm"
 userScripts = "/home/ryan/bin/"
 
 
@@ -32,7 +32,7 @@ keys = [
     
     Key([mod], "Return", lazy.spawn(terminal)),                         # Launch terminal
     Key([mod, "shift"], "r", lazy.spawn('rofi -show run')),             # Spawn rofi run
-    Key([mod], "r", lazy.spawn(userScripts + 'rofi-launcher')),                       # Launch rofi - dmenu
+    Key([mod], "r", lazy.spawn('rofi -show drun')),                       # Launch rofi - dmenu
     Key([mod, "mod1"], "Escape", lazy.spawn(userScripts + 'rofi-powermenu')),         # Spawn power menu
     Key([], "Print", lazy.spawn(userScripts + "rofi-screenshot")),                    # Spawn screenshot menu
 

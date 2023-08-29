@@ -21,7 +21,6 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      # FIXME replace with your hostname
       blubbus = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; }; # Pass flake inputs to our config
         # > Our main nixos configuration file <
@@ -32,7 +31,6 @@
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
-      # FIXME replace with your username@hostname
       "ryan@blubbus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = { inherit inputs; }; # Pass flake inputs to our config

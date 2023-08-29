@@ -15,7 +15,7 @@ blubbus_font_size = 15
 # font pack
 xf="Cantarell"
 
-terminal="kitty"
+terminal="xterm"
 
 
 @hook.subscribe.screens_reconfigured
@@ -344,17 +344,17 @@ def generate_blubbus_widgets():
         **powerline,
     ),
 
-    widget.Battery(
-        font=xf,
-        fontsize=xx,
-        foreground=colors[0],
-        background=colors[5],
+    # widget.Battery(
+    #     font=xf,
+    #     fontsize=xx,
+    #     foreground=colors[0],
+    #     background=colors[5],
 
-        format="{watt:.2f} W {percent:2.0%}",
-        notify_below=10,
-        update_interval=5,
-        **powerline,
-    ),
+    #     format="{watt:.2f} W {percent:2.0%}",
+    #     notify_below=10,
+    #     update_interval=5,
+    #     **powerline,
+    # ),
 
     widget.Clock(
         font=xf,
@@ -372,6 +372,8 @@ def generate_blubbus_screens():
     widgets = generate_blubbus_widgets()
     active_monitors = get_monitor_count()
     screens = [Screen(
+        wallpaper = "~/.config/qtile/background.png",
+        # wallpaper_mode = "stretch",
         top=bar.Bar(
             widgets,
             30,

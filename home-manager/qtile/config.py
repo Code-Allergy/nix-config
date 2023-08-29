@@ -12,7 +12,7 @@ from colors import colors
 
 
 mod="mod4" # super key
-terminal="kitty"
+terminal="wezterm"
 
 '''
 @hook.subscribe.client_killed
