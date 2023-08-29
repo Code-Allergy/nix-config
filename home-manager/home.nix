@@ -9,6 +9,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+      ./foot.nix
   ];
 
   nixpkgs = {
@@ -33,10 +34,15 @@
     };
   };
 
-  # TODO: Set your username
   home = {
-    username = "your-username";
-    homeDirectory = "/home/your-username";
+    username = "ryan";
+    homeDirectory = "/home/ryan";
+    file = {
+      ".config/qtile" = {
+        source = ./qtile;
+        recursive = true;
+      };
+    };
   };
 
   # Add stuff for your user as you see fit:
@@ -45,10 +51,47 @@
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    userName = "Ryan Schaffer";
+    userEmail = "ryan.schaffer@live.com";
+    diff-so-fancy.enable = true;
+  };
 
+  home.shellAliases = {
+      hm = "home-manager switch --flake ~/Documents/nix-config";
+  };
+
+  programs.bash = {
+    enable = true;
+    historyIgnore = [
+      "ls"
+      "cd"
+      "exit"
+    ];
+  };
+
+  programs.command-not-found.enable = true;
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
+
+  programs.exa = {
+    enable = true;
+    enableAliases = true;
+  };
+  programs.firefox.enable = true;
+  programs.kitty.enable = true;
+
+  services.kdeconnect.enable = true;
+
+
+  # for virt-manager
+  dconf.settings = {
+  "org/virt-manager/virt-manager/connections" = {
+    autoconnect = ["qemu:///system"];
+    uris = ["qemu:///system"];
+  };
+};
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
