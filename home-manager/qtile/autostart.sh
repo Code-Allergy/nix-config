@@ -1,8 +1,8 @@
 #!/bin/sh
 
-nitrogen --restore &
+# nitrogen --restore &
 picom &
-deadd-notification-center &
+# deadd-notification-center &
 kdeconnect-cli -l &
 thunar --daemon &
 light-locker &

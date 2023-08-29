@@ -1,20 +1,5 @@
-TGTDEV = "/dev/vda"
-
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
-  o # clear the in memory partition table
-  n # new partition
-  p # primary partition
-  1 # partition number 1
-    # default - start at beginning of disk 
-  +500M # 100 MB boot parttion
-  n # new partition
-  p # primary partition
-  2 # partion number 2
-    # default, start immediately after preceding partition
-    # default, extend partition to end of disk
-  w # write the partition table
-  q # and we're done
-EOF
+TGTDEV=/dev/vda
+parted --script $TGTDEV mklabel gpt mkpart primary fat32 2MiB 502MiB mkpart primary ext4 502MiB 100%
 
 mkfs.fat -F 32 ${TGTDEV}1
 fatlabel ${TGTDEV}1 NIXBOOT

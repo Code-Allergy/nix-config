@@ -84,6 +84,7 @@
     pulseaudio
     pamixer
   ];
+  programs.thunar.enable = true;
 
   fonts = {
     fonts = with pkgs; [
@@ -155,7 +156,7 @@
       allowReboot = false;
       dates = "7:30";
     };
-    
+
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
 }
