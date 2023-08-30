@@ -17,17 +17,18 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { nixpkgs, home-manager, nur, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, ... }@inputs: {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations.blubbus = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; }; # Pass flake inputs to our config
-      modules = [
-        nur.nixosModules.nur
+    nixosConfigurations = {
+      blubbus-vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; }; # Pass flake inputs to our config
+        modules = [
 
-        # > Our main nixos configuration file <
-        ./nixos/configuration.nix ];
+          # > Our main nixos configuration file <
+          ./hosts/blubbus-vm ];
+      };
     };
 
     # Standalone home-manager configuration entrypoint
