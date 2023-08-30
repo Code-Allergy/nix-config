@@ -10,28 +10,36 @@
       ./hardware-configuration.nix
     ];
 
+  environment.systemPackages = with pkgs; [
+    nixos-generators
+    cifs-utils
+    vim
+    git
+
+    # Virtualization
+    virt-manager
+
+    # Audio
+    pulseaudio
+    pamixer
+  ];
+  programs.thunar.enable = true;
+
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-
-
-
-  # Set your time zone.
-  time.timeZone = "America/Regina";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_CA.UTF-8";
-
+  boot.loader.systemd-boot = {
+    enable = true;
+    netbootxyz.enable = true;
+    memtest86.enable = true;
+    editor = false;
+  };
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
     xkbVariant = "";
     enable = true;
-    # desktopManager.plasma5.enable = true;
     windowManager.qtile.enable = true;
     windowManager.qtile.extraPackages = p: with p; [ qtile-extras ]; 
-    #windowManager.qtile.backend = "wayland";
     displayManager.lightdm.enable = true;
-    # displayManager.sddm.enable = true;
   };
   
   nix = {
@@ -63,7 +71,7 @@
   users.users.ryan = {
     isNormalUser = true;
     description = "ryan";
-    extraGroups = [ "networkmanager" "wheel" "podman" "libvirtd" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" "libvirtd" "audio" "" ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCjL6VXXuid4Dq7QbRUPgpFxqOvyNstWtOt/LXiGBPdtQRx979YNI27KtP8x+ysYifrcU0cksfetaHj5UZCEmre5iG78vZ4/svtouEjh6oCUGwCTrVUCN63cuTKtDSTAzBGd/jBFyUZo1SBAtpuQ/gKKvAX6WK1OcAg8SRSpeOhjK4r/jT/2vNEkJePNDJk+uw5uQdHynqrt+eSF6aQG7SZo+nG3S55MdWnlRuKIEfOOq0jt09SPxJ8GB0HpjvZhON/KdjHlAZDUPVui2bBhF0S/umzMyCsR6z3478uGijM9QcMGlpV8RjTqDa5BnngaKoNLc6RnFHjhdkEVLBVJVBUpjsnQbp8oYHMhbzTNgisuuiSHJUtljUIGIcLAe76Yxp3+lUPSYFzxZZp7m+sKUPnHYn/guVdUzJzk6nQXJiwoaV5vXMLsrWPMQJIwNpruGbUID3gkmhS0rs7y1TR0pHjcqfUlHWSrYqIB7gETsCJUjHOiGQm138BVsvYlnz9AH0= ryan@fedora"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCHqmSLKCBzV4VEdq/ey2UdtAo+H1dPGFh/MAMqrCMJxnwwTH7aYtKQmCr0e91fbCkmqRLwtVbX5keSwbpOWACAnPNuxCSuazuJ/PCKEcbTG92iZfK1tsbkd+JniLybn1wHtFPOGyvQpzNpKWVdFMiH0jbzxbrfYOVLiUacCsRiSWFLeS52KOgVzNckeZaJwQE+2Y40rCf1UTfI53FH4C+0SKQLNk9tqCgWaraDhZCrAhMwlRzsV6lWbCyCZMkO4Q92SQPhJdQ2y9eJ0A4x5WQE2YZVFmQTFQ5+nZZnLxhOmuJnUpwBAifU8PP7TwAVBzb4o1fm6TYfIjpj5HVD364E9MwEChyf3+XgIESmzSsr+XES6GaGF29m5LLYgM3spAbJviLTfjYIMGwpVSXW+j8HWxzhDDEZNC/6AAuuhdWRQYyQWcA72yPsMpKXaDH0PT3EeqABUx/uySKW+BAYLODG78Tft6gCbIBWseujlQywij2l5T3muABnHD86nbpbhKE= ryan@arch.fedora"
@@ -73,6 +81,7 @@
   # audio 
 
   # security.rtkit.enable = true;
+  # sound.enable = true;
   # services.pipewire = {
   #   enable = true;
   #   alsa.enable = true;
@@ -97,16 +106,7 @@
   };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    nixos-generators
-    cifs-utils
-    vim
-    git
-    virt-manager
-    pulseaudio
-    pamixer
-  ];
-  programs.thunar.enable = true;
+
 
  fileSystems = let
    SambaConfigCommon = 
@@ -194,7 +194,6 @@
     spiceUSBRedirection.enable = true;
     # anbox.enable = true;
   };
-  # services.qemuGuest.enable = true;
 
   # required for podman
   programs.dconf.enable = true;
@@ -211,4 +210,8 @@
 
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
+
+  # Locale
+  time.timeZone = "America/Regina";
+  i18n.defaultLocale = "en_CA.UTF-8";
 }
