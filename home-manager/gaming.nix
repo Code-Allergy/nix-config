@@ -8,6 +8,7 @@
         gamemode
         mangohud
         gamescope
+        wine
         
         prismlauncher
     ];

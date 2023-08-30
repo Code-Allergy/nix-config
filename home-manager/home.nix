@@ -39,6 +39,7 @@
     htop
     mpv
     youtube-music
+    filelight
   ];
 
 
