@@ -5,16 +5,19 @@
 { inputs, lib, config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./common.nix
-      ./virtualisation.nix
-    ];
+
+  # Enable automatic login for the user.
+  services.getty.autologinUser = "ryan";
+  # Security
+  security.sudo.wheelNeedsPassword = false;
+  imports = [ ./common.nix ];
 
   environment.systemPackages = with pkgs; [
     nixos-generators
     cifs-utils
+
+    # Network
+    networkmanagerapplet
 
     # Virtualization
     virt-manager
@@ -27,23 +30,9 @@
     powertop
   ];
   programs.thunar.enable = true;
-
-  # Bootloader.
-  boot.loader.systemd-boot = {
-    enable = true;
-    netbootxyz.enable = true;
-    memtest86.enable = true;
-    editor = false;
-  };
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-    enable = true;
-    windowManager.qtile.enable = true;
-    windowManager.qtile.extraPackages = p: with p; [ qtile-extras ]; 
-    displayManager.lightdm.enable = true;
-  };
+  programs.thunar.plugins = with pkgs.xfce;[
+    thunar-volman thunar-archive-plugin
+  ];
 
   # SSH
   services.openssh = {
@@ -58,6 +47,7 @@
   users.users.ryan = {
     isNormalUser = true;
     description = "ryan";
+    initialPassword = "CHANGEME123!";
     extraGroups = [ "networkmanager" "wheel" "podman" "libvirtd" "audio" "video" ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCjL6VXXuid4Dq7QbRUPgpFxqOvyNstWtOt/LXiGBPdtQRx979YNI27KtP8x+ysYifrcU0cksfetaHj5UZCEmre5iG78vZ4/svtouEjh6oCUGwCTrVUCN63cuTKtDSTAzBGd/jBFyUZo1SBAtpuQ/gKKvAX6WK1OcAg8SRSpeOhjK4r/jT/2vNEkJePNDJk+uw5uQdHynqrt+eSF6aQG7SZo+nG3S55MdWnlRuKIEfOOq0jt09SPxJ8GB0HpjvZhON/KdjHlAZDUPVui2bBhF0S/umzMyCsR6z3478uGijM9QcMGlpV8RjTqDa5BnngaKoNLc6RnFHjhdkEVLBVJVBUpjsnQbp8oYHMhbzTNgisuuiSHJUtljUIGIcLAe76Yxp3+lUPSYFzxZZp7m+sKUPnHYn/guVdUzJzk6nQXJiwoaV5vXMLsrWPMQJIwNpruGbUID3gkmhS0rs7y1TR0pHjcqfUlHWSrYqIB7gETsCJUjHOiGQm138BVsvYlnz9AH0= ryan@fedora"
@@ -66,29 +56,9 @@
   };
 
 
-  # Enable automatic login for the user.
-  services.getty.autologinUser = "ryan";
-
   # Allow unfree packages
-  nixpkgs.config = {
-    allowUnfree = true;
-    android_sdk.accept_licence = true;
-  };
-
-  # Network config
-  networking = {
-    hostName = "blubbus";
-    networkmanager = {
-      enable = true;
-      wifi.powersave = true;
-    };
-
-    firewall = {
-      allowedTCPPorts = [  ];
-      allowedUDPPorts = [  ];
-      enable = true;
-    };
-  };
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.android_sdk.accept_licence = true;
 
   # Bluetooth
   hardware.bluetooth = {
@@ -99,10 +69,4 @@
   };services.blueman.enable = true;
 
 
-  # Security
-  security.sudo.wheelNeedsPassword = false;
-
-  # Locale
-  time.timeZone = "America/Regina";
-  i18n.defaultLocale = "en_CA.UTF-8";
 }
