@@ -107,7 +107,7 @@ keys = [
         Key([], "c", lazy.spawn("vscodium")),                           # Launches Vim
         Key([], "d", lazy.spawn("discord")),                            # Launches Discord
         Key([], "s", lazy.spawn("steam")),                              # Launches Steam
-        Key([], "o", lazy.spawn("obsidian")),                           # Launches Obsidian
+        # Key([], "o", lazy.spawn("obsidian")),                           # Launches Obsidian
         Key([], "v", lazy.spawn("nvim")),                               # Launches Neovim
     ], False, "Applications"),
     

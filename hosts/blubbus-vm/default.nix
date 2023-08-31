@@ -1,13 +1,18 @@
-{pkgs, config, lib, modulesPath, ...}:
-
 {
+  pkgs,
+  config,
+  lib,
+  modulesPath,
+  ...
+}: {
   imports = [
     # Hardware config
     (modulesPath + "/profiles/qemu-guest.nix")
 
     # Hardware
-    ../../nixos/audio.nix
-    ../../nixos/bluetooth.nix
+    ../../nixos/hardware/audio.nix
+    ../../nixos/hardware/bluetooth.nix
+    # ../../nixos/hardware/display.nix
 
     # Fileserver mounts
     ../../nixos/samba-mounts.nix
@@ -34,30 +39,30 @@
 
     plymouth = {
       enable = true;
-      themePackages = [ pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth ];
+      themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
       theme = "bgrt";
     };
 
-    kernelParams = [ "quiet" "splash" ];
-    initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
-    initrd.kernelModules = [ ];
-    kernelModules = [ "kvm-amd" ];
-    extraModulePackages = [ ];
+    kernelParams = ["quiet" "splash"];
+    initrd.availableKernelModules = ["ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk"];
+    initrd.kernelModules = [];
+    kernelModules = ["kvm-amd"];
+    extraModulePackages = [];
   };
 
   # Root FS
   fileSystems = {
-    "/" =
-      { device = "/dev/disk/by-label/NIXROOT";
-        fsType = "ext4";
-      };
+    "/" = {
+      device = "/dev/disk/by-label/NIXROOT";
+      fsType = "ext4";
+    };
 
-    "/boot" =
-      { device = "/dev/disk/by-label/NIXBOOT";
-        fsType = "vfat";
-      };
+    "/boot" = {
+      device = "/dev/disk/by-label/NIXBOOT";
+      fsType = "vfat";
+    };
   };
-  swapDevices = [ ];
+  swapDevices = [];
 
   networking.useDHCP = lib.mkDefault true;
 
@@ -67,17 +72,16 @@
     # power management
     powertop
   ];
-    
+
   # Laptop TLP battery saving config
   services.tlp.enable = true;
-  services.tlp.settings = { };
+  services.tlp.settings = {};
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
 
   # Display brightness
   programs.light.enable = true;
-
 
   # Network config
   networking = {
@@ -88,15 +92,16 @@
     };
 
     firewall = {
-      allowedTCPPorts = [  ];
-      allowedUDPPorts = [  ];
+      allowedTCPPorts = [];
+      allowedUDPPorts = [];
       enable = true;
     };
   };
 
   programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce;[
-    thunar-volman thunar-archive-plugin
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-volman
+    thunar-archive-plugin
   ];
 
   # SSH

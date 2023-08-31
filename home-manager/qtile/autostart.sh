@@ -3,10 +3,12 @@
 # nitrogen --restore &
 picom &
 # deadd-notification-center &
-kdeconnect-cli -l &
-thunar --daemon &
+# kdeconnect-cli -l &
+# thunar --daemon &
 light-locker &
 evolution &
+echo $PATH
+echo "DID IT WORK?"
 
 # Network system tray applet
 nm-applet &
@@ -26,7 +28,7 @@ then
     #sleep 10; clight-gui --tray &
 fi
 
-if [ $HOSTNAME == "blubbus" ]
-then
-    clight-gui --tray &
-fi
+# if [ $HOSTNAME == "blubbus" ]
+# then
+#     clight-gui --tray &
+# fi

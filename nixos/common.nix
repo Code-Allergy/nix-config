@@ -1,18 +1,25 @@
-{ inputs, lib, config, pkgs, ... }:
 {
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     ./virtualisation.nix
     ./fonts.nix
   ];
 
   environment.systemPackages = with pkgs; [
+    gnome.adwaita-icon-theme
+    libsForQt5.kdeconnect-kde
     nixos-generators
     vim
     git
   ];
 
   nix = {
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     extraOptions = ''
@@ -22,22 +29,21 @@
       keep-derivations = true
       cores = 4
       max-jobs = 6
-      max-free = ${toString (500*1024*1024)}
+      max-free = ${toString (500 * 1024 * 1024)}
     '';
-    
+
     gc = {
       automatic = true;
       dates = "weekly";
       options = "";
     };
   };
-  
+
   # TODO Change this later
   # Enable automatic login for the user.
   services.getty.autologinUser = "ryan";
   # Security
   security.sudo.wheelNeedsPassword = false;
-
   # system config
   system = {
     autoUpgrade = {
@@ -49,10 +55,11 @@
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
 
-  services.dbus.implementation = "broker";
+  # services.dbus.implementation = "broker";
 
   programs.fish.enable = true;
-  # programs.kdeconnect.enable = true;
+  programs.kdeconnect.enable = true;
+  # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

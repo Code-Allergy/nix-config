@@ -1,22 +1,28 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
-
-{ inputs, lib, config, pkgs, ... }: {
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}: {
   # You can import other home-manager modules here
   imports = [
     # If you want to use home-manager modules from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModule
 
     # You can also split up your configuration and import pieces of it here:
-      ./nvim.nix
-      ./picom.nix
-      # ./fish.nix
-      ./firefox.nix
-      ./fish
-      ./rofi
-      ./development.nix
-      ./gaming.nix
-      # ./qtile
+    ./nvim.nix
+    ./picom.nix
+    # ./fish.nix
+    ./display
+    ./firefox.nix
+    ./fish
+    ./rofi
+    ./development.nix
+    ./gaming.nix
+    # ./qtile
   ];
 
   nixpkgs = {
@@ -30,7 +36,7 @@
       # Disable if you don't want unfree packages
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
-      allowUnfreePredicate = (_: true);
+      allowUnfreePredicate = _: true;
     };
   };
 
@@ -39,38 +45,35 @@
     mpv
     youtube-music
     filelight
+    trilium-desktop
+    scrcpy
+    ferdium
   ];
 
-
-  
-
   # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
-  # home.packages = with pkgs; [ steam ];
 
   # Enable home-manager
   programs.home-manager.enable = true;
   home.shellAliases = {
-      hm = "home-manager switch --flake ~/nix-config";
-      nx = "sudo nixos-rebuild switch --flake ~/nix-config";
-      ls = "exa -al --color=always --group-directories-first"; # my preferred listing
-      la = "exa -a --color=always --group-directories-first";  # all files and dirs
-      ll = "exa -l --color=always --group-directories-first";  # long format
-      lt = "exa -aT --color=always --group-directories-first"; # tree listing
-      "l." = "exa -a | egrep '^\.' ";
+    hm = "home-manager switch --flake ~/nix-config";
+    nx = "sudo nixos-rebuild switch --flake ~/nix-config";
+    ls = "exa -al --color=always --group-directories-first"; # my preferred listing
+    la = "exa -a --color=always --group-directories-first"; # all files and dirs
+    ll = "exa -l --color=always --group-directories-first"; # long format
+    lt = "exa -aT --color=always --group-directories-first"; # tree listing
+    "l." = "exa -a | egrep '^\.' ";
 
-      # Confirm before overwriting file
-      cp = "cp -i";
-      mv = "mv -i";
-      rm = "rm -i";
+    # Confirm before overwriting file
+    cp = "cp -i";
+    mv = "mv -i";
+    rm = "rm -i";
 
+    # kitty SSH
+    ssh = "kitty +kitten ssh";
 
-      # kitty SSH
-      ssh = "kitty +kitten ssh";
-            
-      # other flags
-      df = "df -h";                          # human-readable sizes
-      free = "free -m";                      # show sizes in MB
+    # other flags
+    df = "df -h"; # human-readable sizes
+    free = "free -m"; # show sizes in MB
   };
 
   programs.bash = {
@@ -103,7 +106,6 @@
     };
   };
 
-
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
@@ -111,8 +113,6 @@
     enable = true;
     # enableAliases = true;
   };
-  programs.kitty.enable = true;
-
 
   programs.starship.enable = true;
   programs.starship.enableBashIntegration = true;
@@ -120,51 +120,58 @@
   # command not found hook
   programs.command-not-found.enable = true;
 
-
-
-
   programs.zoxide.enable = true;
   programs.zoxide.enableBashIntegration = true;
 
   programs.wezterm = {
     enable = true;
-    # enableBashIntegration = true;
-    extraConfig =
-      ''
-        local config = {}
+    extraConfig = ''
+      local config = {}
 
-        if wezterm.config_builder then
-          config = wezterm.config_builder()
-        end
+      if wezterm.config_builder then
+        config = wezterm.config_builder()
+      end
 
-        config.color_scheme = 'Catppuccin Mocha'
-        config.font = wezterm.font 'Roboto Mono Nerd Font'
-        config.font_size = 12.0
-        config.enable_tab_bar = false
+      config.color_scheme = 'Catppuccin Mocha'
+      config.font = wezterm.font 'Roboto Mono Nerd Font'
+      config.font_size = 12.0
+      config.enable_tab_bar = false
 
-        config.window_close_confirmation = 'NeverPrompt'
+      config.window_close_confirmation = 'NeverPrompt'
 
-        return config
-      '';
-    
+      return config
+    '';
   };
 
   programs.rofi.enable = true;
 
   services.autorandr.enable = true;
-  services.kdeconnect.enable = true;
   services.syncthing.enable = true;
   #services.batsignal.enable = true;
   services.dunst.enable = true;
   services.flameshot.enable = true;
   services.gpg-agent.enable = true;
-  
 
   # for virt-manager
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = ["qemu:///system"];
       uris = ["qemu:///system"];
+    };
+  };
+
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.gnome.adwaita-icon-theme;
+    };
+    theme = {
+      name = "Materia";
+      package = pkgs.materia-theme;
+    };
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = true;
     };
   };
 

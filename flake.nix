@@ -9,6 +9,10 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # alejandra
+    alejandra.url = "github:kamadorueda/alejandra/3.0.0";
+    alejandra.inputs.nixpkgs.follows = "nixpkgs";
+
     nur.url = github:nix-community/NUR;
     # hardware.url = "github:nixos/nixos-hardware";
 
@@ -17,19 +21,30 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs: {
+  outputs = {
+    nixpkgs,
+    home-manager,
+    alejandra,
+    ...
+  } @ inputs: {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      blubbus-vm = nixpkgs.lib.nixosSystem {
+      blubbus-vm = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [ ./hosts/blubbus-vm ];
+        specialArgs = {inherit inputs;};
+        modules = [./hosts/blubbus-vm];
       };
+
       blubbus = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [ ./hosts/blubbus-vm ];
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/blubbus-vm
+          {
+            environment.systemPackages = [alejandra.defaultPackage.x86_64-linux];
+          }
+        ];
       };
     };
 
@@ -38,9 +53,9 @@
     homeConfigurations = {
       "ryan@blubbus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = { inherit inputs; }; # Pass flake inputs to our config
+        extraSpecialArgs = {inherit inputs;}; # Pass flake inputs to our config
         # > Our main home-manager configuration file <
-        modules = [ ./home-manager/home.nix ];
+        modules = [./home-manager/home.nix];
       };
     };
   };

@@ -142,7 +142,9 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
         Match(title="Welcome"),
-        Match(title="Friends List") # Steam friend's list
+        Match(title="Friends List"), # Steam friend's list
+        Match(wm_class="easyeffects"), # easy effects audio gui
+        Match(wm_class="kdeconnect-app"), # kde-connect dialog
     ]
 )
 auto_fullscreen = True
