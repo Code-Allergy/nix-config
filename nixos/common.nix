@@ -49,6 +49,8 @@
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
 
+  services.dbus.implementation = "broker";
+
   programs.fish.enable = true;
   # programs.kdeconnect.enable = true;
 

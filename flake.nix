@@ -23,11 +23,13 @@
     nixosConfigurations = {
       blubbus-vm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; }; # Pass flake inputs to our config
-        modules = [
-
-          # > Our main nixos configuration file <
-          ./hosts/blubbus-vm ];
+        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/blubbus-vm ];
+      };
+      blubbus = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/blubbus-vm ];
       };
     };
 

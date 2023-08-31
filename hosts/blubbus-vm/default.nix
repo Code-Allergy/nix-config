@@ -15,6 +15,10 @@
     # Register ryan as default user
     ../../nixos/users/ryan
 
+    # Run qtile environment
+    # ../../nixos/environments/qtile.nix
+    ../../nixos/environments/pantheon.nix
+
     # common configs for all deployments
     ../../nixos/common.nix
   ];
@@ -62,19 +66,10 @@
     # power management
     powertop
   ];
-
-  # X11
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    windowManager.qtile.enable = true;
-    windowManager.qtile.extraPackages = p: with p; [ qtile-extras ]; 
-    displayManager.lightdm.enable = true;
-  };
     
   # Laptop TLP battery saving config
-  services.tlp.enable = true;
-  services.tlp.settings = { };
+  # services.tlp.enable = true;
+  # services.tlp.settings = { };
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
