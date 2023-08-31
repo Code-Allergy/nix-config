@@ -2,7 +2,6 @@
 {
   imports = [
     ./virtualisation.nix
-    ./hardware-configuration.nix
     ./fonts.nix
   ];
 
@@ -16,13 +15,9 @@
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
-    settings = {
-      auto-optimise-store = true;
-    };
-
     extraOptions = ''
       experimental-features = nix-command flakes
-
+      auto-optimise-store = true
       keep-outputs = true
       keep-derivations = true
       cores = 4
@@ -52,15 +47,6 @@
     };
 
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
-  };
-
-  # SSH
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
   };
 
   programs.fish.enable = true;

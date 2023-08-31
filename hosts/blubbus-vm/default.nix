@@ -1,47 +1,72 @@
-{pkgs, config, ...}:
+{pkgs, config, lib, modulesPath, ...}:
 
 {
   imports = [
-      # ../nixos/common.nix
-      ../../nixos/audio.nix
-      ../../nixos/bluetooth.nix
-      ../../nixos/samba-mounts.nix
-      # ../nixos/hardware-configuration.nix
-      ../../nixos/users/ryan
-      ../../nixos/common.nix
+    # Hardware config
+    (modulesPath + "/profiles/qemu-guest.nix")
+
+    # Hardware
+    ../../nixos/audio.nix
+    ../../nixos/bluetooth.nix
+
+    # Fileserver mounts
+    ../../nixos/samba-mounts.nix
+
+    # Register ryan as default user
+    ../../nixos/users/ryan
+
+    # common configs for all deployments
+    ../../nixos/common.nix
   ];
 
-  config = {
-    environment.systemPackages = with pkgs; [
-      # power management
-      powertop
-    ];
-
-    # Bootloader.
-    boot = {
-      loader.systemd-boot = {
-        enable = true;
-        netbootxyz.enable = true;
-        memtest86.enable = true;
-        editor = false;
-      };
-      plymouth = {
-        enable = true;
-        themePackages = [ pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth ];
-        theme = "bgrt";
-      };
-      kernelParams = [ "quiet" "splash" ];
+  # Bootloader.
+  boot = {
+    loader.systemd-boot = {
+      enable = true;
+      netbootxyz.enable = true;
+      memtest86.enable = true;
+      editor = false;
     };
-      # Locale & Time
-      time.timeZone = "America/Regina";
-      services.chrony.enable = true;
-      i18n.defaultLocale = "en_CA.UTF-8";
 
+    plymouth = {
+      enable = true;
+      themePackages = [ pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth ];
+      theme = "bgrt";
+    };
+
+    kernelParams = [ "quiet" "splash" ];
+    initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-amd" ];
+    extraModulePackages = [ ];
+  };
+
+  fileSystems = {
+    "/" =
+      { device = "/dev/disk/by-label/NIXROOT";
+        fsType = "ext4";
+      };
+
+    "/boot" =
+      { device = "/dev/disk/by-label/NIXBOOT";
+        fsType = "vfat";
+      };
+  };
+  swapDevices = [ ];
+
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  environment.systemPackages = with pkgs; [
+    # power management
+    powertop
+  ];
 
   # X11
   services.xserver = {
-    layout = "us";
     enable = true;
+    layout = "us";
     windowManager.qtile.enable = true;
     windowManager.qtile.extraPackages = p: with p; [ qtile-extras ]; 
     displayManager.lightdm.enable = true;
@@ -75,15 +100,17 @@
     thunar-volman thunar-archive-plugin
   ];
 
-
-  # System configuration
-  system = {
-    autoUpgrade = {
-      enable = true;
-      allowReboot = false;
-      dates = "7:30";
+  # SSH
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
     };
-    stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
-  };
+
+  # Locale & Time
+  time.timeZone = "America/Regina";
+  services.chrony.enable = true;
+  i18n.defaultLocale = "en_CA.UTF-8";
 }
