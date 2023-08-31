@@ -1,6 +1,5 @@
 {pkgs, ...}:
 {
-
   users.users.ryan = {
     isNormalUser = true;
     description = "ryan";

@@ -16,8 +16,8 @@
     ../../nixos/users/ryan
 
     # Run qtile environment
-    # ../../nixos/environments/qtile.nix
-    ../../nixos/environments/pantheon.nix
+    ../../nixos/environments/qtile.nix
+    # ../../nixos/environments/gnome.nix
 
     # common configs for all deployments
     ../../nixos/common.nix
@@ -45,6 +45,7 @@
     extraModulePackages = [ ];
   };
 
+  # Root FS
   fileSystems = {
     "/" =
       { device = "/dev/disk/by-label/NIXROOT";
@@ -68,11 +69,14 @@
   ];
     
   # Laptop TLP battery saving config
-  # services.tlp.enable = true;
-  # services.tlp.settings = { };
+  services.tlp.enable = true;
+  services.tlp.settings = { };
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
+
+  # Display brightness
+  programs.light.enable = true;
 
 
   # Network config
