@@ -1,5 +1,9 @@
+{ pkgs, ... }:
+
 {
-  # Virtualization
+  
+  environment.systemPackages = with pkgs; [ virt-manager ];
+
   virtualisation = {
     podman = {
       enable = true;

@@ -3,30 +3,14 @@
   imports = [
     ./virtualisation.nix
     ./hardware-configuration.nix
+    ./fonts.nix
   ];
-  fonts = {
-    fonts = with pkgs; [
-      montserrat
 
-      roboto
-      roboto-mono
-
-      noto-fonts
-      noto-fonts-emoji
-      
-      fira-code
-      fira-code-symbols
-      (nerdfonts.override { fonts = [ "FiraCode" "IBMPlexMono" "RobotoMono" "Hack"]; })
-    ];
-    fontconfig = {
-      enable = true;
-      defaultFonts = {
-        # serif
-        sansSerif = [ "Montserrat" ];
-        monospace = [ "BlexMono Nerd Font" ];
-      };
-    };
-  };
+  environment.systemPackages = with pkgs; [
+    nixos-generators
+    vim
+    git
+  ];
 
   nix = {
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
@@ -52,7 +36,14 @@
       options = "";
     };
   };
+  
+  # TODO Change this later
+  # Enable automatic login for the user.
+  services.getty.autologinUser = "ryan";
+  # Security
+  security.sudo.wheelNeedsPassword = false;
 
+  # system config
   system = {
     autoUpgrade = {
       enable = true;
@@ -62,4 +53,20 @@
 
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
+
+  # SSH
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+  };
+
+  programs.fish.enable = true;
+  # programs.kdeconnect.enable = true;
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.android_sdk.accept_licence = true;
 }
