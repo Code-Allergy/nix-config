@@ -19,7 +19,7 @@
       defaultFonts = {
         # serif
         sansSerif = ["Montserrat"];
-        monospace = ["BlexMono Nerd Font"];
+        monospace = ["BlexMono Nerd Font Mono"];
       };
     };
   };

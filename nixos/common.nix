@@ -12,9 +12,8 @@
 
   environment.systemPackages = with pkgs; [
     gnome.adwaita-icon-theme
-    libsForQt5.kdeconnect-kde
     nixos-generators
-    vim
+    vim-full
     git
   ];
 
@@ -55,10 +54,12 @@
     stateVersion = "23.05"; # https://nixos.org/nixos/options.html
   };
 
-  # services.dbus.implementation = "broker";
+  # enable flatpak support
+  # services.flatpak.enable = true;
+  # xdg.portal.enable = true;
+  # xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal ];
 
   programs.fish.enable = true;
-  programs.kdeconnect.enable = true;
   # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 
   # Allow unfree packages

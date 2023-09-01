@@ -15,7 +15,7 @@
     # ../../nixos/hardware/display.nix
 
     # Fileserver mounts
-    ../../nixos/samba-mounts.nix
+    # ../../nixos/samba-mounts.nix
 
     # Register ryan as default user
     ../../nixos/users/ryan
@@ -103,6 +103,7 @@
     thunar-volman
     thunar-archive-plugin
   ];
+  services.gvfs.enable = true;
 
   # SSH
   services.openssh = {

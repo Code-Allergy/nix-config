@@ -15,12 +15,13 @@
     # You can also split up your configuration and import pieces of it here:
     ./nvim.nix
     ./picom.nix
-    # ./fish.nix
     ./display
     ./firefox.nix
     ./fish
     ./rofi
     ./development.nix
+    ./communication.nix
+    ./entertainment.nix
     ./gaming.nix
     # ./qtile
   ];
@@ -48,9 +49,8 @@
     trilium-desktop
     scrcpy
     ferdium
+    gimp-with-plugins
   ];
-
-  # Add stuff for your user as you see fit:
 
   # Enable home-manager
   programs.home-manager.enable = true;
@@ -109,37 +109,30 @@
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
-  programs.exa = {
-    enable = true;
-    # enableAliases = true;
-  };
-
+  # Terminal
   programs.starship.enable = true;
   programs.starship.enableBashIntegration = true;
 
   # command not found hook
   programs.command-not-found.enable = true;
 
+  programs.exa = {
+    enable = true;
+  };
+
   programs.zoxide.enable = true;
-  programs.zoxide.enableBashIntegration = true;
+  programs.zoxide.enableFishIntegration = true;
 
   programs.wezterm = {
     enable = true;
     extraConfig = ''
-      local config = {}
-
-      if wezterm.config_builder then
-        config = wezterm.config_builder()
-      end
-
-      config.color_scheme = 'Catppuccin Mocha'
-      config.font = wezterm.font 'Roboto Mono Nerd Font'
-      config.font_size = 12.0
-      config.enable_tab_bar = false
-
-      config.window_close_confirmation = 'NeverPrompt'
-
-      return config
+      return {
+        font = wezterm.font 'Roboto Mono Nerd Font',
+        font_size = 12.0,
+        color_scheme = 'Catppuccin Mocha',
+        hide_tab_bar_if_only_one_tab = true,
+        window_background_opacity = 0.90;
+      }
     '';
   };
 
@@ -163,17 +156,42 @@
   gtk = {
     enable = true;
     iconTheme = {
-      name = "Adwaita";
-      package = pkgs.gnome.adwaita-icon-theme;
+      name = "Papirus";
+      package = pkgs.catppuccin-papirus-folders.override {
+        flavor = "mocha";
+        accent = "sky";
+      };
     };
+
     theme = {
-      name = "Materia";
-      package = pkgs.materia-theme;
+      name = "Catppuccin-Mocha-Compact-Blue-Dark";
+      package = pkgs.catppuccin-gtk.override {
+        accents = [ "blue" ];
+        size = "compact";
+        tweaks = [ "rimless" ];
+        variant = "mocha";
+      };
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = true;
     };
+
+    font = {
+      name = "Montserrat";
+      size = 12;
+    };
   };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.catppuccin-cursors.mochaDark;
+    name = "Catppuccin-Mocha-Dark-Cursors";
+    size = 16;
+  };
+
+  # Cursor
+
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";

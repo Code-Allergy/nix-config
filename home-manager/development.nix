@@ -9,8 +9,15 @@
     android-tools
 
     dbeaver
+
+    # Jetbrains
+    jetbrains.pycharm-professional
+    jetbrains.webstorm
+    jetbrains.idea-ultimate
+    jetbrains.clion
   ];
 
+  programs.java.enable = true;
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
@@ -25,6 +32,7 @@
       file-icons.file-icons
       esbenp.prettier-vscode
       vscjava.vscode-maven
+      humao.rest-client
 
       # nix
       bbenoist.nix
@@ -61,9 +69,9 @@
       "terminal.explorerKind" = "external";
       "terminal.integrated.env.linux" = {
       };
-      "liveServer.settings.donotVerifyTags" = true;
+      "liveServer.settings.doNotVerifyTags" = true;
       "rest-client.enableTelemetry" = false;
-      "editor.fontFamily" = "'BlexMono Nerd Font Mono', 'monospace', monospace";
+      "editor.fontFamily" = "'FiraCode Nerd Font','BlexMono Nerd Font', monospace";
       "editor.fontLigatures" = true;
       "git.autofetch" = true;
 

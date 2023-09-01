@@ -16,6 +16,9 @@
     nur.url = github:nix-community/NUR;
     # hardware.url = "github:nixos/nixos-hardware";
 
+    # Nix software center gtk4
+    # nix-software-center.url = "github:vlinkz/nix-software-center";
+
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
     # nix-colors.url = "github:misterio77/nix-colors";
@@ -33,7 +36,12 @@
       blubbus-vm = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
-        modules = [./hosts/blubbus-vm];
+        modules = [
+          {environment.systemPackages = [
+            # inputs.nix-software-center.packages.x86_64-linux.nix-software-center
+            alejandra.defaultPackage.x86_64-linux
+            ];}
+          ./hosts/blubbus-vm];
       };
 
       blubbus = nixpkgs.lib.nixosSystem {
@@ -41,9 +49,6 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/blubbus-vm
-          {
-            environment.systemPackages = [alejandra.defaultPackage.x86_64-linux];
-          }
         ];
       };
     };
