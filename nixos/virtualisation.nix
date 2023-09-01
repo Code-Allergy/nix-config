@@ -42,7 +42,4 @@
       # };
     };
   };
-
-  # required for podman
-  programs.dconf.enable = true;
 }

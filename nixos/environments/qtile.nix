@@ -6,4 +6,6 @@
     windowManager.qtile.extraPackages = p: with p; [qtile-extras];
     displayManager.lightdm.enable = true;
   };
+
+  programs.dconf.enable = true;
 }
