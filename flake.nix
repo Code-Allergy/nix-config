@@ -28,6 +28,7 @@
     nixpkgs,
     home-manager,
     alejandra,
+    nur,
     ...
   } @ inputs: {
     # NixOS configuration entrypoint
@@ -37,11 +38,14 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
-          {environment.systemPackages = [
-            # inputs.nix-software-center.packages.x86_64-linux.nix-software-center
-            alejandra.defaultPackage.x86_64-linux
-            ];}
-          ./hosts/blubbus-vm];
+          {
+            environment.systemPackages = [
+              # inputs.nix-software-center.packages.x86_64-linux.nix-software-center
+              alejandra.defaultPackage.x86_64-linux
+            ];
+          }
+          ./hosts/blubbus-vm
+        ];
       };
 
       blubbus = nixpkgs.lib.nixosSystem {
@@ -60,7 +64,10 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs;}; # Pass flake inputs to our config
         # > Our main home-manager configuration file <
-        modules = [./home-manager/home.nix];
+        modules = [
+          nur.nixosModules.nur
+          ./home-manager/home.nix
+        ];
       };
     };
   };
