@@ -9,6 +9,9 @@
     gamescope
     wine
 
+    # needed for steam tray icon -- move if needed elsewhere
+    snixembed
+
     prismlauncher
 
     # CC Emulator

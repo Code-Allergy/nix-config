@@ -43,6 +43,7 @@
   services.getty.autologinUser = "ryan";
   # Security
   security.sudo.wheelNeedsPassword = false;
+
   # system config
   system = {
     autoUpgrade = {
@@ -59,8 +60,15 @@
   # xdg.portal.enable = true;
   # xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal ];
 
+  hardware.enableRedistributableFirmware = true;
+
   programs.fish.enable = true;
   # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
+
+  services.upower.enable = true;
+
+  ## find sometwhere for this TODO
+  programs.gamemode.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

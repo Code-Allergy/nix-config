@@ -344,17 +344,16 @@ def generate_blubbus_widgets():
         **powerline,
     ),
 
-    # widget.Battery(
-    #     font=xf,
-    #     fontsize=xx,
-    #     foreground=colors[0],
-    #     background=colors[5],
-
-    #     format="{watt:.2f} W {percent:2.0%}",
-    #     notify_below=10,
-    #     update_interval=5,
-    #     **powerline,
-    # ),
+    widget.Battery(
+       font=xf,
+       fontsize=xx,
+       foreground=colors[0],
+       background=colors[5],
+       format="{watt:.2f} W {percent:2.0%}",
+       notify_below=10,
+       update_interval=5,
+       **powerline,
+    ),
 
     widget.Clock(
         font=xf,

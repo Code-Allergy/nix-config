@@ -12,10 +12,11 @@
     # Hardware
     ../../nixos/hardware/audio.nix
     ../../nixos/hardware/bluetooth.nix
-    # ../../nixos/hardware/display.nix
+    ../../nixos/hardware/display.nix
+    ../../nixos/hardware/nvidia.nix
 
     # Fileserver mounts
-    # ../../nixos/samba-mounts.nix
+    ../../nixos/samba-mounts.nix
 
     # Register ryan as default user
     ../../nixos/users/ryan
@@ -43,7 +44,15 @@
       theme = "bgrt";
     };
 
-    kernelParams = ["quiet" "splash"];
+    kernelParams = [
+      "quiet"
+      "splash"
+      "acpi_backlight=nvidia_wmi_ec"
+
+      # Amd PState_
+      "initcall_blacklist=acpi_cpufreq_init"
+      "amd_pstate=active"
+    ];
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
     initrd.kernelModules = ["dm-snapshot"];
     initrd.luks.devices = {
@@ -52,7 +61,13 @@
         preLVM = true;
       };
     };
-    kernelModules = ["kvm-amd"];
+    kernelModules = [
+      "vfio"
+      "vfio_pci"
+      "vfio_iommu_type1"
+      "vfio_virqfd"
+      "kvm-amd"
+    ];
     extraModulePackages = [];
   };
 
@@ -68,7 +83,10 @@
       fsType = "vfat";
     };
   };
-  swapDevices = [ { device = "/dev/disk/by-uuid/2ba14f11-3e3a-46d7-8f69-e443be36e33b"; } ];
+
+  swapDevices = [
+    {device = "/dev/disk/by-uuid/2ba14f11-3e3a-46d7-8f69-e443be36e33b";}
+  ];
 
   networking.useDHCP = lib.mkDefault true;
 

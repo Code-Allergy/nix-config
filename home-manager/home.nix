@@ -55,8 +55,8 @@
   # Enable home-manager
   programs.home-manager.enable = true;
   home.shellAliases = {
-    hm = "home-manager switch --flake ~/nix-config";
-    nx = "sudo nixos-rebuild switch --flake ~/nix-config";
+    hm = "home-manager switch --flake ~/Documents/nix-config";
+    nx = "sudo nixos-rebuild switch --flake ~/Documents/nix-config";
     ls = "exa -al --color=always --group-directories-first"; # my preferred listing
     la = "exa -a --color=always --group-directories-first"; # all files and dirs
     ll = "exa -l --color=always --group-directories-first"; # long format
@@ -69,7 +69,7 @@
     rm = "rm -i";
 
     # kitty SSH
-    ssh = "kitty +kitten ssh";
+    # ssh = "kitty +kitten ssh";
 
     # other flags
     df = "df -h"; # human-readable sizes
@@ -166,9 +166,9 @@
     theme = {
       name = "Catppuccin-Mocha-Compact-Blue-Dark";
       package = pkgs.catppuccin-gtk.override {
-        accents = [ "blue" ];
+        accents = ["blue"];
         size = "compact";
-        tweaks = [ "rimless" ];
+        tweaks = ["rimless"];
         variant = "mocha";
       };
     };
@@ -191,7 +191,6 @@
   };
 
   # Cursor
-
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";

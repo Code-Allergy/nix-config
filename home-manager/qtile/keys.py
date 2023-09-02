@@ -128,9 +128,9 @@ if os.uname()[1] == 'blubbus':
     keys.extend([
         # Brightness keys
     Key([], "XF86MonBrightnessUp",                                      # Increase brightness 5%
-            lazy.spawn("brightnessctl set +5%")),
+            lazy.spawn("light -A 5")),
     Key([], "XF86MonBrightnessDown",                                    # Decrease brightness 5%
-            lazy.spawn("brightnessctl set 5%-")),
+            lazy.spawn("light -U 5")),
     ])
 
 
