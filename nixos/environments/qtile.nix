@@ -3,9 +3,11 @@
     enable = true;
     layout = "us";
     windowManager.qtile.enable = true;
+    #windowManager.qtile.backend = "wayland";
     windowManager.qtile.extraPackages = p: with p; [qtile-extras];
     # displayManager.startx.enable = true;
     displayManager.lightdm.enable = true;
+    displayManager.lightdm.greeters.enso.enable = true;
   };
   programs.slock.enable = true;
 

@@ -262,7 +262,7 @@ def generate_blubbus_widgets(xx = blubbus_font_size, xf=font_family):
         fontsize=xx,
     ),
 
-    widget.Systray(
+    widget.StatusNotifier(
         **systray
     ),
 
@@ -287,6 +287,7 @@ def generate_blubbus_widgets(xx = blubbus_font_size, xf=font_family):
        foreground=colors[0],
        background=colors[5],
        min_brightness=5,
+       device='/sys/class/backlight/nvidia_wmi_ec_backlight'
     ),
     
     widget.Battery(
