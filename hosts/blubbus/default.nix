@@ -57,7 +57,7 @@
     initrd.kernelModules = ["dm-snapshot"];
     initrd.luks.devices = {
       root = {
-        device = "/dev/nvme1n1p2";
+        device = "/dev/disk/by-uuid/d19873f6-caa4-43a2-8032-0b6cc8e72190";
         preLVM = true;
       };
     };
