@@ -41,7 +41,7 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown()),                        # Shutdown Qtile
     Key([mod], "w", lazy.window.kill()),                                # Kill focused window
 
-    Key([mod, "control"], "t", lazy.spawn('light-locker-command -l')),  # Lock Session
+    Key([mod, "shift"], "l", lazy.spawn('slock')),  # Lock Session
     #Key([mod, "shift"], "s", lazy.widget["widgetbox"].toggle()),       # open/close widget box
 
     ##################################################################################################
