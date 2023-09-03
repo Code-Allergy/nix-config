@@ -49,8 +49,13 @@
       "splash"
       "acpi_backlight=nvidia_wmi_ec"
 
+      # Amd PState Preffered core
+      # Enable for 6.5
+      # "amd_prefcore=enable"
+
       # Amd PState_
       "initcall_blacklist=acpi_cpufreq_init"
+      # Can be removed in 6.5 (becomes default)
       "amd_pstate=active"
     ];
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
@@ -108,6 +113,10 @@
   # Laptop TLP battery saving config
   services.tlp.enable = true;
   services.tlp.settings = {
+    CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+    # only active with TLP 1.6
     CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
     CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
@@ -116,6 +125,11 @@
 
     CPU_BOOST_ON_AC = "1";
     CPU_BOOST_ON_BAT = "0";
+
+    WIFI_PWR_ON_AC = "off";
+    WIFI_PWR_ON_BAT = "on";
+
+    DISK_DEVICES = "nvme0n1 nvme1n1";
   };
 
   # Enable acpi daemon so laptop close/open is responded to
