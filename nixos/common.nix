@@ -63,6 +63,7 @@
   hardware.enableRedistributableFirmware = true;
 
   programs.fish.enable = true;
+  programs.command-not-found.enable = true;
   # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 
   services.upower.enable = true;
