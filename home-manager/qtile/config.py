@@ -145,6 +145,7 @@ floating_layout = layout.Floating(
         Match(title="Friends List"), # Steam friend's list
         Match(wm_class="easyeffects"), # easy effects audio gui
         Match(wm_class="kdeconnect-app"), # kde-connect dialog
+        Match(wm_class=".blueman-manager-wrapped"),
     ]
 )
 auto_fullscreen = True
