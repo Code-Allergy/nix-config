@@ -7,13 +7,6 @@ from libqtile.lazy import lazy
 from qtile_extras import widget
 from qtile_extras.widget.decorations import PowerLineDecoration
 
-# bigblubbus configurables
-big_blubbus_font_size = 12
-blubbus_font_size = 15
-
-
-# font pack
-xf="Cantarell"
 
 terminal="xterm"
 
@@ -29,10 +22,6 @@ def restart_on_randr(qtile, ev):
 	qtile.cmd_restart()
 
 
-def get_monitor_count(): # returns a list of names of monitors
-    output = [l for l in subprocess.check_output(["xrandr"]).decode("utf-8").splitlines()]
-    return [l.split()[0] for l in output if " connected " in l]
-
 @hook.subscribe.startup_complete
 def start_finished():
     if len(get_monitor_count()) > 1:
@@ -41,81 +30,125 @@ def start_finished():
         qtile.focus_screen(0)
         qtile.groups_map["WWW"].cmd_toscreen(toggle=False)
 
-def generate_bigblubbus_widgets():
-    xx = big_blubbus_font_size
-    powerline = {
-        "decorations": [PowerLineDecoration()]
-    }
 
-    widgets=[
+def get_monitor_count(): # returns a list of names of monitors
+    output = [l for l in subprocess.check_output(["xrandr"]).decode("utf-8").splitlines()]
+    return [l.split()[0] for l in output if " connected " in l]
+
+# Standard configs 
+# bigblubbus configurables
+big_blubbus_font_size = 12
+blubbus_font_size =     15
+font_family="Montserrat"
+
+powerline = {
+    "decorations": [PowerLineDecoration()]
+}
+
+current_layout_icon = {
+    "custom_icon_paths":[os.path.expanduser("~/.config/qtile/icons")],
+    "scale":0.55,
+    "padding":0,
+    "background":colors[0],
+    **powerline
+}
+
+group_box = {
+    "font":font_family,
+    "borderwidth":3,
+    "spacing":0,
+    "inactive":colors[15],
+    "active":colors[4],
+    "background":colors[1],
+    "rounded":True,
+    "highlight_color":colors[0],
+    "highlight_method":"block",
+    
+    # when focused on main
+    "this_current_screen_border":colors[6],
+    "other_screen_border":colors[9],
+    
+    # when unfocused on main
+    "this_screen_border":colors[10],
+    "other_current_screen_border":colors[7],
+    
+    # highlight text black
+    "block_highlight_text_color":colors[0],
+    **powerline,
+}
+
+window_name = {
+    "font":font_family,
+    "foreground":colors[7],
+    "background":colors[0],
+    **powerline,
+}
+
+systray = {
+    "background":colors[0],
+    "icons_size":20,
+    "padding":4,
+    **powerline,
+}
+
+memory = {
+    "font":font_family,
+    "background":colors[15],
+    "foreground":colors[0],
+    "measure_mem":'G',
+    "format":'{MemUsed: .2f} GB',
+    **powerline,
+}
+
+cpu = {
+    "font":font_family,
+    "background":colors[2],
+    "foreground":colors[0],
+    "format":'{load_percent}% {freq_current}GHz',
+    **powerline
+}
+
+volume = {
+    "font":font_family,
+    "background":colors[4],
+    "foreground":colors[0],
+    "mouse_callbacks":{},
+    "update_interval":0.2,
+    "limit_max_volume":True,
+    "fmt":'SND: {}',
+    **powerline,
+}
+
+clock = {
+    "font":font_family,
+    "foreground":colors[0],
+    "background":colors[7],
+    "format":"%B %d, %H:%M",
+}
+
+
+def generate_bigblubbus_widgets(xx = big_blubbus_font_size,
+                                xf = font_family):
+    return [
     widget.CurrentLayoutIcon(
-        custom_icon_paths=[os.path.expanduser("~/.config/qtile/icons")],
-        scale=0.85,
-        padding=4,
-        background=colors[0],
-        **powerline,
+        **current_layout_icon,
     ),
     
     widget.GroupBox(
-        font=xf,
+        **group_box,
         fontsize=xx,
         margin_y=1,
         margin_x=1,
         padding_y=5,
         padding_x=3,
-        borderwidth=3,
-        spacing=0,
-        inactive=colors[15],
-        active=colors[4],
-        background=colors[1],
-        rounded=True,
-        highlight_color=colors[0],
-        highlight_method="block",
-        
-        # when focused on main
-        this_current_screen_border=colors[6],
-        other_screen_border=colors[9],
-        
-        # when unfocused on main
-        this_screen_border=colors[10],
-        other_current_screen_border=colors[7],
-        
-        # highlight text black
-        block_highlight_text_color=colors[0],
-        **powerline,
     ),
     widget.WindowName(
-        font=xf,
+        **window_name,
         fontsize=xx,
-        foreground=colors[7],
-        background=colors[0],
-        
-        **powerline,
     ),
-    
-    widget.CheckUpdates(
-        font=xf,
-        fontsize=xx,
-        foreground = colors[1],
-        background = colors[0],
-        colour_have_updates = colors[7],
-        colour_no_updates = colors[0],
-
-        update_interval = 1800,
-        distro = "Arch_checkupdates",
-        display_format = "Updates: {updates} ",
-        mouse_callbacks = {
-            'Button1': lambda: qtile.cmd_spawn('kitty -e sudo pacman -Syu')
-            },
-        padding = 5,
-        **powerline,
-     ),
      
      widget.StatusNotifier(
-        background=colors[0],
-        icons_size=20,
-        padding=4,
-        **powerline,
+        **systray
     ),
 
     widget.Net(
@@ -131,23 +164,13 @@ def generate_bigblubbus_widgets():
     ),
     
     widget.Memory(
-        font=xf,
+        **memory,
         fontsize=xx,
-        background=colors[11],
-        foreground=colors[0],
-        
-        measure_mem='G',
-        format='{MemUsed: .2f} GB',
-        **powerline,
     ),
 
     widget.CPU(
-        font=xf,
+        **cpu,
         fontsize=xx,
-        background=colors[8],
-        foreground=colors[0],
-        
-        format='{load_percent}% {freq_current}GHz',
     ),
 
     widget.ThermalSensor(
@@ -171,30 +194,14 @@ def generate_bigblubbus_widgets():
     ),
 
     widget.Volume(
-        font=xf,
+        **volume,
         fontsize=xx,
-        background=colors[4],
-        foreground=colors[0],
-        mouse_callbacks={},
-        update_interval=0.2,
-        limit_max_volume=True,
-        fmt='SND: {}',
-        **powerline,
     ),
     
     widget.Clock(
-        font=xf,
+        **clock,
         fontsize=xx,
-        foreground=colors[0],
-        background=colors[2],
-        
-        mouse_callbacks={
-            'Button1': lambda: qtile.cmd_spawn('toggle_notifications'),
-            'Button3': lazy.spawn('firefox https://theweathernetwork.com')
-        },
-        format="%B %d, %H:%M")]
-    
-    return widgets
+    )]
 
 
 def generate_bigblubbus_screens():
@@ -237,113 +244,51 @@ def generate_bigblubbus_screens():
     return screens
 
 
-def generate_blubbus_widgets():
-    xx = blubbus_font_size
-    powerline = {
-        "decorations": [PowerLineDecoration()]
-    }
+def generate_blubbus_widgets(xx = blubbus_font_size, xf=font_family):
     
-    widgets=[
-    widget.CurrentLayoutIcon(
-        background=colors[0],
-        custom_icon_paths=[os.path.expanduser("~/.config/qtile/icons")],
-        scale=0.55,
-        padding=0,
-        **powerline,
-    ),
-
+    return [
+    widget.CurrentLayoutIcon(**current_layout_icon),
     widget.GroupBox(
-        font=xf,
+        **group_box,
         fontsize=xx,
         margin_y=3,
         margin_x=1,
         padding_y=1,
         padding_x=2,
-        borderwidth=3,
-        spacing=0,
-        inactive=colors[15],
-        active=colors[4],
-        background=colors[1],
-        rounded=True,
-        highlight_color=colors[0],
-        highlight_method="block",
-        
-        # when focused on main
-        this_current_screen_border=colors[6],
-        other_screen_border=colors[9],
-        
-        # when unfocused on main
-        this_screen_border=colors[10],
-        other_current_screen_border=colors[7],
-        
-        # highlight text black
-        block_highlight_text_color=colors[0],
-        **powerline,
     ),
 
     widget.WindowName(
-        font=xf,
-        fontsize=13,
-        foreground=colors[7],
-        background=colors[0],
-        **powerline,
-        padding=5,
+        **window_name,
+        fontsize=xx,
     ),
 
-    widget.CheckUpdates(
-        background = colors[0],
-        foreground = colors[1],
-        colour_have_updates = colors[7],
-        colour_no_updates = colors[0],
-
-        update_interval = 1800,
-        distro = "Arch_checkupdates",
-        display_format = "!{updates} ",
-        mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(terminal+' sudo pacman -Syu')},
-        padding = 5,
-     ),
-
     widget.Systray(
-        background=colors[0],
-        icons_size=20,
-        padding=4,
-        **powerline,
+        **systray
     ),
 
     widget.Memory(
-        font=xf,
+        **memory,
         fontsize=xx,
-        background=colors[15],
-        foreground=colors[0],
-        
-        measure_mem='G',
-        format='{MemUsed: .2f} GB',
-        **powerline,
     ),
 
     widget.CPU(
-        font=xf,
+        **cpu,
         fontsize=xx,
-        background=colors[2],
-        foreground=colors[0],
-
-        format='{load_percent}%',
-        **powerline,
     ),
 
     widget.PulseVolume(
-        font=xf,
+        **volume,
         fontsize=xx,
-        background=colors[4],
-        foreground=colors[0],
-
-        mouse_callbacks={},
-        update_interval=0.2,
-        limit_max_volume=True,
-        fmt='SND: {}',
-        **powerline,
     ),
 
+    widget.BrightnessControl(
+       font=xf,
+       fontsize=xx,
+       foreground=colors[0],
+       background=colors[5],
+       min_brightness=5,
+    ),
+    
     widget.Battery(
        font=xf,
        fontsize=xx,
@@ -351,20 +296,15 @@ def generate_blubbus_widgets():
        background=colors[5],
        format="{watt:.2f} W {percent:2.0%}",
        notify_below=10,
-       update_interval=5,
+       update_interval=30,
        **powerline,
     ),
 
     widget.Clock(
-        font=xf,
+        **clock,
         fontsize=xx,
-        foreground=colors[0],
-        background=colors[7],
-
-        format="%B %d, %H:%M",
     ),
-        ]
-    return widgets
+    ]
 
 
 def generate_blubbus_screens():
@@ -372,7 +312,6 @@ def generate_blubbus_screens():
     active_monitors = get_monitor_count()
     screens = [Screen(
         wallpaper = "~/.config/qtile/background.png",
-        # wallpaper_mode = "stretch",
         top=bar.Bar(
             widgets,
             30,
@@ -380,7 +319,6 @@ def generate_blubbus_screens():
             foreground=colors[1],
         )
     )]
-
     for i in range(len(active_monitors)-1):
         raw_widgets = generate_blubbus_widgets()
         secondary_monitor_widgets = raw_widgets[0:4] + raw_widgets[5:]
@@ -392,13 +330,23 @@ def generate_blubbus_screens():
                 foreground=colors[1],
             )))
     # eDP-1
-    print(screens)
     return screens
 
+def default_screens():
+    return [
+        Screen(
+            top=bar.Bar(
+                widgets=[],
+                size=30
+            )
+        )
+    ]
 
-if os.uname()[1] == "bigblubbus":
-    screens = generate_bigblubbus_screens()
-if os.uname()[1] == "blubbus":
-    screens = generate_blubbus_screens()
 
+hosts = {
+    "bigblubbus": generate_bigblubbus_screens,
+    "blubbus": generate_blubbus_screens
+}
 
+hostname = os.uname()[1]
+screens = hosts.get(hostname, default_screens)()
