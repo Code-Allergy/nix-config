@@ -70,6 +70,9 @@
   ## find sometwhere for this TODO
   programs.gamemode.enable = true;
 
+  # Enable TRIM for ssds
+  services.fstrim.enable = lib.mkDefault true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_licence = true;

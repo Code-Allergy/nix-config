@@ -114,7 +114,7 @@
   programs.starship.enableBashIntegration = true;
 
   # command not found hook
-  programs.command-not-found.enable = true;
+  # programs.command-not-found.enable = true;
 
   programs.exa = {
     enable = true;

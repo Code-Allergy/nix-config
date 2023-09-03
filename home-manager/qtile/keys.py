@@ -101,7 +101,7 @@ keys = [
 
     # Launching common apps with mod+ctrl and space
     KeyChord([mod, "control"], "space", [
-        Key([], "q", lazy.spawn("qutebrowser")),                        # Launches Qutebrowser
+        # Key([], "q", lazy.spawn("qutebrowser")),                        # Launches Qutebrowser
         Key([], "f", lazy.spawn("firefox")),                            # Launches Firefox
         Key([], "t", lazy.spawn("thunar")),                             # Launches Thunar
         Key([], "c", lazy.spawn("vscodium")),                           # Launches Vim

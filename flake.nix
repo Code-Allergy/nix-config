@@ -52,6 +52,11 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
+          {
+            environment.systemPackages = [
+              alejandra.defaultPackage.x86_64-linux
+            ];
+          }
           ./hosts/blubbus
         ];
       };

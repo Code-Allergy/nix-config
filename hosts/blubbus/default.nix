@@ -61,14 +61,22 @@
         preLVM = true;
       };
     };
+
     kernelModules = [
+      # Enable VFIO for passthrough
       "vfio"
       "vfio_pci"
       "vfio_iommu_type1"
       "vfio_virqfd"
       "kvm-amd"
+
+      # unknown if needed
+      "acpi_call"
     ];
-    extraModulePackages = [];
+    extraModulePackages = with config.boot.kernelPackages; [acpi_call];
+
+    # Kernel version -- use latest stable
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   # Root FS
@@ -99,7 +107,16 @@
 
   # Laptop TLP battery saving config
   services.tlp.enable = true;
-  services.tlp.settings = {};
+  services.tlp.settings = {
+    CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+    CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+
+    PLATFORM_PROFILE_ON_AC = "balanced";
+    PLATFORM_PROFILE_ON_BAT = "low-power";
+
+    CPU_BOOST_ON_AC = "1";
+    CPU_BOOST_ON_BAT = "0";
+  };
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
@@ -128,6 +145,8 @@
     thunar-archive-plugin
   ];
   services.gvfs.enable = true;
+  services.fwupd.enable = true;
+  # services.cpupower-gui.enable = true;
 
   # SSH
   services.openssh = {

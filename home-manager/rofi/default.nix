@@ -1,4 +1,8 @@
-{pkgs, config, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.rofi = {
     enable = true;
     plugins = [
@@ -13,7 +17,7 @@
     ];
 
     extraConfig = {
-      modi = "drun,run,filebrowser,window,calc,emoji";
+      modi = "drun,run,filebrowser,window,calc,emoji,keys,combi,top";
     };
 
     theme = "${pkgs.rofi}/share/rofi/themes/arthur.rasi";
