@@ -48,6 +48,7 @@
     initrd.kernelModules = [];
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   # Root FS
