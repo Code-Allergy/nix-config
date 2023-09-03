@@ -38,12 +38,6 @@
     };
   };
 
-  # TODO Change this later
-  # Enable automatic login for the user.
-  services.getty.autologinUser = "ryan";
-  # Security
-  security.sudo.wheelNeedsPassword = false;
-
   # system config
   system = {
     autoUpgrade = {
