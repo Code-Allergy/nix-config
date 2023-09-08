@@ -11,10 +11,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    gnome.adwaita-icon-theme
     nixos-generators
     vim-full
     git
+    mupdf
   ];
 
   nix = {
@@ -64,6 +64,15 @@
 
   ## find sometwhere for this TODO
   programs.gamemode.enable = true;
+  programs.gamemode.settings = {
+    gpu.apply_gpu_optimisations = "accept-responsibility";
+    gpu.device = 1;
+    # nv_powermizer_mode=1
+    custom = {
+      start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+      end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+    };
+  };
 
   # Enable TRIM for ssds
   services.fstrim.enable = lib.mkDefault true;
