@@ -1,3 +1,4 @@
+import enum
 import os
 import subprocess
 from colors import colors
@@ -262,7 +263,7 @@ def generate_blubbus_widgets(xx = blubbus_font_size, xf=font_family):
         fontsize=xx,
     ),
 
-    widget.StatusNotifier(
+    widget.Systray(
         **systray
     ),
 
@@ -315,14 +316,18 @@ def generate_blubbus_screens():
         wallpaper = "~/.config/qtile/background.png",
         top=bar.Bar(
             widgets,
-            30,
+            25,
             background=colors[0],
             foreground=colors[1],
         )
     )]
     for i in range(len(active_monitors)-1):
         raw_widgets = generate_blubbus_widgets()
-        secondary_monitor_widgets = raw_widgets[0:4] + raw_widgets[5:]
+        secondary_monitor_widgets = []
+        for i, raw_widget in enumerate(raw_widgets):
+            if (not isinstance(raw_widget, widget.Systray)):
+                secondary_monitor_widgets.append(raw_widget)
+        
         screens.append(Screen(
             top=bar.Bar(
                 secondary_monitor_widgets,
