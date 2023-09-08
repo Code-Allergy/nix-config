@@ -5,7 +5,6 @@ from libqtile.lazy import lazy
 from libqtile import layout, bar, widget, hook
 
 mod = "mod4"
-terminal = "wezterm"
 userScripts = "/home/ryan/bin/"
 
 
@@ -25,23 +24,42 @@ def window_to_next_screen(qtile, switch_group=False, switch_screen=False):
         if switch_screen == True:
             qtile.cmd_to_screen(i + 1)
 
+# Application vairables
+desktop_runner = "rofi -show drun"
+term_runner = "rofi -show run"
+terminal = "wezterm"
+power_menu = ""
+screen_capture = "flameshot gui"
+
+display_locker = "slock"
+
+
+audio_increase_cmd = "pamixer -i 5"
+audio_decrease_cmd = "pamixer -d 5"
+audio_mute_cmd = "pamixer -t"
+audio_play_cmd = "playerctl play-pause" ## TODO missing
+
+light_increase_cmd = "light -A 5"
+light_decrease_cmd = "light -U 5"
+
+
 keys = [
     ##################################################################################################
     #   ESSENTIALS
     ##################################################################################################
     
     Key([mod], "Return", lazy.spawn(terminal)),                         # Launch terminal
-    Key([mod, "shift"], "r", lazy.spawn('rofi -show run')),             # Spawn rofi run
-    Key([mod], "r", lazy.spawn('rofi -show drun')),                       # Launch rofi - dmenu
-    Key([mod, "mod1"], "Escape", lazy.spawn(userScripts + 'rofi-powermenu')),         # Spawn power menu
-    Key([], "Print", lazy.spawn(userScripts + "rofi-screenshot")),                    # Spawn screenshot menu
+    Key([mod, "shift"], "r", lazy.spawn(term_runner)),                  # Spawn rofi run
+    Key([mod], "r", lazy.spawn(desktop_runner)),                        # Launch rofi - dmenu
+    Key([mod, "mod1"], "Escape", lazy.spawn(power_menu)),               # Spawn power menu
+    Key([], "Print", lazy.spawn(screen_capture)),                       # Spawn screenshot menu
 
     Key([mod, "control"], "r", lazy.reload_config()),                   # Reload the config
     Key([mod, "control", "shift"], "r", lazy.restart()),                # Force restart QTile
     Key([mod, "control"], "q", lazy.shutdown()),                        # Shutdown Qtile
     Key([mod], "w", lazy.window.kill()),                                # Kill focused window
 
-    Key([mod, "shift"], "l", lazy.spawn('slock')),  # Lock Session
+    Key([mod, "shift"], "l", lazy.spawn(display_locker)),  # Lock Session
     #Key([mod, "shift"], "s", lazy.widget["widgetbox"].toggle()),       # open/close widget box
 
     ##################################################################################################
@@ -86,10 +104,10 @@ keys = [
     ##################################################################################################
     
     # Standard Media Keys
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5")),        # Lower Volume by 5%
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5")),        # Raise Volume by 5%
-    Key([], "XF86AudioMute", lazy.spawn("pamixer -t")),                 # Mute/Unmute Volume
-    #Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),       # Play/Pause player
+    Key([], "XF86AudioLowerVolume", lazy.spawn(audio_decrease_cmd)),        # Lower Volume by 5%
+    Key([], "XF86AudioRaiseVolume", lazy.spawn(audio_increase_cmd)),        # Raise Volume by 5%
+    Key([], "XF86AudioMute", lazy.spawn(audio_mute_cmd)),                 # Mute/Unmute Volume
+    Key([], "XF86AudioPlay", lazy.spawn(audio_play_cmd)),       # Play/Pause player
 
     ##################################################################################################
     #   EXTRAS
@@ -126,11 +144,8 @@ if os.uname()[1] == 'bigblubbus':
 
 if os.uname()[1] == 'blubbus':
     keys.extend([
-        # Brightness keys
-    Key([], "XF86MonBrightnessUp",                                      # Increase brightness 5%
-            lazy.spawn("light -A 5")),
-    Key([], "XF86MonBrightnessDown",                                    # Decrease brightness 5%
-            lazy.spawn("light -U 5")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn(light_increase_cmd)),
+    Key([], "XF86MonBrightnessDown", lazy.spawn(light_decrease_cmd)),
     ])
 
 
