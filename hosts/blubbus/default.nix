@@ -51,12 +51,7 @@
 
       # Amd PState Preffered core
       # Enable for 6.5
-      # "amd_prefcore=enable"
-
-      # Amd PState_
-      "initcall_blacklist=acpi_cpufreq_init"
-      # Can be removed in 6.5 (becomes default)
-      "amd_pstate=active"
+      "amd_prefcore=enable"
     ];
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
     initrd.kernelModules = ["dm-snapshot"];
@@ -108,12 +103,15 @@
   environment.systemPackages = with pkgs; [
     # power management
     powertop
+
+    # Wifi applet
+    networkmanagerapplet
   ];
 
   # Laptop TLP battery saving config
   services.tlp.enable = true;
   services.tlp.settings = {
-    CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+    CPU_SCALING_GOVERNOR_ON_AC = "performance";
     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
     # only active with TLP 1.6
@@ -170,6 +168,11 @@
       PasswordAuthentication = false;
     };
   };
+
+  # Certificates for school
+  security.pki.certificateFiles = [
+    "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
+  ];
 
   # Locale & Time
   time.timeZone = "America/Regina";
