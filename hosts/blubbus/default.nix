@@ -169,6 +169,12 @@
     };
   };
 
+  # Udev rules for Qtile plugin
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
+    ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+  '';
+
   # Certificates for school
   security.pki.certificateFiles = [
     "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
