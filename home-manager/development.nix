@@ -10,6 +10,7 @@
 
     dbeaver
 
+    plantuml
     # Jetbrains
     jetbrains.pycharm-professional
     jetbrains.webstorm
