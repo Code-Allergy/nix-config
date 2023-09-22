@@ -76,6 +76,10 @@
     free = "free -m"; # show sizes in MB
   };
 
+  home.sessionVariables = {
+    _JAVA_AWT_WM_NONREPARENTING = 1;
+  };
+
   programs.bash = {
     enable = true;
     historyIgnore = [
@@ -135,7 +139,7 @@
       }
     '';
   };
-
+  programs.tmux.enable = true;
   programs.rofi.enable = true;
 
   services.autorandr.enable = true;
@@ -189,8 +193,6 @@
     name = "Catppuccin-Mocha-Dark-Cursors";
     size = 16;
   };
-
-  # Cursor
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
