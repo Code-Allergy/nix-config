@@ -5,6 +5,9 @@
     gdb
     gcc
     bochs
+    gnumake
+    cmake
+    nodejs
 
     android-tools
 
@@ -43,6 +46,8 @@
       firefox-devtools.vscode-firefox-debug
       # Theme
       catppuccin.catppuccin-vsc
+
+      vscodevim.vim
     ];
 
     userSettings = {
@@ -79,5 +84,43 @@
 
       "workbench.colorTheme" = "Catppuccin Mocha";
     };
+  };
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+    coc.enable = true;
+    coc.pluginConfig = "";
+    coc.settings = {};
+
+    plugins = with pkgs.vimPlugins; [
+      vim-fugitive
+
+      # nodePackages.bash-language-server
+      # nodePackages.typescript-language-server
+      # nodePackages.vim-language-server
+      # nodePackages.yaml-language-server
+      # python310Packages.python-lsp-server
+
+      coc-python
+      coc-spell-checker
+      coc-sh
+      coc-rust-analyzer
+      coc-prettier
+      coc-nginx
+      coc-lua
+      coc-json
+      coc-toml
+      coc-java
+      coc-html
+      coc-css
+      coc-tsserver
+      coc-cmake
+      coc-docker
+      coc-git
+    ];
   };
 }
