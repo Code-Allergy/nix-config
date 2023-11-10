@@ -19,6 +19,7 @@
     jetbrains.webstorm
     jetbrains.idea-ultimate
     jetbrains.clion
+    maven
   ];
 
   programs.java.enable = true;
@@ -98,7 +99,7 @@
 
     plugins = with pkgs.vimPlugins; [
       vim-fugitive
-
+      vim-vinegar
       # nodePackages.bash-language-server
       # nodePackages.typescript-language-server
       # nodePackages.vim-language-server
