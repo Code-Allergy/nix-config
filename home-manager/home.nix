@@ -10,14 +10,11 @@
 }: {
   # You can import other home-manager modules here
   imports = [
-    # If you want to use modules your own flake exports (from modules/home-manager):
-    # outputs.homeManagerModules.example
-
-    # Or modules exported from other flakes (such as nix-colors):
-    # inputs.nix-colors.homeManagerModules.default
-
-    # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
+    ./git.nix
+    ./gaming.nix
+    ./firefox.nix
+    ./entertainment.nix
+    ./development.nix
   ];
 
   nixpkgs = {
@@ -51,17 +48,10 @@
   };
 
   # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
-  # home.packages = with pkgs; [ steam ];
+  programs.neovim.enable = true;
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
-  programs.git = {
-    enable = true;
-    userEmail = "codeallergy@gmail.com";
-    userName = "Ryan Schaffer";
-  };
-
   
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

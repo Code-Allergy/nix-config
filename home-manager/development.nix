@@ -11,7 +11,7 @@
 
     android-tools
 
-    dbeaver
+    dbeaver-bin
 
     plantuml
     # Jetbrains
@@ -19,6 +19,8 @@
     jetbrains.webstorm
     jetbrains.idea-ultimate
     jetbrains.clion
+    jetbrains.rust-rover
+    jetbrains.rider
     maven
   ];
 

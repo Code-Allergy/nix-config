@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.home-manager
+      ./samba-mounts.nix
       # <home-manager/nixos>    
 ];
 
@@ -21,8 +22,33 @@
     };
   };
 
+    # Enable TRIM for ssds
+  services.fstrim.enable = lib.mkDefault true;
+
+  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.android_sdk.accept_licence = true;
+
+  nix = {
+    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      auto-optimise-store = true
+      keep-outputs = true
+      keep-derivations = true
+      cores = 4
+      max-jobs = 6
+      max-free = ${toString (500 * 1024 * 1024)}
+    '';
+
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "";
+    };
+  };
  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -74,6 +100,17 @@
     pulse.enable = true;
   };
 
+  programs.gamemode.enable = true;
+  programs.gamemode.settings = {
+    gpu.apply_gpu_optimisations = "accept-responsibility";
+    gpu.device = 1;
+    custom = {
+      start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+      end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+    };
+  };
+
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
@@ -83,11 +120,12 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    firefox
+    # firefox
     git
     vscode
     qemu
     corectrl
+    git-crypt
   ];
 
 
@@ -140,8 +178,18 @@
   } ];
 
   
-  # Do NOT change this value, For more information, see `man configuration.nix` 
-  # or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion. 
-  system.stateVersion = "24.05";
+
+  system = {
+    autoUpgrade = {
+      enable = true;
+      allowReboot = false;
+      dates = "7:30";
+    };
+
+
+    # Do NOT change this value, For more information, see `man configuration.nix` 
+    # or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion. 
+    stateVersion = "24.05"; 
+  };
 }
 

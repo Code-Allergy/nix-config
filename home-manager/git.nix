@@ -2,7 +2,7 @@
   programs.git = {
     enable = true;
     userName = "Ryan Schaffer";
-    userEmail = "ryan.schaffer@live.com";
+    userEmail = "rys686@mail.usask.ca";
     diff-so-fancy.enable = true;
   };
 }

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, programs, ...}: {
   home.packages = with pkgs; [
     steamcmd
     steam
@@ -10,7 +10,6 @@
     wine
 
     # needed for steam tray icon -- move if needed elsewhere
-    snixembed
 
     prismlauncher
 
@@ -22,7 +21,6 @@
 
     # Switch Emulators
     ryujinx
-    yuzu-mainline
 
     # Osu!
     osu-lazer-bin

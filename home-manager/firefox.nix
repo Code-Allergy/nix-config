@@ -1,25 +1,23 @@
-{config, ...}: {
+{inputs, pkgs, ...}: {
   programs.firefox = {
     enable = true;
+    policies = {
+      DisableTelemetry = true;
+      DisableFirefoxStudies = true;
+      EnableTrackingProtection = {
+        Value= true;
+        Locked = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+      };
+    };
+
     profiles = {
       default = {
         id = 0;
-        extensions = with config.nur.repos.rycee.firefox-addons; [
-          betterttv
-          # unclosetabbutton
-          # tridactyl
-          bitwarden
-          return-youtube-dislikes
-          sponsorblock
-          protondb-for-steam
-          enhancer-for-youtube
-          ublock-origin
-
-          facebook-container
-          wayback-machine
-          view-image
-        ];
       };
+      # TODO extensions
+      # extensions = with inputs.firefox-addons.packages.${pkgs.system}; [ ublock-origin bitwarden ];
     };
   };
 }
