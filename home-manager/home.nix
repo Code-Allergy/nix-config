@@ -15,6 +15,7 @@
     ./firefox.nix
     ./entertainment.nix
     ./development.nix
+    ./social.nix
   ];
 
   nixpkgs = {

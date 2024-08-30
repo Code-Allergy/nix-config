@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     gdb
     gcc
-    bochs
     gnumake
     cmake
     nodejs
