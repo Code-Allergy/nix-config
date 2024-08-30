@@ -1,0 +1,22 @@
+TGTDEV=/dev/vda
+parted --script $TGTDEV mklabel gpt mkpart primary fat32 2MiB 502MiB mkpart primary ext4 502MiB 100%
+
+mkfs.fat -F 32 ${TGTDEV}1
+fatlabel ${TGTDEV}1 NIXBOOT
+mkfs.ext4 ${TGTDEV}2 -L NIXROOT
+mount /dev/disk/by-label/NIXROOT /mnt
+mkdir -p /mnt/boot
+mount /dev/disk/by-label/NIXBOOT /mnt/boot
+
+# Swap -- can be disabled
+dd if=/dev/zero of=/mnt/.swapfile bs=1024 count=2097152 # 2GB ONLY
+chmod 600 /mnt/.swapfile
+mkswap /mnt/.swapfile
+swapon /mnt/.swapfile
+
+
+nixos-generate-config --root /mnt
+cp /mnt/etc/nixos/hardware-configuration.nix ../nixos
+nixos-rebuild switch --install --flake
+
+
