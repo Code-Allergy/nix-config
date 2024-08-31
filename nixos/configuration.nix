@@ -20,6 +20,7 @@
     ./fonts.nix
     ./flatpak.nix
 
+    ./rust.nix
     # TMP
     ./vpn.nix
     # <home-manager/nixos>
