@@ -1,7 +1,10 @@
-{pkgs, programs, ...}: {
+{
+  pkgs,
+  programs,
+  ...
+}: {
   home.packages = with pkgs; [
     steamcmd
-    steam
     lutris
     bottles
     gamemode

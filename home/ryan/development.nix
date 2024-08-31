@@ -21,6 +21,11 @@
     jetbrains.rust-rover
     jetbrains.rider
     maven
+
+    # rust-rs
+    rustup
+
+    remmina
   ];
 
   programs.java.enable = true;

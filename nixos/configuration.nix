@@ -17,7 +17,6 @@
   home-manager = {
     extraSpecialArgs = {inherit inputs outputs;};
     users = {
-      # Import your home-manager configuration
       ryan = import ../home-manager/home.nix;
     };
   };
