@@ -70,12 +70,9 @@
     mupdf
     wget
     git
-    qemu
-    corectrl
-
-    lact
+    
+    
     kdePackages.polkit-kde-agent-1
-    xorg.xrandr # TMP
 
     # dotfiles
     git-crypt

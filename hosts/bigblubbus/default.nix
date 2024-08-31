@@ -7,6 +7,8 @@
 }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ./fs.nix
+
     ../../nixos/environments/hyprland.nix
     ../../nixos/environments/plasma.nix
     ../../nixos/samba-mounts.nix
@@ -14,6 +16,8 @@
     ../../nixos/rust.nix
     ../../nixos/flatpak.nix
     ../../nixos/vpn.nix
+
+    ../../nixos/hardware/amdgpu.nix
   ];
 
   boot = {
@@ -21,7 +25,6 @@
     loader.efi.canTouchEfiVariables = true;
 
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
-    initrd.kernelModules = ["amdgpu"];
 
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
@@ -31,56 +34,7 @@
       options kvm_intel emulate_invalid_guest_state=0
       options kvm ignore_msrs=1
     '';
-
-    kernelParams = [
-      "amdgpu.ppfeaturemask=0xffffffff"
-    ];
   };
-
-  # AMDGPU
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  systemd.tmpfiles.rules = let
-    rocmEnv = pkgs.symlinkJoin {
-      name = "rocm-combined";
-      paths = with pkgs.rocmPackages; [
-        rocblas
-        hipblas
-        clr
-      ];
-    };
-  in [
-    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
-  ];
-
-  systemd.packages = with pkgs; [lact];
-  systemd.services.lactd.wantedBy = ["multi-user.target"];
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/5639e7ce-bcb2-4481-8c59-6a537f221076";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/3850-28A6";
-      fsType = "vfat";
-      options = ["fmask=0077" "dmask=0077"];
-    };
-    "/mnt/ssd0" = {
-      device = "/dev/disk/by-uuid/b3cb05da-a6e5-4c73-9251-0e42daf1285e";
-      fsType = "ext4";
-    };
-  };
-
-  swapDevices = [
-    {
-      device = "/dev/disk/by-uuid/a3e4489e-9ad2-4ada-b00a-17e94ea0a518";
-    }
-  ];
 
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;

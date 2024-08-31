@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  environment.systemPackages = with pkgs; [virt-manager];
+  environment.systemPackages = with pkgs; [virt-manager qemu];
 
   virtualisation = {
     # podman = {
