@@ -9,6 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
     ./networking.nix
+    ./gaming.nix
 
     ../../nixos/environments/hyprland.nix
     ../../nixos/environments/plasma.nix
@@ -19,6 +20,8 @@
     ../../nixos/vpn.nix
 
     ../../nixos/hardware/amdgpu.nix
+    ../../nixos/hardware/audio.nix
+    ../../nixos/hardware/bluetooth.nix
     ../../nixos/hardware/printing.nix
   ];
 
@@ -36,7 +39,18 @@
       options kvm_intel emulate_invalid_guest_state=0
       options kvm ignore_msrs=1
     '';
+    kernelParams = [
+      # AMD pstate freq scaler
+      "amd_pstate=active"
+
+      # IT8686e sensor TODO
+      "acpi_enforce_resources=lax"
+    ];
   };
+
+  # TODO Test governers
+  powerManagement.enable = true;
+  powerManagement.cpuFreqGovernor = "powersave";
 
   services.openssh = {
     enable = true;
@@ -46,41 +60,10 @@
     };
   };
 
-  # TODO TEMP -- this will go somewhere else, or at least a bigblubbus/gaming.nix split
-  programs.steam.enable = true;
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
-  };
-
-  programs.gamemode.enable = true;
-  programs.gamemode.settings = {
-    gpu.apply_gpu_optimisations = "accept-responsibility";
-    gpu.device = 1;
-    custom = {
-      start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
-      end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
-    };
-  };
-
-  ## TODO end
-
-  ## TODO audio module
-
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-  };
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   time.timeZone = "America/Regina";
-
-  # Enable TRIM for SSDs
-  services.fstrim.enable = lib.mkDefault true;
 
   system = {
     autoUpgrade = {
@@ -89,4 +72,7 @@
       dates = "7:30";
     };
   };
+
+  # TODO unsure if blubbus needs
+  services.upower.enable = true;
 }

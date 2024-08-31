@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/5639e7ce-bcb2-4481-8c59-6a537f221076";
@@ -20,4 +20,7 @@
       device = "/dev/disk/by-uuid/a3e4489e-9ad2-4ada-b00a-17e94ea0a518";
     }
   ];
+
+  # Enable TRIM for SSDs
+  services.fstrim.enable = lib.mkDefault true;
 }
