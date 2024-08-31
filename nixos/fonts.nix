@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       montserrat
 
       roboto
@@ -8,6 +8,9 @@
 
       noto-fonts
       noto-fonts-emoji
+      noto-fonts-color-emoji
+      noto-fonts-monochrome-emoji
+      wl-clipboard-rs
 
       fira-code
       fira-code-symbols

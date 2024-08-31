@@ -6,11 +6,11 @@
   environment.systemPackages = with pkgs; [virt-manager];
 
   virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-      dockerSocket.enable = true;
-    };
+    # podman = {
+    #   enable = true;
+    #   dockerCompat = true;
+    #   dockerSocket.enable = true;
+    # };
 
     libvirtd = {
       enable = true;

@@ -15,6 +15,7 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
     firefox-addons = { url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
 
@@ -23,6 +24,7 @@
     nixpkgs,
     home-manager,
     nur,
+    nix-flatpak,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -57,9 +59,10 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
+      bigblubbus = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
+          nix-flatpak.nixosModules.nix-flatpak
           ./nixos/configuration.nix
         ];
       };

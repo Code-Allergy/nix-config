@@ -42,7 +42,7 @@
       allowUnfree = true;
     };
   };
-
+  # programs.kitty.enable = true;
   home = {
     username = "ryan";
     homeDirectory = "/home/ryan";
