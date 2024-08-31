@@ -18,6 +18,7 @@
     ../../nixos/vpn.nix
 
     ../../nixos/hardware/amdgpu.nix
+    ../../nixos/hardware/printing.nix
   ];
 
   boot = {
@@ -84,10 +85,6 @@
   };
 
   ## TODO end
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-  ## May move this to printing.nix
 
   ## TODO audio module
 
