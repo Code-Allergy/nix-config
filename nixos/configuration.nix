@@ -10,14 +10,14 @@
     inputs.home-manager.nixosModules.home-manager
     ./fonts.nix
     # TMP
-    
+
     # <home-manager/nixos>
   ];
 
   home-manager = {
     extraSpecialArgs = {inherit inputs outputs;};
     users = {
-      ryan = import ../home-manager/home.nix;
+      ryan = import ../home/ryan/home.nix;
     };
   };
 
