@@ -8,6 +8,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
+    ./networking.nix
 
     ../../nixos/environments/hyprland.nix
     ../../nixos/environments/plasma.nix
@@ -35,26 +36,6 @@
       options kvm_intel emulate_invalid_guest_state=0
       options kvm ignore_msrs=1
     '';
-  };
-
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
-
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [22];
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
   };
 
   services.openssh = {
@@ -96,7 +77,6 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  networking.hostName = "bigblubbus"; # Define your hostname.
   time.timeZone = "America/Regina";
 
   # Enable TRIM for SSDs
