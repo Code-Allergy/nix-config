@@ -70,6 +70,7 @@
         modules = [
           nix-flatpak.nixosModules.nix-flatpak
           ./nixos/configuration.nix
+          ./hosts/bigblubbus/default.nix
         ];
       };
     };

@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 {
   config,
   lib,
@@ -10,19 +7,10 @@
   ...
 }: {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
-    ./environments/hyprland.nix
-    ./environments/plasma.nix
-    ./samba-mounts.nix
-    ./virtualisation.nix
     ./fonts.nix
-    ./flatpak.nix
-
-    ./rust.nix
     # TMP
-    ./vpn.nix
+    
     # <home-manager/nixos>
   ];
 
@@ -34,12 +22,11 @@
     };
   };
 
-  # Enable TRIM for ssds
-  services.fstrim.enable = lib.mkDefault true;
-
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.android_sdk.accept_licence = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    android_sdk.accept_licence = true;
+  };
 
   nix = {
     registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
@@ -50,7 +37,7 @@
       auto-optimise-store = true
       keep-outputs = true
       keep-derivations = true
-      cores = 4
+      cores = 6
       max-jobs = 6
       max-free = ${toString (500 * 1024 * 1024)}
     '';
@@ -61,18 +48,9 @@
       options = "";
     };
   };
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  #  boot.loader.grub.device = "nodev";
-  #  boot.loader.grub.efiSupport = true;
-
-  networking.hostName = "bigblubbus"; # Define your hostname.
 
   # TODO blubbus networking
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
-  time.timeZone = "America/Regina";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -81,49 +59,6 @@
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
-
-  virtualisation.libvirtd.enable = true;
-  virtualisation.docker.enable = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-  };
-
-  programs.gamemode.enable = true;
-  programs.gamemode.settings = {
-    gpu.apply_gpu_optimisations = "accept-responsibility";
-    gpu.device = 1;
-    custom = {
-      start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
-      end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
-    };
-  };
-
-  # AMD
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  boot.initrd.kernelModules = ["amdgpu"];
-
-  systemd.tmpfiles.rules = let
-    rocmEnv = pkgs.symlinkJoin {
-      name = "rocm-combined";
-      paths = with pkgs.rocmPackages; [
-        rocblas
-        hipblas
-        clr
-      ];
-    };
-  in [
-    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
-  ];
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
@@ -152,18 +87,6 @@
     boxbuddy
   ];
 
-  systemd.packages = with pkgs; [lact];
-  systemd.services.lactd.wantedBy = ["multi-user.target"];
-
-  # TODO TEMP
-  programs.steam.enable = true;
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
-  };
-
   home-manager.useUserPackages = true;
 
   users.users.ryan = {
@@ -175,76 +98,12 @@
     ];
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
 
-  # Open ports in the firewall.
-  # TODO specify for computer
-
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [22];
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-  };
-
-  boot.extraModprobeConfig = ''
-    options kvm_intel nested=1
-    options kvm_intel emulate_invalid_guest_state=0
-    options kvm ignore_msrs=1
-  '';
-
-  # FS TODO blubbus (bigblubbus specific)
-  fileSystems."/mnt/ssd0" = {
-    device = "/dev/disk/by-uuid/b3cb05da-a6e5-4c73-9251-0e42daf1285e";
-    fsType = "ext4";
-  };
-
-  swapDevices = [
-    {
-      device = "/dev/disk/by-uuid/a3e4489e-9ad2-4ada-b00a-17e94ea0a518";
-    }
-  ];
-
-  # boot.resumeDevice = "/dev/disk/by-uuid/a3e4489e-9ad2-4ada-b00a-17e94ea0a518";
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
-  # TODO this is bigblubbus specific (amd gpu OC enable)
-  boot.kernelParams = [
-    "amdgpu.ppfeaturemask=0xffffffff"
-  ];
-
-  system = {
-    autoUpgrade = {
-      enable = true;
-      allowReboot = false;
-      dates = "7:30";
-    };
-
-    # Do NOT change this value, For more information, see `man configuration.nix`
-    # or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion.
-    stateVersion = "24.05";
-  };
+  # Do NOT change this value, For more information, see `man configuration.nix`
+  # or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion.
+  system.stateVersion = "24.05";
 }

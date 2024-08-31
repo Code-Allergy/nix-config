@@ -11,7 +11,7 @@
     #   dockerCompat = true;
     #   dockerSocket.enable = true;
     # };
-
+    docker.enable = true;
     libvirtd = {
       enable = true;
       qemu.ovmf.enable = true;
