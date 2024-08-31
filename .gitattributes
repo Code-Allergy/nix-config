@@ -1,1 +1,1 @@
-home-manager/secrets/** filter=git-crypt diff=git-crypt
+home/ryan/secrets/** filter=git-crypt diff=git-crypt
