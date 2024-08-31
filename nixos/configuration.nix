@@ -19,6 +19,9 @@
     ./virtualisation.nix
     ./fonts.nix
     ./flatpak.nix
+
+    # TMP
+    ./vpn.nix
     # <home-manager/nixos>
   ];
 
@@ -99,6 +102,28 @@
     };
   };
 
+  # AMD
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+
+  boot.initrd.kernelModules = ["amdgpu"];
+
+  systemd.tmpfiles.rules = let
+    rocmEnv = pkgs.symlinkJoin {
+      name = "rocm-combined";
+      paths = with pkgs.rocmPackages; [
+        rocblas
+        hipblas
+        clr
+      ];
+    };
+  in [
+    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+  ];
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
@@ -112,11 +137,34 @@
     git
     qemu
     corectrl
+
+    lact
+    kdePackages.polkit-kde-agent-1
+    xorg.xrandr # TMP
+
+    # dotfiles
     git-crypt
+    stow
+
+    # add distrobox
+    distrobox
+    boxbuddy
   ];
 
+  systemd.packages = with pkgs; [lact];
+  systemd.services.lactd.wantedBy = ["multi-user.target"];
+
+  # TODO TEMP
+  programs.steam.enable = true;
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
+
   home-manager.useUserPackages = true;
-  
+
   users.users.ryan = {
     isNormalUser = true;
     extraGroups = ["wheel" "docker" "libvirtd"];
@@ -137,20 +185,23 @@
   # Open ports in the firewall.
   # TODO specify for computer
 
-   networking.firewall = { 
+  networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 ];
+    allowedTCPPorts = [22];
     allowedTCPPortRanges = [
-      { from = 1714; to = 1764; } # KDE Connect
-    ];  
-    allowedUDPPortRanges = [ 
-      { from = 1714; to = 1764; } # KDE Connect
-    ];  
-  };   
-  
-  # networking.firewall.allowedUDPPorts = [  ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+    allowedUDPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+  };
+
   boot.extraModprobeConfig = ''
     options kvm_intel nested=1
     options kvm_intel emulate_invalid_guest_state=0
@@ -165,21 +216,24 @@
 
   swapDevices = [
     {
-      device = "/var/lib/swapfile";
-      size = 64 * 1024;
+      device = "/dev/disk/by-uuid/a3e4489e-9ad2-4ada-b00a-17e94ea0a518";
     }
   ];
+
+  # boot.resumeDevice = "/dev/disk/by-uuid/a3e4489e-9ad2-4ada-b00a-17e94ea0a518";
 
   services.openssh = {
     enable = true;
     settings = {
-      # Opinionated: forbid root login through SSH.
       PermitRootLogin = "no";
-      # Opinionated: use keys only.
-      # Remove if you want to SSH using passwords
       PasswordAuthentication = false;
     };
   };
+
+  # TODO this is bigblubbus specific (amd gpu OC enable)
+  boot.kernelParams = [
+    "amdgpu.ppfeaturemask=0xffffffff"
+  ];
 
   system = {
     autoUpgrade = {
