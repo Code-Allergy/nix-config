@@ -9,7 +9,6 @@
     bottles
     gamemode
     mangohud
-    gamescope
     wine
 
     # needed for steam tray icon -- move if needed elsewhere
@@ -28,4 +27,6 @@
     # Osu!
     osu-lazer-bin
   ];
+
+  
 }

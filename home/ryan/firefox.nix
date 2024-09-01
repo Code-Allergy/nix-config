@@ -6,6 +6,9 @@
 }: {
   programs.firefox = {
     enable = true;
+    nativeMessagingHosts = with pkgs.plasma5Packages; [
+      plasma-browser-integration
+    ];
     policies = {
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
@@ -77,6 +80,12 @@
         # Reddit Enhancement Suite
         "jid1-xUfzOsOFlzSOXg@jetpack" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/reddit-enhancement-suite/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # (KDEConnect)Plasma Integration
+        "plasma-browser-integration@kde.org" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           installation_mode = "force_installed";
         };
       };

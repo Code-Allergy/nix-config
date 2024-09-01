@@ -1,22 +1,57 @@
 {
   inputs,
+  outputs,
   lib,
   config,
   pkgs,
   ...
 }: {
   imports = [
-    ./virtualisation.nix
+    inputs.home-manager.nixosModules.home-manager
     ./fonts.nix
+
+    ./users/ryan/default.nix
   ];
 
   environment.systemPackages = with pkgs; [
-    nixos-generators
+    nixos-generators # nix system-image generator
     vim-full
-    git
     mupdf
+    wget
+    git
+
+    # dotfiles
+    git-crypt
+    stow
+
+    # add distrobox
+    distrobox
+    boxbuddy
+
+    # ff
+    # .plasma-browser-integration
   ];
 
+  home-manager = {
+    useUserPackages = true;
+    extraSpecialArgs = {inherit inputs outputs;};
+    users = {
+      ryan = import ../home/ryan/home.nix;
+    };
+  };
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  # Allow unfree packages
+  nixpkgs.config = {
+    allowUnfree = true;
+    android_sdk.accept_licence = true;
+  };
+
+  hardware.enableRedistributableFirmware = true;
   nix = {
     registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
@@ -46,26 +81,10 @@
       dates = "7:30";
     };
 
-    stateVersion = "23.05"; # https://nixos.org/nixos/options.html
+    stateVersion = "24.05"; # https://nixos.org/nixos/options.html
   };
-
-  # enable flatpak support
-  # services.flatpak.enable = true;
-  # xdg.portal.enable = true;
-  # xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal ];
-
-  hardware.enableRedistributableFirmware = true;
 
   programs.fish.enable = true;
   programs.command-not-found.enable = true;
   # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
-
-  services.upower.enable = true;
-
-  # Enable TRIM for ssds
-  services.fstrim.enable = lib.mkDefault true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.android_sdk.accept_licence = true;
 }

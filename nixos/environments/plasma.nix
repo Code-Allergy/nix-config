@@ -8,6 +8,9 @@
       wayland.enable = true;
     };
   };
+  environment.systemPackages = with pkgs; [
+    kdePackages.sddm-kcm
+  ];
 
   qt.platformTheme = "kde";
 }

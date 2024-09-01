@@ -69,7 +69,7 @@
         specialArgs = {inherit inputs outputs;};
         modules = [
           nix-flatpak.nixosModules.nix-flatpak
-          ./nixos/configuration.nix
+          ./nixos/common.nix
           ./hosts/bigblubbus/default.nix
         ];
       };
