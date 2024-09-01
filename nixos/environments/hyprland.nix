@@ -1,5 +1,13 @@
-{pkgs, ...}: {
-  programs.hyprland.enable = true;
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  programs.hyprland = {
+    enable = true;
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    xwayland.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     hyprpaper

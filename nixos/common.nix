@@ -10,6 +10,7 @@
     inputs.home-manager.nixosModules.home-manager
     ./fonts.nix
 
+
     ./users/ryan/default.nix
   ];
 
@@ -33,6 +34,7 @@
   ];
 
   home-manager = {
+    useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {inherit inputs outputs;};
     users = {
@@ -65,6 +67,10 @@
       max-jobs = 6
       max-free = ${toString (500 * 1024 * 1024)}
     '';
+    settings = {
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    };
 
     gc = {
       automatic = true;

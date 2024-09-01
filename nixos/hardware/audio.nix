@@ -20,7 +20,7 @@
   #   };
   # };
 
-  sound.enable = true;
+  # sound.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -31,5 +31,5 @@
     #jack.enable = true;
   };
 
-  sound.mediaKeys.enable = true;
+  # sound.mediaKeys.enable = true;
 }

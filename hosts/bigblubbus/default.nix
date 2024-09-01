@@ -46,6 +46,9 @@
       # IT8686e sensor TODO
       "acpi_enforce_resources=lax"
     ];
+
+    # Latest kernel vers
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   # TODO Test governers
