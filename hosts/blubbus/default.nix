@@ -23,10 +23,12 @@
 
     # Run qtile environment
     ../../nixos/environments/qtile.nix
+    ../../nixos/environments/plasma.nix
+    ../../nixos/environments/hyprland.nix
     # ../../nixos/environments/gnome.nix
 
     # common configs for all deployments
-    ../../nixos/common.nix
+    # ../../nixos/common.nix
   ];
 
   # Bootloader.
@@ -51,7 +53,8 @@
 
       # Amd PState Preffered core
       # Enable for 6.5
-      "amd_prefcore=enable"
+      # TODO
+      # "amd_prefcore=enable"
     ];
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
     initrd.kernelModules = ["dm-snapshot"];
@@ -109,12 +112,12 @@
   ];
 
   # Laptop TLP battery saving config
+  # TODO review these, a lot has changed in TLP and amd-pstate
   services.tlp.enable = true;
   services.tlp.settings = {
     CPU_SCALING_GOVERNOR_ON_AC = "performance";
     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-    # only active with TLP 1.6
     CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
     CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
@@ -122,7 +125,7 @@
     PLATFORM_PROFILE_ON_BAT = "low-power";
 
     CPU_BOOST_ON_AC = "1";
-    CPU_BOOST_ON_BAT = "0";
+    CPU_BOOST_ON_BAT = "1";
 
     WIFI_PWR_ON_AC = "off";
     WIFI_PWR_ON_BAT = "on";
@@ -169,13 +172,13 @@
     };
   };
 
-  # Udev rules for Qtile plugin
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
-    ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
-  '';
+  # # Udev rules for Qtile plugin
+  # services.udev.extraRules = ''
+  #   ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
+  #   ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+  # '';
 
-  # Certificates for school
+  # Certificates for school wlan
   security.pki.certificateFiles = [
     "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
   ];

@@ -80,6 +80,14 @@
           ./hosts/bigblubbus/default.nix
         ];
       };
+      blubbus = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          nix-flatpak.nixosModules.nix-flatpak
+          ./nixos/common.nix
+          ./hosts/blubbus/default.nix
+        ];
+      };
     };
   };
 }

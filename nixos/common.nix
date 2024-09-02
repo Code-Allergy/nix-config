@@ -10,7 +10,6 @@
     inputs.home-manager.nixosModules.home-manager
     ./fonts.nix
 
-
     ./users/ryan/default.nix
   ];
 
@@ -90,7 +89,7 @@
     stateVersion = "24.05"; # https://nixos.org/nixos/options.html
   };
 
-  programs.fish.enable = true;
+  # programs.fish.enable = true;
   programs.command-not-found.enable = true;
   # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 }

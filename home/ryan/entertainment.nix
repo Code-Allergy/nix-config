@@ -3,5 +3,6 @@
     jellyfin-media-player
     jellycli
     spotube
+    vlc
   ];
 }
