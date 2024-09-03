@@ -5,7 +5,6 @@
 }: {
   programs.hyprland = {
     enable = true;
-    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     xwayland.enable = true;
   };
 
@@ -27,6 +26,7 @@
     qview
     polkit-kde-agent
     starship # move to common, after we setup config for it
+    wl-clipboard-rs
     thefuck
     killall # move to elsewhere
   ];
