@@ -19,10 +19,10 @@
     ../../nixos/samba-mounts.nix
 
     # Register ryan as default user
-    ../../nixos/users/ryan
+    # ../../nixos/users/ryan
 
     # Run qtile environment
-    ../../nixos/environments/qtile.nix
+    # ../../nixos/environments/qtile.nix
     ../../nixos/environments/plasma.nix
     ../../nixos/environments/hyprland.nix
     # ../../nixos/environments/gnome.nix
@@ -113,6 +113,7 @@
 
   # Laptop TLP battery saving config
   # TODO review these, a lot has changed in TLP and amd-pstate
+  services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
   services.tlp.settings = {
     CPU_SCALING_GOVERNOR_ON_AC = "performance";
