@@ -12,14 +12,10 @@ in {
       source = [
         "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
       ];
+      exec-once = "/home/ryan/nix-config/home/ryan/hypr/autostart.sh";
     };
 
     extraConfig = ''
-      ###################
-      ### KEYBINDINGS ###
-      ###################
-
-      # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
       bind = CTRL ALT, T, exec, $terminal
       bind = $mainMod, R, exec, $MENU
       bind = $mainMod, W, killactive,
@@ -72,7 +68,7 @@ in {
       bindm = $mainMod, mouse:272, movewindow
       bindm = $mainMod, mouse:273, resizewindow
 
-      # Resize with vim motions + shift
+      # Resize with vim motions + MOD, shift
       bind = $mainMod SHIFT, L, resizeactive, $RESIZE_STEP 0
       bind = $mainMod SHIFT, H, resizeactive, -$RESIZE_STEP 0
       bind = $mainMod SHIFT, J, resizeactive, 0 $RESIZE_STEP
@@ -80,7 +76,7 @@ in {
       bind = $mainMod SHIFT, K, resizeactive, 0 -$RESIZE_STEP
 
       # Screenshot region with mainMod + PrintScr
-      bind = $mainMod, Print, exec, ~/.config/hypr/scripts/screenshot
+      bind = $mainMod, Print, exec, grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot copied to clipboard" -a "ss"
 
       # Screenshot current monitor with mainMod + SHIFT + PrintScr
       # TODO
@@ -101,5 +97,142 @@ in {
 
 
     '';
+  };
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock";     # dbus/sysd lock command (loginctl lock-session)
+        before_sleep_cmd = "loginctl lock-session";
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        ignore_dbus_inhibit = false;             # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
+        ignore_systemd_inhibit = false;          # whether to ignore systemd-inhibit --what=idle inhibitors
+      };
+
+      listener = [
+        {
+          timeout = 300;                            # in seconds
+          on-timeout = "loginctl lock-session";        # command to run when timeout has passed
+        }
+
+        {
+          timeout = 330;                                 # 5.5min
+          on-timeout = "hyprctl dispatch dpms off";        # screen off when timeout has passed
+          on-resume = "hyprctl dispatch dpms on";          # screen on when activity is detected after timeout has fired.
+        }
+
+        {
+          timeout = 1000;                            # in seconds
+          on-timeout = "systemctl hibernate";          # command to run when timeout has passed
+        }
+      ];
+    };
+  };
+
+  programs.hyprlock = {
+    enable = true;
+    settings = {
+      source = "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
+    };
+    extraConfig = ''
+      $accent = $mauve
+      $accentAlpha = $mauveAlpha
+      $font = Montserrat
+
+      # GENERAL
+      general {
+        disable_loading_bar = true
+        hide_cursor = true
+      }
+
+      # BACKGROUND
+      background {
+        monitor =
+        path = $HOME/.config/background
+        blur_passes = 0
+        color = $base
+      }
+
+      # LAYOUT
+      label {
+        monitor =
+        text = Layout: $LAYOUT
+        color = $text
+        font_size = 25
+        font_family = $font
+        position = 30, -30
+        halign = left
+        valign = top
+      }
+
+      # TIME
+      label {
+        monitor =
+        text = $TIME
+        color = $text
+        font_size = 90
+        font_family = $font
+        position = -30, 0
+        halign = right
+        valign = top
+      }
+
+      # DATE
+      label {
+        monitor =
+        text = cmd[update:43200000] date +"%A, %d %B %Y"
+        color = $text
+        font_size = 25
+        font_family = $font
+        position = -30, -150
+        halign = right
+        valign = top
+      }
+
+      # USER AVATAR
+      image {
+        monitor =
+        path = $HOME/.face
+        size = 100
+        border_color = $accent
+        position = 0, 75
+        halign = center
+        valign = center
+      }
+
+      # INPUT FIELD
+      input-field {
+        monitor =
+        size = 300, 60
+        outline_thickness = 4
+        dots_size = 0.2
+        dots_spacing = 0.2
+        dots_center = true
+        outer_color = $accent
+        inner_color = $surface0
+        font_color = $text
+        fade_on_empty = false
+        placeholder_text = <span foreground="##$textAlpha"><i>󰌾 Logged in as </i><span foreground="##$accentAlpha">$USER</span></span>
+        hide_input = false
+        check_color = $accent
+        fail_color = $red
+        fail_text = <i>$FAIL <b>($ATTEMPTS)</b></i>
+        capslock_color = $yellow
+        position = 0, -47
+        halign = center
+        valign = center
+        position = 0 -300
+      }
+    '';
+  };
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload = [ "/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png" ];
+      wallpaper = [ ",/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png" ];
+      splash = true;
+    };
   };
 }

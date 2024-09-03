@@ -7,8 +7,6 @@ picom &
 # thunar --daemon &
 light-locker &
 evolution &
-echo $PATH
-echo "DID IT WORK?"
 
 # Network system tray applet
 nm-applet &

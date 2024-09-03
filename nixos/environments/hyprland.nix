@@ -31,5 +31,7 @@
     killall # move to elsewhere
   ];
 
+  security.pam.services.hyprlock = {};
+
   programs.kdeconnect.enable = true;
 }
