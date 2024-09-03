@@ -70,8 +70,8 @@
 
   hardware.enableRedistributableFirmware = true;
   nix = {
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+    # registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+    # nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     extraOptions = ''
       experimental-features = nix-command flakes

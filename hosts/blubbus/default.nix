@@ -34,17 +34,19 @@
   # Bootloader.
   boot = {
     loader.systemd-boot = {
-      enable = true;
-      netbootxyz.enable = true;
-      memtest86.enable = true;
+      enable = lib.mkForce false;
       editor = true;
     };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
 
-    # plymouth = {
-    #   enable = true;
-    #   themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
-    #   theme = "bgrt";
-    # };
+    plymouth = {
+      enable = true;
+      themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
+      theme = "bgrt";
+    };
 
     kernelParams = [
       "quiet"
