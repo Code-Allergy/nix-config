@@ -103,6 +103,7 @@
   environment.systemPackages = with pkgs; [
     # power management
     powertop
+    brightnessctl
 
     # Wifi applet
     networkmanagerapplet
@@ -152,7 +153,6 @@
     };
   };
 
-  
   # services.gvfs.enable = true;
   services.fwupd.enable = true;
   services.cpupower-gui.enable = true;

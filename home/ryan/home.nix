@@ -17,6 +17,7 @@
     ./development.nix
     ./social.nix
 
+    ./hypr/default.nix
     ./waybar/default.nix
   ];
 

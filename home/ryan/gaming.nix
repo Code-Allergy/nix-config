@@ -11,8 +11,6 @@
     mangohud
     wine
 
-    # needed for steam tray icon -- move if needed elsewhere
-
     prismlauncher
 
     # CC Emulator

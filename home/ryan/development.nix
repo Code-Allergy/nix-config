@@ -1,6 +1,4 @@
 {pkgs, ...}: {
-  # programs.pyenv.enable = true;
-
   home.packages = with pkgs; [
     gdb
     gcc
@@ -13,6 +11,7 @@
     dbeaver-bin
 
     plantuml
+
     # Jetbrains
     jetbrains.pycharm-professional
     jetbrains.webstorm
@@ -54,7 +53,8 @@
       # Theme
       catppuccin.catppuccin-vsc
 
-      vscodevim.vim
+      # TODO git good
+      # vscodevim.vim
     ];
 
     userSettings = {

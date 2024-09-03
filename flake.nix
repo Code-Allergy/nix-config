@@ -1,10 +1,7 @@
 # TODO
-
 # keyring
 # rocm - fedora distrobox
 # local xdg configs
-
-
 {
   description = "Ryan's Flake";
 
