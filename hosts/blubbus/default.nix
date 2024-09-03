@@ -130,6 +130,9 @@
     WIFI_PWR_ON_BAT = "on";
 
     DISK_DEVICES = "nvme0n1 nvme1n1";
+
+    USB_AUTOSUSPEND = "1";
+    USB_ALLOWLIST = "0c45:6720 187c:0550";
   };
 
   # Enable acpi daemon so laptop close/open is responded to

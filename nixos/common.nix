@@ -92,6 +92,6 @@
     thunar-archive-plugin
   ];
 
-  # programs.fish.enable = true;
+  programs.fish.enable = true;
   programs.command-not-found.enable = true;
 }
