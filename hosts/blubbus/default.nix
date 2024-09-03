@@ -175,6 +175,9 @@
   #   "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
   # ];
 
+  # Lock on lid close
+  services.logind.lidSwitch = "lock";
+
   # Locale & Time
   time.timeZone = "America/Regina";
   services.chrony.enable = true;
