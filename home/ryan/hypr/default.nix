@@ -2,8 +2,41 @@
   config,
   pkgs,
   outputs,
+  hostname,
   ...
 }: let
+# TODO
+  hypridle_config =
+    { 
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock";     # dbus/sysd lock command (loginctl lock-session)
+        before_sleep_cmd = "loginctl lock-session";
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        ignore_dbus_inhibit = false;             # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
+        ignore_systemd_inhibit = false;          # whether to ignore systemd-inhibit --what=idle inhibitors
+      };
+
+      listener = [
+        {
+          timeout = 300;                            # in seconds
+          on-timeout = "loginctl lock-session";        # command to run when timeout has passed
+        }
+
+        {
+          timeout = 330;                                 # 5.5min
+          on-timeout = "hyprctl dispatch dpms off";        # screen off when timeout has passed
+          on-resume = "hyprctl dispatch dpms on";          # screen on when activity is detected after timeout has fired.
+        }
+
+        {
+          timeout = 1000;                            # in seconds
+          on-timeout = "systemctl hibernate";          # command to run when timeout has passed
+        }
+      ];
+    };
+  # else
+  # {};
+
   hyprConfig = outputs.paths.hyprConfig;
 in {
   wayland.windowManager.hyprland = {
@@ -101,33 +134,7 @@ in {
 
   services.hypridle = {
     enable = true;
-    settings = {
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock";     # dbus/sysd lock command (loginctl lock-session)
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
-        ignore_dbus_inhibit = false;             # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
-        ignore_systemd_inhibit = false;          # whether to ignore systemd-inhibit --what=idle inhibitors
-      };
-
-      listener = [
-        {
-          timeout = 300;                            # in seconds
-          on-timeout = "loginctl lock-session";        # command to run when timeout has passed
-        }
-
-        {
-          timeout = 330;                                 # 5.5min
-          on-timeout = "hyprctl dispatch dpms off";        # screen off when timeout has passed
-          on-resume = "hyprctl dispatch dpms on";          # screen on when activity is detected after timeout has fired.
-        }
-
-        {
-          timeout = 1000;                            # in seconds
-          on-timeout = "systemctl hibernate";          # command to run when timeout has passed
-        }
-      ];
-    };
+    settings = hypridle_config;
   };
 
   programs.hyprlock = {

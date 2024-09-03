@@ -1,5 +1,3 @@
-# This is your home-manager configuration file
-# Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 {
   inputs,
   outputs,
@@ -10,49 +8,73 @@
 }: {
   # You can import other home-manager modules here
   imports = [
-    ./git.nix
+    ./communication.nix
     ./gaming.nix
-    ./firefox.nix
     ./entertainment.nix
     ./development.nix
     ./social.nix
 
-    ./hypr/default.nix
-    ./waybar/default.nix
+    ./browsers
+    ./kitty
+
+    ./hypr
+    ./waybar
   ];
 
-  # nixpkgs = {
-  #   # You can add overlays here
-  #   overlays = [
-  #     # Add overlays your own flake exports (from overlays and pkgs dir):
-  #     outputs.overlays.additions
-  #     outputs.overlays.modifications
-  #     outputs.overlays.unstable-packages
+  # Enable home-manager
+  programs.home-manager.enable = true;
 
-  #     # You can also add overlays exported from other flakes:
-  #     # neovim-nightly-overlay.overlays.default
-
-  #     # Or define it inline, for example:
-  #     # (final: prev: {
-  #     #   hi = final.hello.overrideAttrs (oldAttrs: {
-  #     #     patches = [ ./change-hello-to-hi.patch ];
-  #     #   });
-  #     # })
-  #   ];
-
-  #   config.allowUnfree = true;
-  # };
-  # programs.kitty.enable = true;
   home = {
     username = "ryan";
     homeDirectory = "/home/ryan";
+    preferXdgDirectories = true;
+    sessionPath = [
+      "$HOME/nix-config/scripts"
+      "$HOME/.local/bin"
+      "$HOME/bin"
+    ];
+    sessionVariables = {
+      EDITOR = lib.mkForce "vim";
+      VISIAL = "vim";
+      PAGER = "less";
+      LESS = "-R";
+      BROWSER = "firefox";
+      TERMINAL = "kitty";
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_CACHE_HOME = "$HOME/.cache";
+      XDG_SESSION_TYPE = "wayland";
+      XDG_SESSION_DESKTOP = "hyprland";
+      XDG_SESSION_CLASS = "user";
+    };
+
+    shellAliases = {
+      # Allows sudo to be used with aliases
+      sudo = "sudo ";
+
+      # GIT aliases
+      g = "git";
+      gc = "git commit";
+      gcm = "git commit -m";
+      gr = "git rebase";
+      gp = "git push";
+      gu = "git unstage";
+      gf = "git fetch";
+      gco = "git checkout";
+      gb = "git branch";
+
+      nix-switch = "sudo nixos-rebuild switch";
+
+      serve = "python3 -m http.server";
+    };
   };
 
-  # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
-
-  # Enable home-manager and git
-  programs.home-manager.enable = true;
+  programs.git = {
+    enable = true;
+    userName = "Ryan Schaffer";
+    userEmail = "rys686@mail.usask.ca";
+    diff-so-fancy.enable = true;
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

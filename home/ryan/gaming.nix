@@ -5,8 +5,6 @@
 }: {
   home.packages = with pkgs; [
     steamcmd
-    lutris
-    bottles
     gamemode
     mangohud
     wine
@@ -21,9 +19,11 @@
 
     # Switch Emulators
     ryujinx
-
-    # Osu!
-    # TODO broke blubbus?
-    # osu-lazer-bin
   ];
+
+  programs.mangohud = {
+    enable = true;
+    enableSessionWide = true;
+    # settings =
+  };
 }

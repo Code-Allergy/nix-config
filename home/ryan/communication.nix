@@ -1,9 +1,8 @@
-{pkgs, ...}:
-
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
-    discord
-    discocss
+    # discord
+    # discocss
+    vesktop
+    trilium-desktop # not sure where to put this just yet.
   ];
-
 }

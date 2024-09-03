@@ -34,6 +34,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko.url = "github:nix-community/disko";
+    ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
+
 
   };
 
@@ -41,7 +44,6 @@
     self,
     nixpkgs,
     home-manager,
-    nur,
     nix-flatpak,
     lanzaboote,
     ...
@@ -74,7 +76,7 @@
 
     nixosConfigurations = {
       bigblubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
+        specialArgs = {inherit inputs outputs; hostname = "bigblubbus";};
         modules = [
           lanzaboote.nixosModules.lanzaboote
           nix-flatpak.nixosModules.nix-flatpak
@@ -83,7 +85,7 @@
         ];
       };
       blubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
+        specialArgs = {inherit inputs outputs; hostname = "blubbus";};
         modules = [
           lanzaboote.nixosModules.lanzaboote
           nix-flatpak.nixosModules.nix-flatpak

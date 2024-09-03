@@ -4,6 +4,7 @@
   lib,
   config,
   pkgs,
+  hostname,
   ...
 }: {
   imports = [
@@ -14,21 +15,15 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    sbctl # secureboot
-
+    sbctl            # secureboot
     nixos-generators # nix system-image generator
     vim-full
-    mupdf
     wget
     git
 
     # dotfiles
     git-crypt
     stow
-
-    # add distrobox
-    distrobox
-    boxbuddy
 
     alejandra
 
@@ -47,11 +42,20 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = {inherit inputs outputs;};
+    extraSpecialArgs = {inherit inputs outputs hostname;};
     users = {
       ryan = import ../home/ryan/home.nix;
     };
   };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+  };
+
 
   programs.gnupg.agent = {
     enable = true;
@@ -89,6 +93,7 @@
       options = "";
     };
   };
+
 
   security = {
     pam.services.kwallet = {

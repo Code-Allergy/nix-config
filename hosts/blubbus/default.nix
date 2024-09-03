@@ -64,19 +64,6 @@
       };
     };
 
-    kernelModules = [
-      # Enable VFIO for passthrough
-      # "vfio"
-      # "vfio_pci"
-      # "vfio_iommu_type1"
-      # "vfio_virqfd"
-      # "kvm-amd"
-
-      # unknown if needed
-      # "acpi_call"
-    ];
-    # extraModulePackages = with config.boot.kernelPackages; [acpi_call];
-
     # Nvidia drivers often break on latest kernel.. use LTS instead.
     kernelPackages = pkgs.linuxPackages;
   };
@@ -112,7 +99,6 @@
   ];
 
   # Laptop TLP battery saving config
-  # TODO review these, a lot has changed in TLP and amd-pstate
   services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
   services.tlp.settings = {
@@ -162,15 +148,6 @@
   services.fwupd.enable = true;
   services.cpupower-gui.enable = true;
 
-  # SSH
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
   # # Udev rules for Qtile plugin
   # services.udev.extraRules = ''
   #   ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
@@ -197,10 +174,6 @@
   # security.pki.certificateFiles = [
   #   "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
   # ];
-
-  #
-  #
-  #
 
   # Locale & Time
   time.timeZone = "America/Regina";

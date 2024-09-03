@@ -5,25 +5,40 @@
     gnumake
     cmake
 
+    # add distrobox
+    distrobox
+    boxbuddy
+    mupdf
+
     android-tools
 
     dbeaver-bin
 
-    # Jetbrains
+    remmina
+
     jetbrains.pycharm-professional
     jetbrains.webstorm
     jetbrains.idea-ultimate
     jetbrains.clion
     jetbrains.rust-rover
     jetbrains.rider
-    maven
-
-    remmina
   ];
+
+  programs.jetbrains-remote = {
+    enable = true;
+    ides = with pkgs.jetbrains; [
+      pycharm-professional
+      webstorm
+      idea-ultimate
+      clion
+      rust-rover
+      rider
+    ];
+  };
 
   programs.vscode = {
     enable = true;
-    # package = pkgs.vscodium;
+    package = pkgs.vscodium;
     extensions = with pkgs.vscode-extensions; [
       ms-vscode.cpptools
       ms-vscode.hexeditor
@@ -56,7 +71,6 @@
 
     userSettings = {
       "cmake.configureOnOpen" = true;
-      "files.autoSave" = "afterDelay";
       "window.menuBarVisibility" = "toggle";
       "[javascript]" = {
         "editor.defaultFormatter" = "esbenp.prettier-vscode";
