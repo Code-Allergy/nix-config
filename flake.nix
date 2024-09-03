@@ -1,5 +1,12 @@
+# TODO
+
+# keyring
+# rocm - fedora distrobox
+# local xdg configs
+
+
 {
-  description = "Your new nix config";
+  description = "Ryan's Flake";
 
   inputs = {
     # Nixpkgs

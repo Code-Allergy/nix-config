@@ -16,6 +16,8 @@
     ./entertainment.nix
     ./development.nix
     ./social.nix
+
+    ./waybar/default.nix
   ];
 
   # nixpkgs = {
