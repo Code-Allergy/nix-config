@@ -26,7 +26,11 @@
   ];
 
   boot = {
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot.enable = lib.mkForce false;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
     loader.efi.canTouchEfiVariables = true;
 
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
@@ -78,4 +82,32 @@
 
   # TODO unsure if blubbus needs
   services.upower.enable = true;
+
+
+  # TDARR
+
+  virtualisation.oci-containers.containers = {
+      tdarr_node = {
+        image = "ghcr.io/haveagitgat/tdarr_node";
+        volumes = [
+          "/etc/tdarr:/app/configs"
+          "/var/log/tdarr:/app/logs"
+          "/mnt/tower/media:/mnt/media"
+          "/mnt/tower/ingest/Tcache:/temp"
+        ];
+        environment = {
+          nodeName = "blubbus";
+          serverIP = "192.168.1.112";
+          serverPort = "8266";
+          inContainer = "true";
+          TZ = "America/Regina";
+          PUID = "1000";
+          PGID = "1000";
+        };
+        extraOptions = [
+          # "--gpus=all" "--device=/dev/dri:/dev/dri"
+          "--network=bridge"
+        ];
+      };
+    };
 }

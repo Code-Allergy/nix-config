@@ -4,13 +4,10 @@
     gcc
     gnumake
     cmake
-    nodejs
 
     android-tools
 
     dbeaver-bin
-
-    plantuml
 
     # Jetbrains
     jetbrains.pycharm-professional
@@ -21,16 +18,12 @@
     jetbrains.rider
     maven
 
-    # rust-rs
-    rustup
-
     remmina
   ];
 
-  programs.java.enable = true;
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    # package = pkgs.vscodium;
     extensions = with pkgs.vscode-extensions; [
       ms-vscode.cpptools
       ms-vscode.hexeditor
@@ -47,11 +40,15 @@
 
       # nix
       bbenoist.nix
+      jnoortheen.nix-ide
       kamadorueda.alejandra
 
       firefox-devtools.vscode-firefox-debug
+
       # Theme
       catppuccin.catppuccin-vsc
+
+      github.copilot
 
       # TODO git good
       # vscodevim.vim
@@ -90,6 +87,7 @@
       "git.autofetch" = true;
 
       "workbench.colorTheme" = "Catppuccin Mocha";
+      "workbench.preferredDarkColorTheme" = "Catppuccin Mocha";
     };
   };
 

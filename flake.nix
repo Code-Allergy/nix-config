@@ -8,11 +8,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # HYPRLAND NEEDED
-    # You can access packages and modules from different nixpkgs revs
-    # at the same time. Here's an working example:
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
     home-manager = {
@@ -20,17 +16,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
+
+    # REQUIRES sbctl generate keys at /etc/secureboot
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # hyprland = {
-    #   type = "git";
-    #   url = "https://github.com/hyprwm/hyprland";
-    #   submodules = true;
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+
+
   };
 
   outputs = {
@@ -39,16 +43,13 @@
     home-manager,
     nur,
     nix-flatpak,
+    lanzaboote,
     ...
   } @ inputs: let
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
-      "aarch64-linux"
-      "i686-linux"
       "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
     ];
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
@@ -63,9 +64,7 @@
 
     # Your custom packages and modifications, exported as overlays
     overlays = import ./overlays {inherit inputs;};
-    # overlays = [
-    #   inputs.nur.overlay
-    # ];
+
     # Reusable nixos modules you might want to export
     # These are usually stuff you would upstream into nixpkgs
     nixosModules = import ./modules/nixos;
@@ -73,23 +72,23 @@
     # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;
 
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
       bigblubbus = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
+          lanzaboote.nixosModules.lanzaboote
           nix-flatpak.nixosModules.nix-flatpak
           ./nixos/common.nix
-          ./hosts/bigblubbus/default.nix
+          ./hosts/bigblubbus
         ];
       };
       blubbus = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
+          lanzaboote.nixosModules.lanzaboote
           nix-flatpak.nixosModules.nix-flatpak
           ./nixos/common.nix
-          ./hosts/blubbus/default.nix
+          ./hosts/blubbus
         ];
       };
     };

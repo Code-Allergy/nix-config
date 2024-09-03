@@ -83,6 +83,9 @@
     # add distrobox
     distrobox
     boxbuddy
+
+    # just comma it
+    comma
   ];
 
   home-manager.useUserPackages = true;
