@@ -54,8 +54,8 @@
 
   hardware.enableRedistributableFirmware = true;
   nix = {
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+    # registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+    # nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -66,10 +66,6 @@
       max-jobs = 6
       max-free = ${toString (500 * 1024 * 1024)}
     '';
-    settings = {
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-    };
 
     gc = {
       automatic = true;
@@ -89,7 +85,13 @@
     stateVersion = "24.05"; # https://nixos.org/nixos/options.html
   };
 
+  # Thunar as default GUI file browser
+  programs.thunar.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-volman
+    thunar-archive-plugin
+  ];
+
   # programs.fish.enable = true;
   programs.command-not-found.enable = true;
-  # programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 }

@@ -1,18 +1,19 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   # Nvidia GPU
   # Only configured statically for blubbus ONLY
   hardware.opengl = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
+    # driSupport = true;
+    # driSupport32Bit = true;
+    # extraPackages = with pkgs; [
+    #   vaapiVdpau
+    #   libvdpau-va-gl
+    # ];
   };
 
   # Nvidia
@@ -29,7 +30,7 @@
     # nvidia-settings menu
     nvidiaSettings = true;
 
-    #package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     prime = {
       offload.enable = true;
@@ -39,9 +40,9 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    # nvidia-offload
-    pciutils
-    glxinfo
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   # nvidia-offload
+  #   pciutils
+  #   glxinfo
+  # ];
 }

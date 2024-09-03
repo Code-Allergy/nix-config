@@ -25,8 +25,7 @@
     ryujinx
 
     # Osu!
-    osu-lazer-bin
+    # TODO broke blubbus?
+    # osu-lazer-bin
   ];
-
-  
 }

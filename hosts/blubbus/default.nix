@@ -37,27 +37,24 @@
       enable = true;
       netbootxyz.enable = true;
       memtest86.enable = true;
-      editor = false;
+      editor = true;
     };
 
-    plymouth = {
-      enable = true;
-      themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
-      theme = "bgrt";
-    };
+    # plymouth = {
+    #   enable = true;
+    #   themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
+    #   theme = "bgrt";
+    # };
 
     kernelParams = [
       "quiet"
       "splash"
       "acpi_backlight=nvidia_wmi_ec"
 
-      # Amd PState Preffered core
-      # Enable for 6.5
-      # TODO
-      # "amd_prefcore=enable"
+      "amd_pstate.shared_mem=1"
     ];
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
-    initrd.kernelModules = ["dm-snapshot"];
+    # initrd.kernelModules = ["dm-snapshot"];
     initrd.luks.devices = {
       root = {
         device = "/dev/disk/by-uuid/d19873f6-caa4-43a2-8032-0b6cc8e72190";
@@ -67,19 +64,19 @@
 
     kernelModules = [
       # Enable VFIO for passthrough
-      "vfio"
-      "vfio_pci"
-      "vfio_iommu_type1"
-      "vfio_virqfd"
-      "kvm-amd"
+      # "vfio"
+      # "vfio_pci"
+      # "vfio_iommu_type1"
+      # "vfio_virqfd"
+      # "kvm-amd"
 
       # unknown if needed
-      "acpi_call"
+      # "acpi_call"
     ];
-    extraModulePackages = with config.boot.kernelPackages; [acpi_call];
+    # extraModulePackages = with config.boot.kernelPackages; [acpi_call];
 
-    # Kernel version -- use latest stable
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Nvidia drivers often break on latest kernel.. use LTS instead.
+    kernelPackages = pkgs.linuxPackages;
   };
 
   # Root FS
@@ -155,14 +152,10 @@
     };
   };
 
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-volman
-    thunar-archive-plugin
-  ];
-  services.gvfs.enable = true;
+  
+  # services.gvfs.enable = true;
   services.fwupd.enable = true;
-  # services.cpupower-gui.enable = true;
+  services.cpupower-gui.enable = true;
 
   # SSH
   services.openssh = {
@@ -180,9 +173,29 @@
   # '';
 
   # Certificates for school wlan
-  security.pki.certificateFiles = [
-    "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
-  ];
+  # TODO broke config -- missing?
+  # error: builder for '/nix/store/n7ndlgnfc8jkiqm96374aa17zf9c7rvd-nss-cacert-3.101.drv' failed with exit code 1;
+  #        last 10 log lines:
+  #        > Traceback (most recent call last):
+  #        >   File "/nix/store/zmzk6ycn1l2fivm2syrgxiihdv7p4i6c-python3.11-buildcatrust-0.3.0/bin/.buildcatrust-wrapped", line 9, in <module>
+  #        >     sys.exit(main())
+  #        >              ^^^^^^
+  #        >   File "/nix/store/zmzk6ycn1l2fivm2syrgxiihdv7p4i6c-python3.11-buildcatrust-0.3.0/lib/python3.11/site-packages/buildcatrust/cli.py", line 243, in main
+  #        >     sys.exit(cli_main(sys.argv[1:]) or 0)
+  #        >              ^^^^^^^^^^^^^^^^^^^^^^
+  #        >   File "/nix/store/zmzk6ycn1l2fivm2syrgxiihdv7p4i6c-python3.11-buildcatrust-0.3.0/lib/python3.11/site-packages/buildcatrust/cli.py", line 182, in cli_main
+  #        >     raise FileNotFoundError(f"Bundle not found: {bundle_path}")
+  #        > FileNotFoundError: Bundle not found: /nix/store/zbzjr67bnrrhrgmbnhlism874pxc80l3-nss-cacert-3.101/etc/ssl/certs/DigiCert_Global_Root_CA.crt
+  #        For full logs, run 'nix log /nix/store/n7ndlgnfc8jkiqm96374aa17zf9c7rvd-nss-cacert-3.101.drv'.
+  # error: 1 dependencies of derivation '/nix/store/5y9salcw7ygw0jgrhq0hh7cww7l74izv-etc.drv' failed to build
+  # error: 1 dependencies of derivation '/nix/store/dfndmqm6rl1q9gv9zz59sdxy5ysxwwbc-nixos-system-blubbus-24.05.20240830.6e99f2a.drv' failed to build
+  # security.pki.certificateFiles = [
+  #   "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
+  # ];
+
+  #
+  #
+  #
 
   # Locale & Time
   time.timeZone = "America/Regina";
