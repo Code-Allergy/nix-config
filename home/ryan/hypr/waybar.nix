@@ -61,9 +61,8 @@
           "spacing" = 10;
         };
         "clock" = {
-          #/ "timezone"= "America/New_York";
-          "tooltip-format" = "<big>{=%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          "format-alt" = "{=%Y-%m-%d}";
+          "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          "format-alt" = "{:%Y-%m-%d}"; # TODO
         };
         "cpu" = {
           "format" = "{usage}% ";
@@ -91,18 +90,13 @@
             "warning" = 30;
             "critical" = 15;
           };
-          "format" = "{capacity}% {icon} {power=4.2f}W";
+          "format" = "{capacity}% {icon} {power:4.2f}W";
           "format-full" = "{capacity}% {icon}";
           "format-charging" = "{capacity}% ";
           "format-plugged" = "{capacity}% ";
           "format-alt" = "{time} {icon}";
-          # "format-good"= ""; // An empty format will hide the module
-          #// "format-full"= "";
           "format-icons" = ["" "" "" "" ""];
         };
-        # "battery#bat2"= {
-        #     "bat"= "BAT2";
-        # };
         "network" = {
           # "interface"= "wlp2*"; // (Optional) To force the use of this interface
           "format-wifi" = "{signalStrength}% ";
