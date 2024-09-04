@@ -15,7 +15,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    sbctl            # secureboot
+    sbctl # secureboot
     nixos-generators # nix system-image generator
     vim-full
     wget
@@ -28,6 +28,9 @@
     alejandra
 
     bottom
+
+    # run any package with ,
+    comma
   ];
 
   # Thunar as default GUI file browser
@@ -55,7 +58,6 @@
       PasswordAuthentication = false;
     };
   };
-
 
   programs.gnupg.agent = {
     enable = true;
@@ -94,13 +96,12 @@
     };
   };
 
-
   security = {
     pam.services.kwallet = {
       name = "kwallet";
       enableKwallet = true;
     };
-    
+
     polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
         if ((action.id == "org.corectrl.helper.init" ||
@@ -112,8 +113,8 @@
         }
       });
 
-    
-    
+
+
     '';
     # Other security options: https://nixos.org/nixos/options.html#security
   };
