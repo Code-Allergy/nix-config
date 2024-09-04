@@ -5,35 +5,34 @@
   hostname,
   ...
 }: let
-# TODO
-  hypridle_config =
-    { 
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock";     # dbus/sysd lock command (loginctl lock-session)
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
-        ignore_dbus_inhibit = false;             # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
-        ignore_systemd_inhibit = false;          # whether to ignore systemd-inhibit --what=idle inhibitors
-      };
-
-      listener = [
-        {
-          timeout = 300;                            # in seconds
-          on-timeout = "loginctl lock-session";        # command to run when timeout has passed
-        }
-
-        {
-          timeout = 330;                                 # 5.5min
-          on-timeout = "hyprctl dispatch dpms off";        # screen off when timeout has passed
-          on-resume = "hyprctl dispatch dpms on";          # screen on when activity is detected after timeout has fired.
-        }
-
-        {
-          timeout = 1000;                            # in seconds
-          on-timeout = "systemctl hibernate";          # command to run when timeout has passed
-        }
-      ];
+  # TODO
+  hypridle_config = {
+    general = {
+      lock_cmd = "pidof hyprlock || hyprlock"; # dbus/sysd lock command (loginctl lock-session)
+      before_sleep_cmd = "loginctl lock-session";
+      after_sleep_cmd = "hyprctl dispatch dpms on";
+      ignore_dbus_inhibit = false; # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
+      ignore_systemd_inhibit = false; # whether to ignore systemd-inhibit --what=idle inhibitors
     };
+
+    listener = [
+      {
+        timeout = 300; # in seconds
+        on-timeout = "loginctl lock-session"; # command to run when timeout has passed
+      }
+
+      {
+        timeout = 330; # 5.5min
+        on-timeout = "hyprctl dispatch dpms off"; # screen off when timeout has passed
+        on-resume = "hyprctl dispatch dpms on"; # screen on when activity is detected after timeout has fired.
+      }
+
+      {
+        timeout = 1000; # in seconds
+        on-timeout = "systemctl hibernate"; # command to run when timeout has passed
+      }
+    ];
+  };
   # else
   # {};
 
@@ -156,7 +155,7 @@ in {
       # BACKGROUND
       background {
         monitor =
-        path = $HOME/.config/background
+        path = $HOME/nix-config/wallpapers/lockscreen.png
         blur_passes = 0
         color = $base
       }
@@ -237,8 +236,8 @@ in {
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = [ "/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png" ];
-      wallpaper = [ ",/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png" ];
+      preload = ["/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png"];
+      wallpaper = [",/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png"];
       splash = true;
     };
   };
