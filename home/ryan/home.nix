@@ -14,6 +14,8 @@
     ./development.nix
     ./social.nix
 
+    ./syncthing
+
     ./browsers
     ./kitty
 

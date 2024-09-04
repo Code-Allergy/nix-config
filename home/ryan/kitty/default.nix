@@ -1303,101 +1303,6 @@
       #: to use the background color of the currently active window and
       #: finally you can use an arbitrary color, such as #12af59 or red.
 
-      macos_titlebar_color system
-
-      #: The color of the kitty window's titlebar on macOS. A value of
-      #: system means to use the default system color, light or dark can
-      #: also be used to set it explicitly. A value of background means to
-      #: use the background color of the currently active window and finally
-      #: you can use an arbitrary color, such as #12af59 or red. WARNING:
-      #: This option works by using a hack when arbitrary color (or
-      #: background) is configured, as there is no proper Cocoa API for it.
-      #: It sets the background color of the entire window and makes the
-      #: titlebar transparent. As such it is incompatible with
-      #: background_opacity. If you want to use both, you are probably
-      #: better off just hiding the titlebar with hide_window_decorations.
-
-      macos_option_as_alt no
-
-      #: Use the Option key as an Alt key on macOS. With this set to no,
-      #: kitty will use the macOS native Option+Key to enter Unicode
-      #: character behavior. This will break any Alt+Key keyboard shortcuts
-      #: in your terminal programs, but you can use the macOS Unicode input
-      #: technique. You can use the values: left, right or both to use only
-      #: the left, right or both Option keys as Alt, instead. Note that
-      #: kitty itself always treats Option the same as Alt. This means you
-      #: cannot use this option to configure different kitty shortcuts for
-      #: Option+Key vs. Alt+Key. Also, any kitty shortcuts using
-      #: Option/Alt+Key will take priority, so that any such key presses
-      #: will not be passed to terminal programs running inside kitty.
-      #: Changing this option by reloading the config is not supported.
-
-      macos_hide_from_tasks no
-
-      #: Hide the kitty window from running tasks on macOS (⌘+Tab and the
-      #: Dock). Changing this option by reloading the config is not
-      #: supported.
-
-      macos_quit_when_last_window_closed no
-
-      #: Have kitty quit when all the top-level windows are closed on macOS.
-      #: By default, kitty will stay running, even with no open windows, as
-      #: is the expected behavior on macOS.
-
-      macos_window_resizable yes
-
-      #: Disable this if you want kitty top-level OS windows to not be
-      #: resizable on macOS. Changing this option by reloading the config
-      #: will only affect newly created OS windows.
-
-      macos_thicken_font 0
-
-      #: Draw an extra border around the font with the given width, to
-      #: increase legibility at small font sizes on macOS. For example, a
-      #: value of 0.75 will result in rendering that looks similar to sub-
-      #: pixel antialiasing at common font sizes.
-
-      macos_traditional_fullscreen no
-
-      #: Use the macOS traditional full-screen transition, that is faster,
-      #: but less pretty.
-
-      macos_show_window_title_in all
-
-      #: Control where the window title is displayed on macOS. A value of
-      #: window will show the title of the currently active window at the
-      #: top of the macOS window. A value of menubar will show the title of
-      #: the currently active window in the macOS global menu bar, making
-      #: use of otherwise wasted space. A value of all will show the title
-      #: in both places, and none hides the title. See
-      #: macos_menubar_title_max_length for how to control the length of the
-      #: title in the menu bar.
-
-      macos_menubar_title_max_length 0
-
-      #: The maximum number of characters from the window title to show in
-      #: the macOS global menu bar. Values less than one means that there is
-      #: no maximum limit.
-
-      macos_custom_beam_cursor no
-
-      #: Use a custom mouse cursor for macOS that is easier to see on both
-      #: light and dark backgrounds. Nowadays, the default macOS cursor
-      #: already comes with a white border. WARNING: this might make your
-      #: mouse cursor invisible on dual GPU machines. Changing this option
-      #: by reloading the config is not supported.
-
-      macos_colorspace srgb
-
-      #: The colorspace in which to interpret terminal colors. The default
-      #: of srgb will cause colors to match those seen in web browsers. The
-      #: value of default will use whatever the native colorspace of the
-      #: display is. The value of displayp3 will use Apple's special
-      #: snowflake display P3 color space, which will result in over
-      #: saturated (brighter) colors with some color shift. Reloading
-      #: configuration will change this value only for newly created OS
-      #: windows.
-
       linux_display_server auto
 
       #: Choose between Wayland and X11 backends. By default, an appropriate
@@ -2027,37 +1932,6 @@
       map kitty_mod+delete clear_terminal reset active
       map opt+cmd+r        clear_terminal reset active
 
-      #::  You can create shortcuts to clear/reset the terminal. For
-      #::  example::
-
-      #::      # Reset the terminal
-      #::      map f1 clear_terminal reset active
-      #::      # Clear the terminal screen by erasing all contents
-      #::      map f1 clear_terminal clear active
-      #::      # Clear the terminal scrollback by erasing it
-      #::      map f1 clear_terminal scrollback active
-      #::      # Scroll the contents of the screen into the scrollback
-      #::      map f1 clear_terminal scroll active
-      #::      # Clear everything up to the line with the cursor
-      #::      map f1 clear_terminal to_cursor active
-
-      #::  If you want to operate on all kitty windows instead of just the
-      #::  current one, use all instead of active.
-
-      #::  It is also possible to remap Ctrl+L to both scroll the current
-      #::  screen contents into the scrollback buffer and clear the screen,
-      #::  instead of just clearing the screen, for example, for ZSH add the
-      #::  following to ~/.zshrc:
-
-      #::  .. code-block:: zsh
-
-      #::      scroll-and-clear-screen() {
-      #::          printf '\n%.0s' {1..$LINES}
-      #::          zle clear-screen
-      #::      }
-      #::      zle -N scroll-and-clear-screen
-      #::      bindkey '^l' scroll-and-clear-screen
-
       #: Clear up to cursor line
 
       map cmd+k clear_terminal to_cursor active
@@ -2087,55 +1961,13 @@
       #::  Show details about exactly what configuration kitty is running
       #::  with and its host environment. Useful for debugging issues.
 
-      #: Send arbitrary text on key presses
-
-      #::  E.g. map ctrl+shift+alt+h send_text all Hello World
-
-      #::  You can tell kitty to send arbitrary (UTF-8) encoded text to the
-      #::  client program when pressing specified shortcut keys. For
-      #::  example::
-
-      #::      map ctrl+alt+a send_text all Special text
-
-      #::  This will send "Special text" when you press the Ctrl+Alt+A key
-      #::  combination. The text to be sent is a python string literal so
-      #::  you can use escapes like \x1b to send control codes or \u21fb to
-      #::  send Unicode characters (or you can just input the Unicode
-      #::  characters directly as UTF-8 text). You can use `kitty +kitten
-      #::  show_key` to get the key escape codes you want to emulate.
-
-      #::  The first argument to send_text is the keyboard modes in which to
-      #::  activate the shortcut. The possible values are normal,
-      #::  application, kitty or a comma separated combination of them. The
-      #::  modes normal and application refer to the DECCKM cursor key mode
-      #::  for terminals, and kitty refers to the kitty extended keyboard
-      #::  protocol. The special value all means all of them.
-
-      #::  Some more examples::
-
-      #::      # Output a word and move the cursor to the start of the line (like typing and pressing Home)
-      #::      map ctrl+alt+a send_text normal Word\x1b[H
-      #::      map ctrl+alt+a send_text application Word\x1bOH
-      #::      # Run a command at a shell prompt (like typing the command and pressing Enter)
-      #::      map ctrl+alt+a send_text normal,application some command with arguments\r
-
-      #: Open kitty Website
-
       map shift+cmd+/ open_url https://sw.kovidgoyal.net/kitty/
-
-      #: }}}
-
-      #: }}}
-
-      # vim:ft=kitty
 
       ## name:     Catppuccin-Mocha
       ## author:   Pocco81 (https://github.com/Pocco81)
       ## license:  MIT
       ## upstream: https://github.com/catppuccin/kitty/blob/main/mocha.conf
       ## blurb:    Soothing pastel theme for the high-spirited!
-
-
 
       # The basic colors
       foreground              #CDD6F4
