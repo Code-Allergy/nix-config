@@ -6,12 +6,18 @@
 }: {
   programs.firefox = {
     enable = true;
-    nativeMessagingHosts = with pkgs.plasma5Packages; [
-      plasma-browser-integration
+    nativeMessagingHosts = with pkgs; [
+      plasma5Packages.plasma-browser-integration
     ];
     policies = {
+      AppAutoUpdate = false;
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
+      DisableFirefoxAccounts = true;
+      DisablePocket = true;
+      StartDownloadsInTempDirectory = true;
+      OfferToSaveLogins = false;
+      PasswordManagerEnabled = false;
       EnableTrackingProtection = {
         Value = true;
         Locked = true;
@@ -86,6 +92,12 @@
         # (KDEConnect)Plasma Integration
         "plasma-browser-integration@kde.org" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Firefox Color
+        "FirefoxColor@mozilla.com" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/firefox-color/latest.xpi";
           installation_mode = "force_installed";
         };
       };

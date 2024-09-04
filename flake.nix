@@ -2,6 +2,7 @@
 # keyring
 # rocm - fedora distrobox
 # local xdg configs
+# harden system - firejail, apparmor, etc
 {
   description = "Ryan's Flake";
 
@@ -36,8 +37,6 @@
 
     disko.url = "github:nix-community/disko";
     ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
-
-
   };
 
   outputs = {
@@ -76,7 +75,10 @@
 
     nixosConfigurations = {
       bigblubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs; hostname = "bigblubbus";};
+        specialArgs = {
+          inherit inputs outputs;
+          hostname = "bigblubbus";
+        };
         modules = [
           lanzaboote.nixosModules.lanzaboote
           nix-flatpak.nixosModules.nix-flatpak
@@ -85,7 +87,10 @@
         ];
       };
       blubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs; hostname = "blubbus";};
+        specialArgs = {
+          inherit inputs outputs;
+          hostname = "blubbus";
+        };
         modules = [
           lanzaboote.nixosModules.lanzaboote
           nix-flatpak.nixosModules.nix-flatpak

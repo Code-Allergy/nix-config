@@ -1,6 +1,6 @@
 {
-  # ADD CHROME
   imports = [
     ./firefox.nix
+    ./chromium.nix
   ];
 }
