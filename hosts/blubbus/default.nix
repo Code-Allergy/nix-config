@@ -178,7 +178,7 @@
   # ];
 
   # Lock on lid close
-  services.logind.lidSwitch = "lock";
+  services.logind.lidSwitch = "suspend";
 
   # Locale & Time
   time.timeZone = "America/Regina";

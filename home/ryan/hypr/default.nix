@@ -8,7 +8,6 @@
   # TODO
   hypridle_config = {
     general = {
-      lock_cmd = "pidof hyprlock || hyprlock"; # dbus/sysd lock command (loginctl lock-session)
       before_sleep_cmd = "loginctl lock-session";
       after_sleep_cmd = "hyprctl dispatch dpms on";
       ignore_dbus_inhibit = false; # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
@@ -29,7 +28,7 @@
 
       {
         timeout = 1000; # in seconds
-        on-timeout = "systemctl hibernate"; # command to run when timeout has passed
+        on-timeout = "systemctl suspend"; # command to run when timeout has passed
       }
     ];
   };
