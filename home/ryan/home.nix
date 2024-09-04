@@ -18,9 +18,9 @@
 
     ./browsers
     ./kitty
+    ./shell
 
     ./hypr
-    ./waybar
   ];
 
   # Enable home-manager

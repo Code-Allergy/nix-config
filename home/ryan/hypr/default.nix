@@ -35,9 +35,11 @@
   };
   # else
   # {};
-
-  hyprConfig = outputs.paths.hyprConfig;
 in {
+  imports = [
+    ./waybar.nix
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
