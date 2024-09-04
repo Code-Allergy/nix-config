@@ -83,6 +83,8 @@
           #// "device"= "acpi_video1";
           "format" = "{percent}% {icon}";
           "format-icons" = ["🌑" "🌘" "🌗" "🌖" "🌕"];
+          "on-scroll-up" = "backlightctl set +10%";
+          "on-scroll-down" = "backlightctl set -10%";
         };
         "battery" = {
           "states" = {
