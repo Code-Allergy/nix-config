@@ -179,7 +179,7 @@
 
   # Lock on lid close
   services.logind.lidSwitch = "suspend";
-  # services.logind.lidSwitchExternalPower = "lock";
+  services.logind.lidSwitchExternalPower = "lock";
 
   # Locale & Time
   time.timeZone = "America/Regina";
