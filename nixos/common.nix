@@ -99,7 +99,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "";
+      options = "--delete-older-than 30d";
     };
   };
 
@@ -138,6 +138,7 @@
       enable = true;
       allowReboot = false;
       dates = "7:30";
+      randomizedDelaySec = "45min";
     };
 
     stateVersion = "24.05"; # https://nixos.org/nixos/options.html
