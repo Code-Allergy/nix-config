@@ -5,6 +5,7 @@
   config,
   pkgs,
   hostname,
+  nixConfigRoot,
   ...
 }: {
   imports = [
@@ -45,7 +46,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = {inherit inputs outputs hostname;};
+    extraSpecialArgs = {inherit inputs outputs hostname nixConfigRoot;};
     users = {
       ryan = import ../home/ryan/home.nix;
     };

@@ -3,7 +3,10 @@
     gdb
     gcc
     gnumake
+    python3
+    nodejs_22
     cmake
+
 
     # add distrobox
     distrobox
@@ -52,6 +55,7 @@
       esbenp.prettier-vscode
       vscjava.vscode-maven
       humao.rest-client
+      arrterian.nix-env-selector
 
       # nix
       bbenoist.nix
@@ -102,6 +106,12 @@
 
       "workbench.colorTheme" = "Catppuccin Mocha";
       "workbench.preferredDarkColorTheme" = "Catppuccin Mocha";
+
+      "cmake.showOptionsMovedNotification" = false;
+      "cmake.pinnedCommands" = [
+        "workbench.action.tasks.configureTaskRunner"
+        "workbench.action.tasks.runTask"
+      ];
     };
   };
 

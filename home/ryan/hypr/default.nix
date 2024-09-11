@@ -3,12 +3,13 @@
   pkgs,
   outputs,
   hostname,
+  nixConfigRoot,
   ...
 }: let
   inherit (import ./variables.nix { inherit hostname; }) hyprland_variables;
   inherit (import ./configs/hypridle.nix) hypridle_config;
-  inherit (import ./configs/hyprlock.nix) hyprlock_config;
-  inherit (import ./configs/hyprpaper.nix) hyprpaper_config;
+  inherit (import ./configs/hyprlock.nix { inherit nixConfigRoot; }) hyprlock_config;
+  inherit (import ./configs/hyprpaper.nix { inherit nixConfigRoot; }) hyprpaper_config;
 in {
   imports = [
     ./waybar.nix
@@ -23,9 +24,9 @@ in {
       "$MENU" = hyprland_variables.MENU;
       "$WORKSPACE_SWIPE" = hyprland_variables.WORKSPACE_SWIPE;
       source = [
-        "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
+        "${nixConfigRoot}/home/ryan/hypr/hyprland.conf"
       ];
-      exec-once = "/home/ryan/nix-config/home/ryan/hypr/autostart.sh";
+      exec-once = "${nixConfigRoot}/home/ryan/hypr/autostart.sh";
     };
 
     extraConfig = ''

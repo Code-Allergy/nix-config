@@ -25,6 +25,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
 
     # REQUIRES sbctl generate keys at /etc/secureboot
+    # RUN sbctl generate keys and verify that the boot entries are signed after applying the configuration.
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,12 +50,9 @@
   } @ inputs: let
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
-    systems = [
-      "x86_64-linux"
-    ];
-    # This is a function that generates an attribute by calling a function you
-    # pass to it, with each system as an argument
+    systems = ["x86_64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
+    nixConfigRoot = self.outPath;
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
@@ -76,7 +74,7 @@
     nixosConfigurations = {
       bigblubbus = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          inherit inputs outputs;
+          inherit inputs outputs nixConfigRoot;
           hostname = "bigblubbus";
         };
         modules = [
@@ -88,7 +86,7 @@
       };
       blubbus = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          inherit inputs outputs;
+          inherit inputs outputs nixConfigRoot;
           hostname = "blubbus";
         };
         modules = [
