@@ -31,16 +31,23 @@
 
     # run any package with ,
     comma
+
+    gnome.gnome-keyring
+    libsecret
+    libgnome-keyring
+    gnupg
   ];
 
   # Thunar as default GUI file browser
   programs.fish.enable = true;
   programs.command-not-found.enable = true;
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-    thunar-volman
-    thunar-archive-plugin
-  ];
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-volman
+      thunar-archive-plugin
+    ];
+  };
 
   home-manager = {
     useGlobalPkgs = true;
@@ -61,7 +68,7 @@
 
   programs.gnupg.agent = {
     enable = true;
-    enableSSHSupport = false;
+    enableSSHSupport = true;
     settings = {
       default-cache-ttl = 2592000;
       max-cache-ttl = 2592000;
@@ -96,12 +103,9 @@
     };
   };
 
+  services.gnome.gnome-keyring.enable = true;
   security = {
-    pam.services.kwallet = {
-      name = "kwallet";
-      enableKwallet = true;
-    };
-
+    pam.services.login.enableGnomeKeyring = true;
     polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
         if ((action.id == "org.corectrl.helper.init" ||

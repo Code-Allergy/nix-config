@@ -24,7 +24,7 @@
     qview
     polkit-kde-agent
     starship # move to common, after we setup config for it
-    wl-clipboard-rs
+    wl-clipboard
     thefuck
     killall # move to elsewhere
   ];
