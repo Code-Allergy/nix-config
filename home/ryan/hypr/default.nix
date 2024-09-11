@@ -38,16 +38,16 @@ in {
       env = ELECTRON_OZONE_PLATFORM_HINT,auto
       env = GDK_BACKEND,wayland
       env = QT_QPA_PLATFORM,wayland
-      env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
-      env = XDG_CURRENT_DESKTOP,Hyprland
-      env = XDG_SESSION_TYPE,wayland
-      env = WLR_RENDERER,vulkan
-      env = QT_AUTO_SCREEN_SCALE_FACTOR,1
-      env = QT_QPA_PLATFORMTHEME,qt5ct
-      env = SDL_VIDEODRIVER,wayland
-      env = _JAVA_AWT_WM_NONREPARENTING,1
-      env = CLUTTER_BACKEND,wayland
-      env = NIXOS_OZONE_WL,1
+      #env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
+      #env = XDG_CURRENT_DESKTOP,Hyprland
+      #env = XDG_SESSION_TYPE,wayland
+      #env = WLR_RENDERER,vulkan
+      #env = QT_AUTO_SCREEN_SCALE_FACTOR,1
+      #env = QT_QPA_PLATFORMTHEME,qt5ct
+      #env = SDL_VIDEODRIVER,wayland
+      #env = _JAVA_AWT_WM_NONREPARENTING,1
+      #env = CLUTTER_BACKEND,wayland
+      #env = NIXOS_OZONE_WL,1
 
       bind = CTRL ALT, T, exec, $terminal
       bind = $mainMod, R, exec, $MENU
