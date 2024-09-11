@@ -1,6 +1,6 @@
-{nixConfigRoot}:{
+{
   hyprlock_config = {
-    source = "${nixConfigRoot}/home/ryan/hypr/themes/mocha.conf";
+    source = "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
     extraConfig = ''
       $accent = $mauve
       $accentAlpha = $mauveAlpha
@@ -15,7 +15,7 @@
       # BACKGROUND
       background {
         monitor =
-        path = ${nixConfigRoot}/wallpapers/lockscreen.png
+        path = $HOME/nix-config/wallpapers/lockscreen.png
         blur_passes = 0
         color = $base
       }

@@ -1,7 +1,7 @@
-{nixConfigRoot}: {
-  hyprpaper_config = {
-    preload = ["${nixConfigRoot}/wallpapers/mandelbrot_full_blue.png"];
-    wallpaper = ["${nixConfigRoot}/wallpapers/mandelbrot_full_blue.png"];
-    splash = true;
-  };
+{
+    hyprpaper_config = {
+        preload = ["/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png"];
+        wallpaper = [",/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png"];
+        splash = true;
+    };
 }
