@@ -5,6 +5,9 @@
     gnumake
     cmake
 
+    python312
+    nodejs_22
+
     # add distrobox
     distrobox
     boxbuddy
@@ -57,6 +60,7 @@
       bbenoist.nix
       jnoortheen.nix-ide
       kamadorueda.alejandra
+      arrterian.nix-env-selector
 
       firefox-devtools.vscode-firefox-debug
 
@@ -102,6 +106,11 @@
 
       "workbench.colorTheme" = "Catppuccin Mocha";
       "workbench.preferredDarkColorTheme" = "Catppuccin Mocha";
+      "cmake.showOptionsMovedNotification" = false;
+      "cmake.pinnedCommands" = [
+        "workbench.action.tasks.configureTaskRunner"
+        "workbench.action.tasks.runTask"
+      ];
     };
   };
 

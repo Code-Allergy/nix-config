@@ -5,7 +5,7 @@
   hostname,
   ...
 }: let
-  inherit (import ./variables.nix { inherit hostname; }) hyprland_variables;
+  inherit (import ./variables.nix {inherit hostname;}) hyprland_variables;
   inherit (import ./configs/hypridle.nix) hypridle_config;
   inherit (import ./configs/hyprlock.nix) hyprlock_config;
   inherit (import ./configs/hyprpaper.nix) hyprpaper_config;
@@ -130,9 +130,17 @@ in {
     '';
   };
 
+  services.hypridle = {
+    enable = true;
+    settings = hypridle_config;
+  };
+
   programs.hyprlock = {
     enable = true;
-    settings = hyprlock_config;
+    settings = {
+      source = "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
+    };
+    extraConfig = hyprlock_config;
   };
 
   services.hyprpaper = {

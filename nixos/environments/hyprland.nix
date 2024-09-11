@@ -19,9 +19,7 @@
     slurp
     kitty
     libnotify
-    # swaynotificationcenter
-    dunst
-    wl-clipboard
+    dunst # For now
     pavucontrol
     qview
     polkit-kde-agent
