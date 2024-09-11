@@ -5,36 +5,10 @@
   hostname,
   ...
 }: let
-  # TODO
-  hypridle_config = {
-    general = {
-      lock_cmd = "sleep 1; pidof hyprlock || hyprlock";
-      before_sleep_cmd = "loginctl lock-session";
-      after_sleep_cmd = "hyprctl dispatch dpms on";
-      ignore_dbus_inhibit = false; # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
-      ignore_systemd_inhibit = false; # whether to ignore systemd-inhibit --what=idle inhibitors
-    };
-
-    listener = [
-      {
-        timeout = 300; # in seconds
-        on-timeout = "loginctl lock-session"; # command to run when timeout has passed
-      }
-
-      {
-        timeout = 330; # 5.5min
-        on-timeout = "hyprctl dispatch dpms off"; # screen off when timeout has passed
-        on-resume = "hyprctl dispatch dpms on"; # screen on when activity is detected after timeout has fired.
-      }
-
-      {
-        timeout = 1000; # in seconds
-        on-timeout = "systemctl suspend"; # command to run when timeout has passed
-      }
-    ];
-  };
-  # else
-  # {};
+  inherit (import ./variables.nix { inherit hostname; }) hyprland_variables;
+  inherit (import ./configs/hypridle.nix) hypridle_config;
+  inherit (import ./configs/hyprlock.nix) hyprlock_config;
+  inherit (import ./configs/hyprpaper.nix) hyprpaper_config;
 in {
   imports = [
     ./waybar.nix
@@ -43,6 +17,11 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
+      # Spread the variables
+      "$TEARING" = hyprland_variables.TEARING;
+      "$INACTIVE_OPACITY" = hyprland_variables.INACTIVE_OPACITY;
+      "$MENU" = hyprland_variables.MENU;
+      "$WORKSPACE_SWIPE" = hyprland_variables.WORKSPACE_SWIPE;
       source = [
         "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
       ];
@@ -50,6 +29,26 @@ in {
     };
 
     extraConfig = ''
+      # TODO ENVIRONMENT VARIABLES
+      env = HYPRCURSOR_THEME,"Future-Cyan-Hyprcursor_Theme"
+      env = HYPRCURSOR_SIZE,30
+      env = XCURSOR_THEME,Nordzy-catppuccin-mocha-blue
+      env = XCURSOR_SIZE,24
+
+      env = ELECTRON_OZONE_PLATFORM_HINT,auto
+      env = GDK_BACKEND,wayland
+      env = QT_QPA_PLATFORM,wayland
+      env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
+      env = XDG_CURRENT_DESKTOP,Hyprland
+      env = XDG_SESSION_TYPE,wayland
+      env = WLR_RENDERER,vulkan
+      env = QT_AUTO_SCREEN_SCALE_FACTOR,1
+      env = QT_QPA_PLATFORMTHEME,qt5ct
+      env = SDL_VIDEODRIVER,wayland
+      env = _JAVA_AWT_WM_NONREPARENTING,1
+      env = CLUTTER_BACKEND,wayland
+      env = NIXOS_OZONE_WL,1
+
       bind = CTRL ALT, T, exec, $terminal
       bind = $mainMod, R, exec, $MENU
       bind = $mainMod, W, killactive,
@@ -128,119 +127,16 @@ in {
 
       bindel = , XF86MonBrightnessUp, exec, brightnessctl s +3%
       bindel = , XF86MonBrightnessDown, exec, brightnessctl s 3%-
-
-
     '';
-  };
-
-  services.hypridle = {
-    enable = true;
-    settings = hypridle_config;
   };
 
   programs.hyprlock = {
     enable = true;
-    settings = {
-      source = "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
-    };
-    extraConfig = ''
-      $accent = $mauve
-      $accentAlpha = $mauveAlpha
-      $font = Montserrat
-
-      # GENERAL
-      general {
-        disable_loading_bar = true
-        hide_cursor = true
-      }
-
-      # BACKGROUND
-      background {
-        monitor =
-        path = $HOME/nix-config/wallpapers/lockscreen.png
-        blur_passes = 0
-        color = $base
-      }
-
-      # LAYOUT
-      label {
-        monitor =
-        text = Layout: $LAYOUT
-        color = $text
-        font_size = 25
-        font_family = $font
-        position = 30, -30
-        halign = left
-        valign = top
-      }
-
-      # TIME
-      label {
-        monitor =
-        text = $TIME
-        color = $text
-        font_size = 90
-        font_family = $font
-        position = -30, 0
-        halign = right
-        valign = top
-      }
-
-      # DATE
-      label {
-        monitor =
-        text = cmd[update:43200000] date +"%A, %d %B %Y"
-        color = $text
-        font_size = 25
-        font_family = $font
-        position = -30, -150
-        halign = right
-        valign = top
-      }
-
-      # USER AVATAR
-      image {
-        monitor =
-        path = $HOME/.face
-        size = 100
-        border_color = $accent
-        position = 0, 75
-        halign = center
-        valign = center
-      }
-
-      # INPUT FIELD
-      input-field {
-        monitor =
-        size = 300, 60
-        outline_thickness = 4
-        dots_size = 0.2
-        dots_spacing = 0.2
-        dots_center = true
-        outer_color = $accent
-        inner_color = $surface0
-        font_color = $text
-        fade_on_empty = false
-        placeholder_text = <span foreground="##$textAlpha"><i>󰌾 Logged in as </i><span foreground="##$accentAlpha">$USER</span></span>
-        hide_input = false
-        check_color = $accent
-        fail_color = $red
-        fail_text = <i>$FAIL <b>($ATTEMPTS)</b></i>
-        capslock_color = $yellow
-        position = 0, -47
-        halign = center
-        valign = center
-        position = 0 -300
-      }
-    '';
+    settings = hyprlock_config;
   };
 
   services.hyprpaper = {
     enable = true;
-    settings = {
-      preload = ["/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png"];
-      wallpaper = [",/home/ryan/nix-config/wallpapers/mandelbrot_full_blue.png"];
-      splash = true;
-    };
+    settings = hyprpaper_config;
   };
 }
