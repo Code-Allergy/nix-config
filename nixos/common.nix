@@ -123,6 +123,15 @@
     # Other security options: https://nixos.org/nixos/options.html#security
   };
 
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+  };
+
+  services.earlyoom.enable = true;
+  services.earlyoom.freeMemThreshold = 10;
+  
+
   # system config
   system = {
     autoUpgrade = {
