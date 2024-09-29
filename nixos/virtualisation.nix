@@ -3,16 +3,34 @@
   config,
   ...
 }: {
-  environment.systemPackages = with pkgs; [virt-manager qemu];
+  # environment.systemPackages = with pkgs; [qemu];
 
+  programs.virt-manager.enable = true;
   virtualisation = {
-    docker.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
     libvirtd = {
       enable = true;
-      qemu.ovmf.enable = true;
-      qemu.ovmf.packages = [pkgs.OVMFFull];
-      qemu.swtpm.enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = true;
+        ovmf = {
+          enable = true;
+          packages = [
+            (pkgs.OVMF.override {
+              secureBoot = true;
+              tpmSupport = true;
+            })
+            .fd
+          ];
+        };
+      };
     };
+    waydroid.enable = true;
     spiceUSBRedirection.enable = true;
   };
 

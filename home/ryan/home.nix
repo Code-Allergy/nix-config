@@ -34,6 +34,10 @@
     enable = true;
     addKeysToAgent = "yes";
     extraConfig = ''
+      Host vada.life
+        HostName vada.life
+        IdentityFile ~/.ssh/id_ed25519
+
       Host blubbus
         HostName 192.168.1.206
         User ryan
@@ -75,7 +79,7 @@
     enable = true;
     components = ["pkcs11" "secrets" "ssh"];
   };
-  
+
   systemd.user.services.keyring-daemon = {
     Unit = {
       Description = "GNOME Keyring daemon";

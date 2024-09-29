@@ -32,10 +32,13 @@
     # run any package with ,
     comma
 
-    gnome.gnome-keyring
+    # gnome.gnome-keyring
+
     libsecret
-    libgnome-keyring
+    # libgnome-keyring
     gnupg
+    # kwallet
+    # kwalletmanager
   ];
 
   # Thunar as default GUI file browser
@@ -103,9 +106,13 @@
     };
   };
 
-  services.gnome.gnome-keyring.enable = true;
+  # services.gnome.gnome-keyring.enable = true;
   security = {
-    pam.services.login.enableGnomeKeyring = true;
+    # pam.services.login.enableGnomeKeyring = true;
+    # CoreCtrl Configuration
+    pam.services = {
+      sddm.enableKwallet = true;
+    };
     polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
         if ((action.id == "org.corectrl.helper.init" ||
@@ -130,7 +137,8 @@
 
   services.earlyoom.enable = true;
   services.earlyoom.freeMemThreshold = 10;
-  
+
+  programs.adb.enable = true;
 
   # system config
   system = {

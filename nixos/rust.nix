@@ -30,5 +30,6 @@
     cargo-unused-features
     bacon
     trunk
+    mold
   ];
 }

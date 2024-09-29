@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   home.packages = with pkgs; [
     gdb
     gcc
@@ -19,6 +23,7 @@
 
     remmina
 
+    android-studio
     jetbrains.pycharm-professional
     jetbrains.webstorm
     jetbrains.idea-ultimate
@@ -112,6 +117,20 @@
         "workbench.action.tasks.runTask"
       ];
     };
+  };
+
+  # Declarative virtmanager configuration, not sure where to place this
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
   };
 
   programs.neovim = {
