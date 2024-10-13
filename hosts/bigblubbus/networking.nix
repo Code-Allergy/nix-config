@@ -7,7 +7,7 @@
     };
     firewall = {
       enable = true;
-      allowedTCPPorts = [22];
+      allowedTCPPorts = [22 8000];
       allowedTCPPortRanges = [
         {
           from = 1714;
