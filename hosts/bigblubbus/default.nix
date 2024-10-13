@@ -15,7 +15,6 @@
     ../../nixos/environments/plasma.nix
     ../../nixos/samba-mounts.nix
     ../../nixos/virtualisation.nix
-    ../../nixos/rust.nix
     ../../nixos/flatpak.nix
     ../../nixos/vpn.nix
 
@@ -48,7 +47,7 @@
       # AMD pstate freq scaler
       "amd_pstate=active"
 
-      # IT8686e sensor TODO
+      # IT8686e sensor
       "acpi_enforce_resources=lax"
       "it87.force_id=0x8628"
     ];
