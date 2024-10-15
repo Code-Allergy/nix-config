@@ -35,15 +35,17 @@
     bottom
     bat
     eza
-    thefuck
     killall
     file
 
     # dotfile management
     git-crypt
-    stow # Unused
+
+    # nix lsp
     alejandra
   ];
+
+  programs.thefuck.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
