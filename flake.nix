@@ -30,11 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     disko.url = "github:nix-community/disko";
     ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
@@ -49,12 +44,72 @@
   } @ inputs: let
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
-    systems = [
-      "x86_64-linux"
-    ];
-    # This is a function that generates an attribute by calling a function you
-    # pass to it, with each system as an argument
+    systems = ["x86_64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
+
+    mkNixosSystem = {
+      hostname,
+      username,
+      isHeaded ? true,
+    }:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs;
+          inherit hostname username isHeaded;
+        };
+        modules = [
+          lanzaboote.nixosModules.lanzaboote
+          nix-flatpak.nixosModules.nix-flatpak
+          ./nixos/common.nix
+          (./hosts + "/${hostname}")
+          # Conditional headed/headless configuration
+          (
+            if isHeaded
+            then ./nixos/headed.nix
+            else ./nixos/headless.nix
+          )
+
+          ./nixos/users/${username}
+          # Home-manager module
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {inherit inputs outputs hostname isHeaded;};
+            home-manager.users.${username} = import ./home/${username}/home.nix;
+          }
+        ];
+      };
+
+    # Function to create a home-manager configuration
+    mkHomeConfiguration = {
+      system,
+      username,
+      isHeaded ? true,
+      configName ? username, # Allows us to have username "aliases" for different configurations
+      homeDirectory ? null,
+    }:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = {
+          inherit inputs outputs;
+          inherit isHeaded username;
+        };
+        modules = [
+          ./home/${configName}/home.nix
+          {
+            home = {
+              inherit username;
+              homeDirectory =
+                if homeDirectory != null
+                then homeDirectory
+                else if nixpkgs.lib.hasPrefix "darwin" system
+                then "/Users/${username}"
+                else "/home/${username}";
+            };
+          }
+        ];
+      };
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
@@ -74,30 +129,33 @@
     homeManagerModules = import ./modules/home-manager;
 
     nixosConfigurations = {
-      bigblubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs outputs;
-          hostname = "bigblubbus";
-        };
-        modules = [
-          lanzaboote.nixosModules.lanzaboote
-          nix-flatpak.nixosModules.nix-flatpak
-          ./nixos/common.nix
-          ./hosts/bigblubbus
-        ];
+      bigblubbus = mkNixosSystem {
+        hostname = "bigblubbus";
+        username = "ryan";
+        isHeaded = true;
       };
-      blubbus = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs outputs;
-          hostname = "blubbus";
-        };
-        modules = [
-          lanzaboote.nixosModules.lanzaboote
-          nix-flatpak.nixosModules.nix-flatpak
-          ./nixos/common.nix
-          ./hosts/blubbus
-        ];
+      blubbus = mkNixosSystem {
+        hostname = "blubbus";
+        username = "ryan";
+        isHeaded = true;
       };
     };
+
+    homeConfigurations = forAllSystems (system: {
+      "ryan" = mkHomeConfiguration {
+        inherit system;
+        username = "ryan";
+      };
+
+      # Tuxworld nix-home configuration
+      "rys686" = mkHomeConfiguration {
+        inherit system;
+        username = "rys686";
+        configName = "ryan";
+        homeDirectory = "/student/rys686";
+        isHeaded = false;
+      };
+      # Add more configurations as needed
+    });
   };
 }

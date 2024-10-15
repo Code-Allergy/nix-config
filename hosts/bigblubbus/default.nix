@@ -22,6 +22,7 @@
     ../../nixos/hardware/audio.nix
     ../../nixos/hardware/bluetooth.nix
     ../../nixos/hardware/printing.nix
+    ../../nixos/hardware/footpetal.nix
   ];
 
   boot = {
@@ -72,30 +73,4 @@
       dates = "7:30";
     };
   };
-  # TDARR
-
-  # virtualisation.oci-containers.containers = {
-  #     tdarr_node = {
-  #       image = "ghcr.io/haveagitgat/tdarr_node";
-  #       volumes = [
-  #         "/etc/tdarr:/app/configs"
-  #         "/var/log/tdarr:/app/logs"
-  #         "/mnt/tower/media:/mnt/media"
-  #         "/mnt/tower/ingest/Tcache:/temp"
-  #       ];
-  #       environment = {
-  #         nodeName = "blubbus";
-  #         serverIP = "192.168.1.112";
-  #         serverPort = "8266";
-  #         inContainer = "true";
-  #         TZ = "America/Regina";
-  #         PUID = "1000";
-  #         PGID = "1000";
-  #       };
-  #       extraOptions = [
-  #         # "--gpus=all" "--device=/dev/dri:/dev/dri"
-  #         "--network=bridge"
-  #       ];
-  #     };
-  #   };
 }

@@ -7,7 +7,11 @@
     };
     firewall = {
       enable = true;
-      allowedTCPPorts = [22 8000];
+      allowedTCPPorts = [
+        22 # SSH
+        8000 # Dev server
+        22000 # Syncthing
+      ];
       allowedTCPPortRanges = [
         {
           from = 1714;

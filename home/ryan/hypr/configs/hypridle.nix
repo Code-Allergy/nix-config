@@ -1,7 +1,7 @@
 {
   hypridle_config = {
     general = {
-      lock_cmd = "sleep 1; pidof hyprlock || hyprlock";
+      lock_cmd = "pidof hyprlock || hyprlock";
       before_sleep_cmd = "loginctl lock-session";
       after_sleep_cmd = "hyprctl dispatch dpms on";
       ignore_dbus_inhibit = false;

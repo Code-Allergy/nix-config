@@ -7,13 +7,6 @@
   hostname,
   ...
 }: {
-  imports = [
-    inputs.home-manager.nixosModules.home-manager
-    ./fonts.nix
-
-    ./users/ryan
-  ];
-
   environment.systemPackages = with pkgs; [
     sbctl # secureboot
     nixos-generators # nix system-image generator
@@ -39,27 +32,13 @@
     gnupg
     # kwallet
     # kwalletmanager
+    thefuck
+    killall # move to elsewhere
   ];
 
   # Thunar as default GUI file browser
   programs.fish.enable = true;
   programs.command-not-found.enable = true;
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-volman
-      thunar-archive-plugin
-    ];
-  };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = {inherit inputs outputs hostname;};
-    users = {
-      ryan = import ../home/ryan/home.nix;
-    };
-  };
 
   services.openssh = {
     enable = true;
@@ -85,10 +64,41 @@
   };
 
   hardware.enableRedistributableFirmware = true;
-  nix = {
-    # registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-    # nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
+  # services.gnome.gnome-keyring.enable = true;
+  security = {
+    # pam.services.login.enableGnomeKeyring = true;
+    # CoreCtrl Configuration
+    pam.services.sddm.enableKwallet = true;
+    polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if ((action.id == "org.corectrl.helper.init" ||
+            action.id == "org.corectrl.helperkiller.init") &&
+            subject.local == true &&
+            subject.active == true &&
+            subject.isInGroup("users")) {
+                return polkit.Result.YES;
+        }
+      });
+    '';
+    # Other security options: https://nixos.org/nixos/options.html#security
+  };
+
+  # use zram
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+  };
+
+  # earlyoom
+  services.earlyoom.enable = true;
+  services.earlyoom.freeMemThreshold = 10;
+
+  # android ADB
+  programs.adb.enable = true;
+
+  # system config
+  nix = {
     extraOptions = ''
       experimental-features = nix-command flakes
       auto-optimise-store = true
@@ -105,42 +115,6 @@
       options = "--delete-older-than 30d";
     };
   };
-
-  # services.gnome.gnome-keyring.enable = true;
-  security = {
-    # pam.services.login.enableGnomeKeyring = true;
-    # CoreCtrl Configuration
-    pam.services = {
-      sddm.enableKwallet = true;
-    };
-    polkit.extraConfig = ''
-      polkit.addRule(function(action, subject) {
-        if ((action.id == "org.corectrl.helper.init" ||
-            action.id == "org.corectrl.helperkiller.init") &&
-            subject.local == true &&
-            subject.active == true &&
-            subject.isInGroup("users")) {
-                return polkit.Result.YES;
-        }
-      });
-
-
-
-    '';
-    # Other security options: https://nixos.org/nixos/options.html#security
-  };
-
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-  };
-
-  services.earlyoom.enable = true;
-  services.earlyoom.freeMemThreshold = 10;
-
-  programs.adb.enable = true;
-
-  # system config
   system = {
     autoUpgrade = {
       enable = true;

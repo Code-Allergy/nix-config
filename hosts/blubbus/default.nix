@@ -8,6 +8,7 @@
   imports = [
     # Hardware config
     (modulesPath + "/installer/scan/not-detected.nix")
+    ./fs.nix
 
     # Hardware
     ../../nixos/hardware/audio.nix
@@ -20,17 +21,8 @@
     # Fileserver mounts
     ../../nixos/samba-mounts.nix
 
-    # Register ryan as default user
-    # ../../nixos/users/ryan
-
-    # Run qtile environment
-    # ../../nixos/environments/qtile.nix
     ../../nixos/environments/plasma.nix
     ../../nixos/environments/hyprland.nix
-    # ../../nixos/environments/gnome.nix
-
-    # common configs for all deployments
-    # ../../nixos/common.nix
   ];
 
   # Bootloader.
@@ -69,23 +61,6 @@
     # Nvidia drivers often break on latest kernel.. use LTS instead.
     kernelPackages = pkgs.linuxPackages;
   };
-
-  # Root FS
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/4894db5b-c287-4f21-ac36-6db9b6c8de07";
-      fsType = "ext4";
-    };
-
-    "/boot" = {
-      device = "/dev/disk/by-uuid/A7A9-9D2E";
-      fsType = "vfat";
-    };
-  };
-
-  swapDevices = [
-    {device = "/dev/disk/by-uuid/2ba14f11-3e3a-46d7-8f69-e443be36e33b";}
-  ];
 
   networking.useDHCP = lib.mkDefault true;
 
