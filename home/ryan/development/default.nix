@@ -4,10 +4,15 @@
   isHeaded,
   ...
 }: {
-  imports = [
-    ./git.nix
-    ./headed.nix
+  imports = lib.flatten [
+    [
+      ./git.nix
+    ]
+    (lib.optionals isHeaded [
+      ./headed.nix
+    ])
   ];
+
   home.packages = with pkgs; [
     gdb
     gcc
