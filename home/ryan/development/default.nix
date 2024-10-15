@@ -21,7 +21,12 @@
     python312
     nodejs_22
 
+    # network tools
+    wget
+    curl
+
     distrobox
+
     android-tools
 
     # Github/Gitlab CLI

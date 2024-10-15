@@ -10,33 +10,11 @@
   environment.systemPackages = with pkgs; [
     sbctl # secureboot
     nixos-generators # nix system-image generator
-    vim-full
-    wget
-    git
-
-    # dotfiles
-    git-crypt
-    stow
-
-    alejandra
-
-    bottom
-
-    # run any package with ,
-    comma
-
-    # gnome.gnome-keyring
 
     libsecret
-    # libgnome-keyring
     gnupg
-    # kwallet
-    # kwalletmanager
-    thefuck
-    killall # move to elsewhere
   ];
 
-  # Thunar as default GUI file browser
   programs.fish.enable = true;
   programs.command-not-found.enable = true;
 
@@ -48,14 +26,14 @@
     };
   };
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    settings = {
-      default-cache-ttl = 2592000;
-      max-cache-ttl = 2592000;
-    };
-  };
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  #   settings = {
+  #     default-cache-ttl = 2592000;
+  #     max-cache-ttl = 2592000;
+  #   };
+  # };
 
   # Allow unfree packages
   nixpkgs.config = {
