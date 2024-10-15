@@ -105,7 +105,6 @@ in {
       bind = $mainMod SHIFT, L, resizeactive, $RESIZE_STEP 0
       bind = $mainMod SHIFT, H, resizeactive, -$RESIZE_STEP 0
       bind = $mainMod SHIFT, J, resizeactive, 0 $RESIZE_STEP
-
       bind = $mainMod SHIFT, K, resizeactive, 0 -$RESIZE_STEP
 
       # Screenshot region with mainMod + PrintScr

@@ -16,6 +16,7 @@
     ../../nixos/hardware/display.nix
     ../../nixos/hardware/nvidia.nix
 
+    # Don't think this works
     ../../nixos/hardware/hibernate-after-sleep.nix
 
     # Fileserver mounts
@@ -115,8 +116,8 @@
     };
 
     firewall = {
-      allowedTCPPorts = [];
-      allowedUDPPorts = [];
+      allowedTCPPorts = [22000];
+      allowedUDPPorts = [22000];
       enable = true;
     };
   };
@@ -124,33 +125,6 @@
   # services.gvfs.enable = true;
   services.fwupd.enable = true;
   services.cpupower-gui.enable = true;
-
-  # # Udev rules for Qtile plugin
-  # services.udev.extraRules = ''
-  #   ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
-  #   ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_wmi_ec_backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
-  # '';
-
-  # Certificates for school wlan
-  # TODO broke config -- missing?
-  # error: builder for '/nix/store/n7ndlgnfc8jkiqm96374aa17zf9c7rvd-nss-cacert-3.101.drv' failed with exit code 1;
-  #        last 10 log lines:
-  #        > Traceback (most recent call last):
-  #        >   File "/nix/store/zmzk6ycn1l2fivm2syrgxiihdv7p4i6c-python3.11-buildcatrust-0.3.0/bin/.buildcatrust-wrapped", line 9, in <module>
-  #        >     sys.exit(main())
-  #        >              ^^^^^^
-  #        >   File "/nix/store/zmzk6ycn1l2fivm2syrgxiihdv7p4i6c-python3.11-buildcatrust-0.3.0/lib/python3.11/site-packages/buildcatrust/cli.py", line 243, in main
-  #        >     sys.exit(cli_main(sys.argv[1:]) or 0)
-  #        >              ^^^^^^^^^^^^^^^^^^^^^^
-  #        >   File "/nix/store/zmzk6ycn1l2fivm2syrgxiihdv7p4i6c-python3.11-buildcatrust-0.3.0/lib/python3.11/site-packages/buildcatrust/cli.py", line 182, in cli_main
-  #        >     raise FileNotFoundError(f"Bundle not found: {bundle_path}")
-  #        > FileNotFoundError: Bundle not found: /nix/store/zbzjr67bnrrhrgmbnhlism874pxc80l3-nss-cacert-3.101/etc/ssl/certs/DigiCert_Global_Root_CA.crt
-  #        For full logs, run 'nix log /nix/store/n7ndlgnfc8jkiqm96374aa17zf9c7rvd-nss-cacert-3.101.drv'.
-  # error: 1 dependencies of derivation '/nix/store/5y9salcw7ygw0jgrhq0hh7cww7l74izv-etc.drv' failed to build
-  # error: 1 dependencies of derivation '/nix/store/dfndmqm6rl1q9gv9zz59sdxy5ysxwwbc-nixos-system-blubbus-24.05.20240830.6e99f2a.drv' failed to build
-  # security.pki.certificateFiles = [
-  #   "${pkgs.cacert}/etc/ssl/certs/DigiCert_Global_Root_CA.crt"
-  # ];
 
   # Lock on lid close
   services.logind.lidSwitch = "suspend";

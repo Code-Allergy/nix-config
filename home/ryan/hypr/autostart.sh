@@ -1,6 +1,5 @@
 #!/bin/sh
 
-hyprpaper &
 hypridle &
 dunst &
 
