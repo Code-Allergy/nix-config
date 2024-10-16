@@ -26,14 +26,14 @@
     };
   };
 
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  #   settings = {
-  #     default-cache-ttl = 2592000;
-  #     max-cache-ttl = 2592000;
-  #   };
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    settings = {
+      default-cache-ttl = 2592000;
+      max-cache-ttl = 2592000;
+    };
+  };
 
   # Allow unfree packages
   nixpkgs.config = {
