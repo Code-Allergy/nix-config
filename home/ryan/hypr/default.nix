@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   outputs,
   hostname,
   ...
@@ -13,6 +14,13 @@ in {
   imports = [
     ./waybar.nix
   ];
+
+  # cursors
+  home.pointerCursor = {
+    name = "catppuccin-mocha-blue-cursors";
+    package = pkgs.catppuccin-cursors.mochaBlue;
+    size = 30;
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -30,10 +38,13 @@ in {
 
     extraConfig = ''
       # TODO ENVIRONMENT VARIABLES
-      env = HYPRCURSOR_THEME,"Future-Cyan-Hyprcursor_Theme"
+      $RESIZE_STEP = 30
+
+      # Unsure if needed but shrug
+      env = HYPRCURSOR_THEME,catppuccin-mocha-blue-cursors
       env = HYPRCURSOR_SIZE,30
-      env = XCURSOR_THEME,Nordzy-catppuccin-mocha-blue
-      env = XCURSOR_SIZE,24
+      env = XCURSOR_THEME,catppuccin-mocha-blue-cursors
+      env = XCURSOR_SIZE,30
 
       env = ELECTRON_OZONE_PLATFORM_HINT,auto
       env = GDK_BACKEND,wayland
@@ -115,7 +126,7 @@ in {
 
       bind = $mainMod CTRL ALT, L, exec, loginctl lock-session
 
-
+      # Laptop binds
       bindel = , XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
       bindel = , XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 

@@ -3,15 +3,9 @@
   inputs,
   ...
 }: {
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
+  programs.hyprland.enable = true;
 
   environment.systemPackages = with pkgs; [
-    hyprpaper
-    hyprlock
-    hypridle
     hyprcursor
     waybar
     fuzzel
@@ -23,7 +17,6 @@
     pavucontrol
     qview
     polkit-kde-agent
-    starship # move to common, after we setup config for it
     wl-clipboard
   ];
 
