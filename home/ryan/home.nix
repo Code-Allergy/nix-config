@@ -14,7 +14,7 @@
       ./shell
       ./keyring
       ./ssh
-      ./hypr # For now, this should be only on headed systems though.
+      ./yazi
     ]
     (lib.optionals isHeaded [
       ./communication.nix
@@ -23,6 +23,7 @@
       (import ./syncthing {inherit pkgs lib isHeaded;}) # TEMP
       ./browsers
       ./kitty
+      ./hypr
     ])
   ];
 
