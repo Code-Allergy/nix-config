@@ -4,6 +4,7 @@
   inputs,
   outputs,
   hostname,
+  lib,
   ...
 }: let
   inherit (import ./variables.nix {inherit hostname;}) hyprland_variables;
@@ -21,6 +22,21 @@ in {
     package = pkgs.catppuccin-cursors.mochaBlue;
     size = 30;
   };
+
+  home.packages = with pkgs; [
+    hyprcursor
+    grim
+    slurp
+    libnotify
+    pavucontrol
+    qview
+    polkit-kde-agent
+    wl-clipboard
+  ];
+
+  # fuzzel
+  programs.fuzzel.enable = true;
+  services.dunst.enable = true;
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -148,7 +164,7 @@ in {
   programs.hyprlock = {
     enable = true;
     settings = {
-      source = "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
+      source = lib.mkForce "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
     };
     extraConfig = hyprlock_config;
   };
