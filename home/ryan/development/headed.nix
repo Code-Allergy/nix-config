@@ -81,6 +81,10 @@
         "editor.formatOnSave" = true;
         "editor.formatOnType" = false;
       };
+      "[rust]" = {
+        "editor.defaultFormatter" = "rust-lang.rust-analyzer";
+        "editor.formatOnSave" = true;
+      };
       "window.autoDetectColorScheme" = true;
       "terminal.explorerKind" = "external";
       "terminal.integrated.env.linux" = {
@@ -93,6 +97,7 @@
 
       "workbench.colorTheme" = "Catppuccin Mocha";
       "workbench.preferredDarkColorTheme" = "Catppuccin Mocha";
+      "workbench.preferredLightColorTheme" = "Catppuccin Mocha";
       "cmake.showOptionsMovedNotification" = false;
       "cmake.pinnedCommands" = [
         "workbench.action.tasks.configureTaskRunner"
