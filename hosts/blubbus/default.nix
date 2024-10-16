@@ -39,15 +39,24 @@
 
     plymouth = {
       enable = true;
-      themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
-      theme = "bgrt";
+      themePackages = with pkgs; [
+        (pkgs.catppuccin-plymouth.override {
+          variant = "mocha";
+        })
+      ];
+      theme = "catppuccin-mocha";
     };
-
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    initrd.systemd.enable = true;
     kernelParams = [
       "quiet"
       "splash"
-      "acpi_backlight=nvidia_wmi_ec"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
 
+      "acpi_backlight=nvidia_wmi_ec"
       "amd_pstate.shared_mem=1"
     ];
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
@@ -58,6 +67,7 @@
         preLVM = true;
       };
     };
+    loader.timeout = 0;
 
     # Nvidia drivers often break on latest kernel.. use LTS instead.
     kernelPackages = pkgs.linuxPackages;
