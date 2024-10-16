@@ -5,6 +5,7 @@
   config,
   pkgs,
   isHeaded,
+  catppuccin,
   ...
 }: {
   imports = lib.flatten [
@@ -44,6 +45,13 @@
     # nix lsp
     alejandra
   ];
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
+
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
 
   programs.thefuck.enable = true;
 

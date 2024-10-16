@@ -5,6 +5,7 @@
   config,
   pkgs,
   hostname,
+  catppuccin,
   ...
 }: {
   environment.systemPackages = with pkgs; [
@@ -42,7 +43,8 @@
   };
 
   hardware.enableRedistributableFirmware = true;
-
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
   # services.gnome.gnome-keyring.enable = true;
   security = {
     # pam.services.login.enableGnomeKeyring = true;

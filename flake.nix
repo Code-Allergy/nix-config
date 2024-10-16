@@ -29,9 +29,9 @@
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    disko.url = "github:nix-community/disko";
-    ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
+    catppuccin.url = "github:catppuccin/nix";
+    # disko.url = "github:nix-community/disko";
+    # ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
 
   outputs = {
@@ -40,6 +40,7 @@
     home-manager,
     nix-flatpak,
     lanzaboote,
+    catppuccin,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -70,13 +71,19 @@
           )
 
           ./nixos/users/${username}
+          catppuccin.nixosModules.catppuccin
           # Home-manager module
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {inherit inputs outputs hostname isHeaded;};
-            home-manager.users.${username} = import ./home/${username}/home.nix;
+            home-manager.users.${username} = {
+              imports = [
+                ./home/${username}/home.nix
+                catppuccin.homeManagerModules.catppuccin
+              ];
+            };
           }
         ];
       };
