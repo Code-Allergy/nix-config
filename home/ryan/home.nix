@@ -43,8 +43,9 @@
     # dotfile management
     git-crypt
 
-    # nix lsp
+    # nix formatter + lsp
     alejandra
+    nixd
   ];
   catppuccin.flavor = "mocha";
   catppuccin.enable = true;
