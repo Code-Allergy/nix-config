@@ -8,6 +8,11 @@
   catppuccin,
   ...
 }: {
+  imports = [
+    ../cachix.nix
+    ./rust.nix
+  ];
+
   environment.systemPackages = with pkgs; [
     sbctl # secureboot
     nixos-generators # nix system-image generator
