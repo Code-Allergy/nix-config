@@ -1,11 +1,7 @@
 {
-  inputs,
-  outputs,
   lib,
-  config,
   pkgs,
   isHeaded,
-  catppuccin,
   ...
 }: {
   imports = lib.flatten [

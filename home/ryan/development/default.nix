@@ -21,7 +21,9 @@
     cmake
     python312
     nodejs_22
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zed-editor
+
+    wakatime
+    inputs.tsutsumi.packages.${pkgs.system}.wakatime-ls
 
     # network tools
     wget

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, inputs, ...}: {
   home.packages = with pkgs; [
     boxbuddy
     mupdf
@@ -6,6 +6,7 @@
     remmina
     android-studio
 
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zed-editor
     sublime-merge
 
     jetbrains.pycharm-professional

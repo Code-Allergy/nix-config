@@ -52,6 +52,11 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    tsutsumi = {
+      url = "github:Fuwn/tsutsumi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # disko.url = "github:nix-community/disko";
     # ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
