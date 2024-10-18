@@ -66,6 +66,12 @@
 
   time.timeZone = "America/Regina";
 
+  # TEMPORARY
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+  };
+
   system = {
     autoUpgrade = {
       enable = true;
