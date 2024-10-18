@@ -10,7 +10,7 @@
 }: {
   imports = lib.flatten [
     [
-      (import ./development {inherit pkgs lib isHeaded;})
+      ./development
       ./shell
       ./keyring
       ./ssh

@@ -1,11 +1,13 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    # GUI
     boxbuddy
     mupdf
     dbeaver-bin
     remmina
     android-studio
+
+    sublime-merge
+
     jetbrains.pycharm-professional
     jetbrains.webstorm
     jetbrains.idea-ultimate

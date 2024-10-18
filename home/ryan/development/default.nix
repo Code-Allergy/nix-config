@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   isHeaded,
@@ -20,6 +21,7 @@
     cmake
     python312
     nodejs_22
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zed-editor
 
     # network tools
     wget
