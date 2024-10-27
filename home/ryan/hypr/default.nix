@@ -38,6 +38,8 @@ in {
   programs.fuzzel.enable = true;
   services.dunst.enable = true;
 
+  programs.wlogout.enable = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
