@@ -10,6 +10,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
 
+    ../../nixos/virtualisation.nix
+
     # Hardware
     ../../nixos/hardware/audio.nix
     ../../nixos/hardware/bluetooth.nix
