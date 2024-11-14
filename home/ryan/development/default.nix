@@ -21,6 +21,7 @@
     cmake
     python312
     nodejs_22
+    jdk21_headless
 
     wakatime
     inputs.tsutsumi.packages.${pkgs.system}.wakatime-ls
