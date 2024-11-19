@@ -22,6 +22,7 @@
     python312
     nodejs_22
     jdk21_headless
+    clang-tools
 
     wakatime
     inputs.tsutsumi.packages.${pkgs.system}.wakatime-ls
@@ -73,22 +74,23 @@
       # nodePackages.yaml-language-server
       # python310Packages.python-lsp-server
 
-      coc-python
-      coc-spell-checker
-      coc-sh
-      coc-rust-analyzer
-      coc-prettier
-      coc-nginx
-      coc-lua
-      coc-json
-      coc-toml
-      coc-java
-      coc-html
-      coc-css
-      coc-tsserver
-      coc-cmake
-      coc-docker
-      coc-git
+      # TODO changed in 24.11
+      # coc-python
+      # coc-spell-checker
+      # coc-sh
+      # coc-rust-analyzer
+      # coc-prettier
+      # coc-nginx
+      # coc-lua
+      # coc-json
+      # coc-toml
+      # coc-java
+      # coc-html
+      # coc-css
+      # coc-tsserver
+      # coc-cmake
+      # coc-docker
+      # coc-git
     ];
 
     extraLuaConfig = ''

@@ -11,7 +11,7 @@
       PartOf = ["graphical-session.target"];
     };
     Service = {
-      ExecStart = "${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon --foreground --components=secrets,ssh,pkcs11";
+      ExecStart = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --foreground --components=secrets,ssh,pkcs11";
       Restart = "on-failure";
     };
     Install = {

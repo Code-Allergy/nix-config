@@ -5,14 +5,12 @@
     lact
   ];
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-
-    # openCL ROCm 
-    extraPackages = [ pkgs.rocm-opencl-icd ];
+    enable32Bit = true;
   };
+
+  hardware.amdgpu.opencl.enable = true;
 
   # support for ROCm on Nix
   systemd.tmpfiles.rules = let
@@ -32,8 +30,10 @@
   systemd.services.lactd.wantedBy = ["multi-user.target"];
 
   # AMDGPU overclocking support
-  boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
+  # boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
 
   # early load amdgpu kernel module, for hidpi support during boot
-  boot.initrd.kernelModules = ["amdgpu"];
+  # boot.initrd.kernelModules = ["amdgpu"];
+  hardware.amdgpu.initrd.enable = true;
+  programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
 }
