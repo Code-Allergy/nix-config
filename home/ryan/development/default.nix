@@ -23,6 +23,8 @@
     nodejs_22
     jdk21_headless
     clang-tools
+    tealdeer
+    nil
 
     wakatime
     inputs.tsutsumi.packages.${pkgs.system}.wakatime-ls
