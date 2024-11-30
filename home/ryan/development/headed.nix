@@ -16,22 +16,23 @@
     jetbrains.pycharm-professional
     jetbrains.webstorm
     jetbrains.idea-ultimate
-    jetbrains.clion
+    # jetbrains.clion
     jetbrains.rust-rover
-    jetbrains.rider
+    # jetbrains.rider
   ];
 
-  programs.jetbrains-remote = {
-    enable = true;
-    ides = with pkgs.jetbrains; [
-      pycharm-professional
-      webstorm
-      idea-ultimate
-      clion
-      rust-rover
-      rider
-    ];
-  };
+  # Disabled until dependency on Dotnet SDK 7.0.410 is updated (EOL)
+  # programs.jetbrains-remote = {
+  #   enable = true;
+  #   ides = with pkgs.jetbrains; [
+  #     pycharm-professional
+  #     webstorm
+  #     idea-ultimate
+  #     clion
+  #     rust-rover
+  #     rider
+  #   ];
+  # };
 
   programs.vscode = {
     enable = true;
