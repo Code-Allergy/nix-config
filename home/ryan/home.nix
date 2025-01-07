@@ -20,6 +20,7 @@
       ./browsers
       ./kitty
       ./hypr
+      ./obs.nix
     ])
   ];
 
