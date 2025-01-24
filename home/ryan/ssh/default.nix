@@ -33,6 +33,11 @@
         HostName cmpt332-ppc
         User rys686
         ProxyJump tuxworld
+
+      Host trux
+        HostName trux
+        User rys686
+        ProxyJump tuxworld
     '';
   };
 }
