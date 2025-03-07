@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  # environment.systemPackages = with pkgs; [qemu];
+  environment.systemPackages = with pkgs; [docker-compose];
 
   programs.virt-manager.enable = true;
   virtualisation = {

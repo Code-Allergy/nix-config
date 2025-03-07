@@ -43,6 +43,9 @@
     # nix formatter + lsp
     alejandra
     nixd
+
+    # sshfs
+    sshfs
   ];
   catppuccin.flavor = "mocha";
   catppuccin.enable = true;

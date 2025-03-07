@@ -75,6 +75,10 @@
     };
   };
 
+  services.open-webui = {
+    enable = true;
+  };
+
   system = {
     autoUpgrade = {
       enable = true;

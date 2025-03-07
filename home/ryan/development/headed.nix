@@ -3,36 +3,43 @@
   inputs,
   ...
 }: {
-  home.packages = with pkgs; [
-    boxbuddy
-    mupdf
-    dbeaver-bin
-    remmina
-    android-studio
+  home.packages = with pkgs;
+    [
+      boxbuddy
+      mupdf
+      dbeaver-bin
+      remmina
+      android-studio
+      sublime-merge
 
-    zed-editor
-    sublime-merge
-
-    jetbrains.pycharm-professional
-    jetbrains.webstorm
-    jetbrains.idea-ultimate
-    # jetbrains.clion
-    jetbrains.rust-rover
-    # jetbrains.rider
-  ];
+      onlyoffice-bin
+      libreoffice-qt
+      hunspell
+      hunspellDicts.uk_UA
+      hunspellDicts.th_TH
+      jetbrains.pycharm-professional
+      jetbrains.webstorm
+      jetbrains.idea-ultimate
+      jetbrains.clion
+      jetbrains.rust-rover
+      jetbrains.rider
+    ]
+    ++ (with inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}; [
+      zed-editor
+    ]);
 
   # Disabled until dependency on Dotnet SDK 7.0.410 is updated (EOL)
-  # programs.jetbrains-remote = {
-  #   enable = true;
-  #   ides = with pkgs.jetbrains; [
-  #     pycharm-professional
-  #     webstorm
-  #     idea-ultimate
-  #     clion
-  #     rust-rover
-  #     rider
-  #   ];
-  # };
+  programs.jetbrains-remote = {
+    enable = true;
+    ides = with pkgs.jetbrains; [
+      pycharm-professional
+      webstorm
+      idea-ultimate
+      clion
+      rust-rover
+      rider
+    ];
+  };
 
   programs.vscode = {
     enable = true;
