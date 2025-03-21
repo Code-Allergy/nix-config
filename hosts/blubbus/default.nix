@@ -1,10 +1,10 @@
 {
   pkgs,
-  config,
   lib,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     # Hardware config
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -41,11 +41,6 @@
 
     plymouth = {
       enable = true;
-      themePackages = with pkgs; [
-        (pkgs.catppuccin-plymouth.override {
-          variant = "mocha";
-        })
-      ];
       theme = "catppuccin-mocha";
     };
     consoleLogLevel = 0;
@@ -61,7 +56,14 @@
       "acpi_backlight=nvidia_wmi_ec"
       "amd_pstate.shared_mem=1"
     ];
-    initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod"];
+    
+    initrd.availableKernelModules = [
+      "nvme"
+      "xhci_pci"
+      "ahci"
+      "usb_storage"
+      "sd_mod"
+    ];
     # initrd.kernelModules = ["dm-snapshot"];
     initrd.luks.devices = {
       root = {
@@ -128,8 +130,8 @@
     };
 
     firewall = {
-      allowedTCPPorts = [22000];
-      allowedUDPPorts = [22000];
+      allowedTCPPorts = [ 22000 ];
+      allowedUDPPorts = [ 22000 ];
       enable = true;
       allowedTCPPortRanges = [
         {
