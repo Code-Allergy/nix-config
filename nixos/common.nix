@@ -1,11 +1,5 @@
 {
-  inputs,
-  outputs,
-  lib,
-  config,
   pkgs,
-  hostname,
-  catppuccin,
   ...
 }: {
   imports = [
