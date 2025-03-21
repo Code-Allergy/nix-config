@@ -25,7 +25,7 @@
     clang-tools
     tealdeer
     nil
-
+    nixfmt-rfc-style
     wakatime
     inputs.tsutsumi.packages.${pkgs.system}.wakatime-ls
 
