@@ -1,23 +1,16 @@
 {
-  pkgs,
-  lib,
   config,
   ...
-}: {
-  # Nvidia GPU
-  # Only configured statically for blubbus ONLY
-  hardware.opengl = {
+}:
+{
+  # Nvidia GPU for blubbus ONLY
+  hardware.graphics = {
     enable = true;
-    # driSupport = true;
-    # driSupport32Bit = true;
-    # extraPackages = with pkgs; [
-    #   vaapiVdpau
-    #   libvdpau-va-gl
-    # ];
+    enable32Bit = true;
   };
 
   # Nvidia
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -39,10 +32,4 @@
       nvidiaBusId = "PCI:1:0:0";
     };
   };
-
-  # environment.systemPackages = with pkgs; [
-  #   # nvidia-offload
-  #   pciutils
-  #   glxinfo
-  # ];
 }
