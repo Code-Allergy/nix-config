@@ -29,11 +29,7 @@
   systemd.packages = with pkgs; [lact];
   systemd.services.lactd.wantedBy = ["multi-user.target"];
 
-  # AMDGPU overclocking support
-  # boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
-
   # early load amdgpu kernel module, for hidpi support during boot
-  # boot.initrd.kernelModules = ["amdgpu"];
   hardware.amdgpu.initrd.enable = true;
   programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
 }

@@ -1,8 +1,15 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   ## COMMON - HEADED
   imports = [
     ./fonts.nix
   ];
+
+  # Theme
+  catppuccin = {
+    flavor = "mocha";
+    enable = true;
+  };
 
   programs.thunar = {
     enable = true;

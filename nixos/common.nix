@@ -6,6 +6,7 @@
   imports = [
     ../cachix.nix
     ./rust.nix
+    ./headless.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -43,13 +44,11 @@
   };
 
   hardware.enableRedistributableFirmware = true;
-  catppuccin.flavor = "mocha";
-  catppuccin.enable = true;
-  # services.gnome.gnome-keyring.enable = true;
+
   security = {
-    # pam.services.login.enableGnomeKeyring = true;
-    # CoreCtrl Configuration
     pam.services.sddm.enableKwallet = true;
+
+    # CoreCtrl Configuration
     polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
         if ((action.id == "org.corectrl.helper.init" ||
@@ -58,7 +57,7 @@
             subject.active == true &&
             subject.isInGroup("users")) {
                 return polkit.Result.YES;
-        }
+            }
       });
     '';
     # Other security options: https://nixos.org/nixos/options.html#security

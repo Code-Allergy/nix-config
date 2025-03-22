@@ -1,8 +1,8 @@
 {
   pkgs,
-  config,
   ...
-}: {
+}:
+{
   environment.systemPackages = with pkgs; [
     pamixer
     pavucontrol
@@ -16,8 +16,11 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
     wireplumber = {
       enable = true;
     };
   };
+
+  services.jack.loopback.enable = true;
 }
