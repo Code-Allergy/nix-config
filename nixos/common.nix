@@ -1,7 +1,8 @@
 {
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     ../cachix.nix
     ./rust.nix
@@ -17,8 +18,6 @@
 
   programs.fish.enable = true;
   programs.command-not-found.enable = true;
-
-  services.tailscale.enable = true;
 
   services.openssh = {
     enable = true;

@@ -1,9 +1,8 @@
 {
   pkgs,
-  programs,
-  inputs,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     mcpelauncher-client
     mcpelauncher-ui-qt
@@ -42,6 +41,10 @@
   programs.mangohud = {
     enable = true;
     enableSessionWide = true;
-    # settings =
+    settings = {
+      blacklist = [
+        "Zed"
+      ];
+    };
   };
 }

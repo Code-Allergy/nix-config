@@ -2,15 +2,21 @@
   pkgs,
   config,
   ...
-}: {
-  environment.systemPackages = with pkgs; [docker-compose];
+}:
+{
+  environment.systemPackages = with pkgs; [ docker-compose ];
 
   programs.virt-manager.enable = true;
   virtualisation = {
     podman = {
       enable = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
     };
     libvirtd = {
       enable = true;
@@ -24,8 +30,7 @@
             (pkgs.OVMF.override {
               secureBoot = true;
               tpmSupport = true;
-            })
-            .fd
+            }).fd
           ];
         };
       };

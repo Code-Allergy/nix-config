@@ -1,8 +1,5 @@
 {
-  config,
   pkgs,
-  inputs,
-  outputs,
   hostname,
   lib,
   ...
@@ -32,11 +29,9 @@ in
     libnotify
     pavucontrol
     qview
-    # polkit-kde-agent # TODO 25.05
     wl-clipboard
   ];
 
-  # TODO 25.05
   services.hyprpolkitagent = {
     enable = true;
   };
