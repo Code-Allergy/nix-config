@@ -52,8 +52,21 @@
 
   services.kdeconnect = {
     enable = true;
+    package = pkgs.kdePackages.kdeconnect-kde;
     indicator = true;
   };
+
+  services.conky = {
+    enable = true;
+    extraConfig = ''
+      conky.config = {
+          out_to_x = false,
+          out_to_wayland = true,
+      };
+    '';
+  };
+
+  services.copyq.enable = true;
 
   programs.thefuck.enable = true;
 

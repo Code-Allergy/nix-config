@@ -15,7 +15,7 @@
 {
   programs.yazi = {
     enable = true;
-    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.yazi;
+    package = pkgs.yazi;
     settings = {
       manager = {
         show_hidden = true;

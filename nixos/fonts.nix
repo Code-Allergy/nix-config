@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   fonts = {
     packages = with pkgs; [
       montserrat
@@ -13,15 +14,19 @@
 
       fira-code
       fira-code-symbols
-      (nerdfonts.override {fonts = ["FiraCode" "IBMPlexMono" "RobotoMono" "Hack"];})
+      nerd-fonts.fira-code
+      nerd-fonts.blex-mono
+      nerd-fonts.roboto-mono
+      nerd-fonts.hack
+      # (nerdfonts.override {fonts = ["FiraCode" "IBMPlexMono" "RobotoMono" "Hack"];})
     ];
 
     fontconfig = {
       enable = true;
       defaultFonts = {
         # serif
-        sansSerif = ["Montserrat"];
-        monospace = ["BlexMono Nerd Font Mono"];
+        sansSerif = [ "Montserrat" ];
+        monospace = [ "BlexMono Nerd Font Mono" ];
       };
     };
   };

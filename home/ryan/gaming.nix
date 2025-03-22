@@ -5,8 +5,8 @@
   ...
 }: {
   home.packages = with pkgs; [
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.mcpelauncher-client
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.mcpelauncher-ui-qt
+    mcpelauncher-client
+    mcpelauncher-ui-qt
 
     steamcmd
     gamemode
@@ -21,8 +21,22 @@
     # Wii U Emulator
     cemu
 
-    # Switch Emulators
+    # Switch Emulator
     ryujinx
+
+    # PS3 Emulator
+    rpcs3
+
+    # PS2 Emulator
+    pcsx2
+
+    # Game saves
+    ludusavi
+
+    # Heroic Games Launcher
+    heroic
+    gogdl
+    legendary-heroic
   ];
 
   programs.mangohud = {

@@ -10,9 +10,9 @@
       ];
     };
   in {
-    "/mnt/tower/ryan" = SambaConfigCommon // {device = "//192.168.1.112/Ryan";};
-    "/mnt/tower/games" = SambaConfigCommon // {device = "//192.168.1.112/Games";};
-    "/mnt/tower/media" = SambaConfigCommon // {device = "//192.168.1.112/Media";};
-    "/mnt/tower/ingest" = SambaConfigCommon // {device = "//192.168.1.112/Ingest";};
+    "/tower/ryan" = SambaConfigCommon // {device = "//192.168.1.112/Ryan";};
+    "/tower/games" = SambaConfigCommon // {device = "//192.168.1.112/Games";};
+    "/tower/media" = SambaConfigCommon // {device = "//192.168.1.112/Media";};
+    "/tower/ingest" = SambaConfigCommon // {device = "//192.168.1.112/Ingest";};
   };
 }

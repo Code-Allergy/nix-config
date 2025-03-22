@@ -1,34 +1,29 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 {
-  home.packages =
-    with pkgs;
-    [
-      boxbuddy
-      mupdf
-      dbeaver-bin
-      remmina
-      android-studio
-      sublime-merge
+  home.packages = with pkgs; [
+    boxbuddy
+    mupdf
+    dbeaver-bin
+    remmina
+    android-studio
+    sublime-merge
 
-      onlyoffice-bin
-      libreoffice-qt
-      hunspell
-      hunspellDicts.uk_UA
-      hunspellDicts.th_TH
-      jetbrains.pycharm-professional
-      jetbrains.webstorm
-      jetbrains.idea-ultimate
-      jetbrains.clion
-      jetbrains.rust-rover
-      jetbrains.rider
-    ]
-    ++ (with inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}; [
-      package-version-server
-    ]);
+    onlyoffice-bin
+    libreoffice-qt
+    hunspell
+    hunspellDicts.uk_UA
+    hunspellDicts.th_TH
+    jetbrains.pycharm-professional
+    jetbrains.webstorm
+    jetbrains.idea-ultimate
+    jetbrains.clion
+    jetbrains.rust-rover
+    jetbrains.rider
+    package-version-server
+  ];
 
   programs.jetbrains-remote = {
     enable = true;
@@ -44,7 +39,6 @@
 
   programs.zed-editor = {
     enable = true;
-    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zed-editor;
     extensions = [
       "nix"
       "wakatime"
@@ -64,6 +58,7 @@
       # "asciidoc"
       # "http"
     ];
+    installRemoteServer = true;
     userSettings = {
       assistant = {
         default_model = {
@@ -140,7 +135,6 @@
           binary = {
             path = "/run/current-system/sw/bin/rust-analyzer";
           };
-
         };
         nil = {
           binary = {
@@ -185,12 +179,12 @@
       ui_font_size = 16;
       buffer_font_size = 14;
     };
-    # installRemoteServer = true;
+
   };
 
   programs.vscode = {
     enable = true;
-    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.vscodium-fhs;
+    package = pkgs.vscodium-fhs;
     extensions = with pkgs.vscode-extensions; [
       ms-vscode.cpptools
       ms-vscode.hexeditor
@@ -265,6 +259,25 @@
         "workbench.action.tasks.configureTaskRunner"
         "workbench.action.tasks.runTask"
       ];
+    };
+  };
+
+  programs.mods = {
+    enable = true;
+    enableFishIntegration = true;
+    enableBashIntegration = true;
+    settings = {
+      default-model = "llama3.2";
+      apis = {
+        ollama = {
+          base-url = "http://localhost:11434/api";
+          models = {
+            "llama3.2" = {
+              max-input-chars = 650000;
+            };
+          };
+        };
+      };
     };
   };
 }

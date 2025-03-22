@@ -6,12 +6,14 @@
   hostname,
   lib,
   ...
-}: let
-  inherit (import ./variables.nix {inherit hostname;}) hyprland_variables;
+}:
+let
+  inherit (import ./variables.nix { inherit hostname; }) hyprland_variables;
   inherit (import ./configs/hypridle.nix) hypridle_config;
   inherit (import ./configs/hyprlock.nix) hyprlock_config;
   inherit (import ./configs/hyprpaper.nix) hyprpaper_config;
-in {
+in
+{
   imports = [
     ./waybar.nix
   ];
@@ -30,9 +32,14 @@ in {
     libnotify
     pavucontrol
     qview
-    polkit-kde-agent
+    # polkit-kde-agent # TODO 25.05
     wl-clipboard
   ];
+
+  # TODO 25.05
+  services.hyprpolkitagent = {
+    enable = true;
+  };
 
   # fuzzel
   programs.fuzzel.enable = true;
