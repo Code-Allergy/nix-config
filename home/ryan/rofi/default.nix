@@ -1,10 +1,11 @@
 {
   pkgs,
-  config,
   ...
-}: {
+}:
+{
   programs.rofi = {
     enable = true;
+    package = pkgs.rofi-wayland;
     plugins = [
       pkgs.rofi-vpn
       pkgs.rofi-top
@@ -17,9 +18,7 @@
     ];
 
     extraConfig = {
-      modi = "drun,run,filebrowser,window,calc,emoji,keys,combi,top";
+      modi = "drun,run,filebrowser,window,keys,combi";
     };
-
-    theme = "${pkgs.rofi}/share/rofi/themes/arthur.rasi";
   };
 }

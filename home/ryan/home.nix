@@ -22,6 +22,7 @@
       ./kitty
       ./hypr
       ./obs.nix
+      ./rofi
     ])
   ];
 
