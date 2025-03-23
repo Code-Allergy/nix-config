@@ -78,7 +78,6 @@ in
       source = [
         "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
       ];
-      # exec-once = "/home/ryan/nix-config/home/ryan/hypr/autostart.sh";
       exec-once = [
         "uwsm app -- hyprsunset"
         "uwsm app -- hyprnotify"
