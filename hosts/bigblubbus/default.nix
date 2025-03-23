@@ -4,7 +4,8 @@
   pkgs,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
@@ -33,10 +34,20 @@
     };
     loader.efi.canTouchEfiVariables = true;
 
-    initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+    initrd.availableKernelModules = [
+      "nvme"
+      "xhci_pci"
+      "ahci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+    ];
 
-    kernelModules = ["kvm-amd" "it87"];
-    extraModulePackages = [];
+    kernelModules = [
+      "kvm-amd"
+      "it87"
+    ];
+    extraModulePackages = [ ];
 
     extraModprobeConfig = ''
       options kvm_intel nested=1
@@ -51,6 +62,10 @@
       # IT8686e sensor
       "acpi_enforce_resources=lax"
       "it87.force_id=0x8628"
+
+      # Display
+      "video=DP-1:1920x1080@144"
+      "video=HDMI-A-1:1920x1080@60:rotate:3"
     ];
 
     # Latest kernel vers
@@ -65,15 +80,6 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   time.timeZone = "America/Regina";
-
-  # TEMPORARY
-  services.ollama = {
-    enable = true;
-    acceleration = "rocm";
-    environmentVariables = {
-      HSA_OVERRIDE_GFX_VERSION = "11.0.0";
-    };
-  };
 
   services.open-webui = {
     enable = true;

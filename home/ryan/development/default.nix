@@ -4,7 +4,8 @@
   lib,
   isHeaded,
   ...
-}: {
+}:
+{
   imports = lib.flatten [
     [
       ./git.nix
@@ -42,11 +43,20 @@
     glab
   ];
 
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+    environmentVariables = {
+      HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+    };
+
+  };
+
   # Declarative virtmanager configuration, not sure where to place this
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
     };
   };
 
@@ -64,7 +74,7 @@
     vimdiffAlias = true;
     coc.enable = true;
     coc.pluginConfig = "";
-    coc.settings = {};
+    coc.settings = { };
 
     plugins = with pkgs.vimPlugins; [
       vim-fugitive
