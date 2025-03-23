@@ -15,6 +15,7 @@
 
     libsecret
     gnupg
+    kdePackages.kwallet-pam
   ];
 
   programs.fish.enable = true;
@@ -46,7 +47,8 @@
   hardware.enableRedistributableFirmware = true;
 
   security = {
-    pam.services.sddm.enableKwallet = true;
+    pam.services.sddm.kwallet.enable = true;
+    pam.services.sddm.kwallet.package = pkgs.kdePackages.kwallet;
 
     # CoreCtrl Configuration
     polkit.extraConfig = ''

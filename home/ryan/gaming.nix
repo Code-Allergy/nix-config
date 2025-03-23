@@ -6,7 +6,6 @@
 
     steamcmd
     gamemode
-    mangohud
     wine
 
     prismlauncher
@@ -38,11 +37,5 @@
 
   programs.mangohud = {
     enable = true;
-    enableSessionWide = true;
-    settings = {
-      # blacklist = [
-      #   "Zed"
-      # ];
-    };
   };
 }

@@ -26,11 +26,16 @@
     ../../nixos/hardware/footpetal.nix
   ];
 
+  environment.systemPackages = with pkgs; [
+    lm_sensors
+    openrgb-with-all-plugins
+  ];
+
   boot = {
     loader.systemd-boot.enable = lib.mkForce false;
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
     loader.efi.canTouchEfiVariables = true;
 
@@ -66,6 +71,9 @@
       # Display
       "video=DP-1:1920x1080@144"
       "video=HDMI-A-1:1920x1080@60:rotate:3"
+
+      # AMDGPU
+      "amdgpu.ppfeaturemask=0xffffffff"
     ];
 
     # Latest kernel vers
@@ -78,12 +86,14 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.ryzen-smu.enable = true;
 
   time.timeZone = "America/Regina";
 
   services.open-webui = {
     enable = true;
   };
+  services.hardware.openrgb.enable = true;
 
   system = {
     autoUpgrade = {

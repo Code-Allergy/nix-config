@@ -23,6 +23,7 @@ in
   };
 
   home.packages = with pkgs; [
+    
     hyprcursor
     grim
     slurp
@@ -54,13 +55,20 @@ in
   };
 
   # fuzzel
-  programs.fuzzel.enable = true;
-  # services.dunst.enable = true;
+  programs.fuzzel = {
+    enable = true;
+    settings = {
+      main = {
+        launch-prefix = "uwsm app --";
+      };
+    };
+  };
 
   programs.wlogout.enable = true;
 
   wayland.windowManager.hyprland = {
     enable = true;
+    systemd.enable = false;
     settings = {
       # Spread the variables
       "$TEARING" = hyprland_variables.TEARING;
@@ -70,7 +78,15 @@ in
       source = [
         "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
       ];
-      exec-once = "/home/ryan/nix-config/home/ryan/hypr/autostart.sh";
+      # exec-once = "/home/ryan/nix-config/home/ryan/hypr/autostart.sh";
+      exec-once = [
+        "uwsm app -- hyprsunset"
+        "uwsm app -- hyprnotify"
+        "uwsm app -- steam -silent"
+        "uwsm app -- vesktop --start-minimized"
+        "uwsm app -- corectrl --minimize-systray"
+
+      ];
     };
 
     extraConfig = ''
@@ -99,11 +115,11 @@ in
       #env = CLUTTER_BACKEND,wayland
       #env = NIXOS_OZONE_WL,1
 
-      bind = CTRL ALT, T, exec, $terminal
+      bind = CTRL ALT, T, exec, uwsm app -- $terminal
       bind = $mainMod, R, exec, $MENU
       bind = $mainMod, W, killactive,
       bind = $mainMod SHIFT, F, exit,
-      bind = $mainMod, E, exec, $fileManager
+      bind = $mainMod, E, exec, uwsm app -- $fileManager
       bind = $mainMod, V, togglefloating,
 
       bind = $mainMod, P, pseudo, # dwindle
