@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     mcpelauncher-client
@@ -22,6 +19,7 @@
 
     # Switch Emulator
     ryujinx
+    suyu
 
     # PS3 Emulator
     rpcs3
@@ -42,9 +40,9 @@
     enable = true;
     enableSessionWide = true;
     settings = {
-      blacklist = [
-        "Zed"
-      ];
+      # blacklist = [
+      #   "Zed"
+      # ];
     };
   };
 }

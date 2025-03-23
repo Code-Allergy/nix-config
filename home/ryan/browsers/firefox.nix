@@ -1,13 +1,13 @@
 {
   pkgs,
-  inputs,
-  libs,
   ...
-}: {
+}:
+{
   programs.firefox = {
     enable = true;
     nativeMessagingHosts = with pkgs; [
-      plasma5Packages.plasma-browser-integration
+      kdePackages.plasma-browser-integration
+      tridactyl-native
     ];
     policies = {
       AppAutoUpdate = false;
@@ -100,6 +100,9 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/firefox-color/latest.xpi";
           installation_mode = "force_installed";
         };
+
+        # # Tridactyl
+        # ""
       };
     };
 

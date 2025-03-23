@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     jellyfin-media-player
     jellycli
@@ -6,6 +7,16 @@
     youtube-music
     vlc
   ];
+
+  programs.freetube = {
+    enable = true;
+    settings = {
+      allowDashAv1Formats = true;
+      checkForUpdates = false;
+      defaultQuality = "1440";
+      baseTheme = "catppuccinMocha";
+    };
+  };
 
   home.file.".config/YouTube Music/config.json".text = ''
     {

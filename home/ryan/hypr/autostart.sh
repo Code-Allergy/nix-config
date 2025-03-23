@@ -1,9 +1,12 @@
 #!/bin/sh
 
 hypridle &
-dunst &
+hyprsunset &
+hyprnotify &
+systemctl --user start hyprpolkitagent &
+copyq --start-server
 
-systemctl --user start plasma-polkit-agent &
+# systemctl --user start plasma-polkit-agent &
 syncthingtray --wait &
 
 if [ $HOSTNAME = "bigblubbus" ]; then
@@ -15,4 +18,3 @@ fi
 if [ $HOSTNAME = "blubbus" ]; then
     # Shrug
 fi
-

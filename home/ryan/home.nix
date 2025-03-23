@@ -3,7 +3,8 @@
   pkgs,
   isHeaded,
   ...
-}: {
+}:
+{
   imports = lib.flatten [
     [
       ./development
@@ -16,7 +17,7 @@
       ./communication.nix
       ./entertainment.nix
       ./gaming.nix
-      (import ./syncthing {inherit pkgs lib isHeaded;}) # TEMP
+      (import ./syncthing { inherit pkgs lib isHeaded; }) # TEMP
       ./browsers
       ./kitty
       ./hypr
@@ -64,6 +65,12 @@
           out_to_wayland = true,
       };
     '';
+  };
+
+  # mime default applications
+  xdg.mimeApps.defaultApplications = {
+    "image/png" = "qview.desktop";
+    "application/zip" = "ark.desktop";
   };
 
   services.copyq.enable = true;

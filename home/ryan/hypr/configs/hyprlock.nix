@@ -83,10 +83,10 @@
       fail_color = $red
       fail_text = <i>$FAIL <b>($ATTEMPTS)</b></i>
       capslock_color = $yellow
-      position = 0, -47
+      position = 0, -400
       halign = center
       valign = center
-      position = 0 -300
+
     }
   '';
 }

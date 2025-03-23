@@ -30,7 +30,24 @@ in
     pavucontrol
     qview
     wl-clipboard
+    hyprnotify
+    xdg-desktop-portal-hyprland
+    kdePackages.xdg-desktop-portal-kde
+    hyprsunset
+    hyprpicker
+    hyprls
   ];
+
+  # Set kde file picker as default fallback
+  home.file = {
+    ".config/xdg-desktop-portal/hyprland-portals.conf" = {
+      text = ''
+        [preferred]
+        default = hyprland;gtk
+        org.freedesktop.impl.portal.FileChooser = kde
+      '';
+    };
+  };
 
   services.hyprpolkitagent = {
     enable = true;
@@ -38,7 +55,7 @@ in
 
   # fuzzel
   programs.fuzzel.enable = true;
-  services.dunst.enable = true;
+  # services.dunst.enable = true;
 
   programs.wlogout.enable = true;
 
@@ -69,6 +86,8 @@ in
       env = ELECTRON_OZONE_PLATFORM_HINT,auto
       env = GDK_BACKEND,wayland
       env = QT_QPA_PLATFORM,wayland
+
+      env = XDG_MENU_PREFIX,plasma-
       #env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
       #env = XDG_CURRENT_DESKTOP,Hyprland
       #env = XDG_SESSION_TYPE,wayland

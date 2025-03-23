@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   ## COMMON - HEADED
   imports = [
@@ -11,11 +11,11 @@
     enable = true;
   };
 
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-volman
-      thunar-archive-plugin
-    ];
-  };
+  # programs.thunar = {
+  #   enable = true;
+  #   plugins = with pkgs.xfce; [
+  #     thunar-volman
+  #     thunar-archive-plugin
+  #   ];
+  # };
 }
