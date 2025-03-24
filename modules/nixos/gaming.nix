@@ -68,6 +68,9 @@ in
       openFirewall = cfg.sunshine.enable;
     };
 
+    # Use flatpak lutris for gaming for now
+    services.flatpak.packages = [ "net.lutris.Lutris" ];
+
     # also enable the gaming module configuration in home-manager
     home-manager.users.ryan.global.config.gaming.enable = cfg.enable;
   };

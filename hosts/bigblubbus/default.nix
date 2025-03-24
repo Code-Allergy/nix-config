@@ -26,7 +26,9 @@
   ];
 
   # New (2025) module configuration
-  global.config.gaming.enable = true;
+  global.config = {
+    gaming.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     lm_sensors
