@@ -18,12 +18,12 @@
     powerManagement.finegrained = true;
 
     # Open source driver
-    open = false;
+    open = true;
 
     # nvidia-settings menu
     nvidiaSettings = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
 
     prime = {
       offload.enable = true;

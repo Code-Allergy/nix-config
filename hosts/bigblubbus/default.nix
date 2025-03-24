@@ -95,6 +95,9 @@
   };
   services.hardware.openrgb.enable = true;
 
+  # enable bluetooth on boot
+  hardware.bluetooth.powerOnBoot = lib.mkForce true;
+  
   system = {
     autoUpgrade = {
       enable = true;

@@ -36,7 +36,7 @@
     };
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
 
     plymouth = {
@@ -51,12 +51,12 @@
       "splash"
       "boot.shell_on_fail"
       "loglevel=3"
-      "rd.systemd.show_status=false"
+      # "rd.systemd.show_status=false"
 
       "acpi_backlight=nvidia_wmi_ec"
-      "amd_pstate.shared_mem=1"
+      # "amd_pstate.shared_mem=1"
     ];
-    
+
     initrd.availableKernelModules = [
       "nvme"
       "xhci_pci"

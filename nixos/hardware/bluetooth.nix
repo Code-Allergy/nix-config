@@ -2,7 +2,7 @@
 {
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;
+    powerOnBoot = false;
     package = pkgs.bluez;
     settings = {
       General = {
