@@ -15,7 +15,6 @@
 
     libsecret
     gnupg
-    kdePackages.kwallet-pam
   ];
 
   programs.fish.enable = true;
@@ -46,9 +45,10 @@
 
   hardware.enableRedistributableFirmware = true;
 
+  services.gnome.gnome-keyring.enable = true;
+  programs.seahorse.enable = true;
   security = {
-    pam.services.sddm.kwallet.enable = true;
-    pam.services.sddm.kwallet.package = pkgs.kdePackages.kwallet;
+    pam.services.sddm.enableGnomeKeyring = true;
 
     # CoreCtrl Configuration
     polkit.extraConfig = ''
