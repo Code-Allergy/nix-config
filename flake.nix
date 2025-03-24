@@ -83,6 +83,7 @@
           modules = [
             lanzaboote.nixosModules.lanzaboote
             nix-flatpak.nixosModules.nix-flatpak
+            ./modules/nixos
             ./nixos/common.nix
             (./hosts + "/${hostname}")
             # Conditional headed/headless configuration
@@ -106,6 +107,7 @@
               home-manager.users.${username} = {
                 imports = [
                   ./home/${username}/home.nix
+                  ./modules/home-manager
                   catppuccin.homeManagerModules.catppuccin
                 ];
               };
@@ -130,6 +132,7 @@
           };
           modules = [
             ./home/${configName}/home.nix
+
             {
               home = {
                 inherit username;

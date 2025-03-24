@@ -10,7 +10,6 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
     ./networking.nix
-    ./gaming.nix
 
     ../../nixos/environments/hyprland.nix
     ../../nixos/environments/plasma.nix
@@ -25,6 +24,9 @@
     ../../nixos/hardware/printing.nix
     ../../nixos/hardware/footpetal.nix
   ];
+
+  # New (2025) module configuration
+  global.config.gaming.enable = true;
 
   environment.systemPackages = with pkgs; [
     lm_sensors
@@ -85,12 +87,4 @@
 
   # enable bluetooth on boot
   hardware.bluetooth.powerOnBoot = lib.mkForce true;
-
-  system = {
-    autoUpgrade = {
-      enable = true;
-      allowReboot = false;
-      dates = "7:30";
-    };
-  };
 }

@@ -16,7 +16,6 @@
     (lib.optionals isHeaded [
       ./communication.nix
       ./entertainment.nix
-      ./gaming.nix
       (import ./syncthing { inherit pkgs lib isHeaded; }) # TEMP
       ./browsers
       ./kitty
