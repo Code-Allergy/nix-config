@@ -81,9 +81,6 @@
 
   time.timeZone = "America/Regina";
 
-  services.open-webui = {
-    enable = true;
-  };
   services.hardware.openrgb.enable = true;
 
   # enable bluetooth on boot

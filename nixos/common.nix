@@ -80,13 +80,15 @@
 
   # system config
   nix = {
+    settings.trusted-users = [
+      "root"
+      "ryan"
+    ];
     extraOptions = ''
       experimental-features = nix-command flakes
       auto-optimise-store = true
       keep-outputs = true
       keep-derivations = true
-      cores = 4
-      max-jobs = 6
       max-free = ${toString (500 * 1024 * 1024)}
     '';
 

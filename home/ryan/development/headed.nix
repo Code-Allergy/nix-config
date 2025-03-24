@@ -210,7 +210,7 @@
         firefox-devtools.vscode-firefox-debug
 
         # Theme
-        catppuccin.catppuccin-vsc
+        # catppuccin.catppuccin-vsc
 
         github.copilot
 
