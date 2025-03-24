@@ -352,18 +352,14 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1742422364,
-        "narHash": "sha256-mNqIplmEohk5jRkqYqG19GA8MbQ/D4gQSK0Mu4LvfRQ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-        "type": "github"
+        "lastModified": 1742723610,
+        "narHash": "sha256-WTG4KXZ0i9A+ffHVO7adBS/TgwAFcHU0PoZtlJuBpTk=",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/d056063028f6cbe9b99c3a4b52fdad99573db3ab.tar.gz"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/d056063028f6cbe9b99c3a4b52fdad99573db3ab.tar.gz"
       }
     },
     "pre-commit-hooks": {

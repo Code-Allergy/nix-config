@@ -27,6 +27,9 @@
     };
   };
 
+  # Keyring
+  services.gnome.gnome-keyring.enable = true;
+  programs.seahorse.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
@@ -35,6 +38,7 @@
       max-cache-ttl = 2592000;
     };
   };
+  security.pam.services.sddm.enableGnomeKeyring = true;
 
   # Allow unfree packages
   nixpkgs.config = {
@@ -48,11 +52,7 @@
 
   hardware.enableRedistributableFirmware = true;
 
-  services.gnome.gnome-keyring.enable = true;
-  programs.seahorse.enable = true;
   security = {
-    pam.services.sddm.enableGnomeKeyring = true;
-
     # CoreCtrl Configuration
     polkit.extraConfig = ''
       polkit.addRule(function(action, subject) {
@@ -84,7 +84,6 @@
   # system config
   nix = {
     settings.trusted-users = [
-      "root"
       "ryan"
     ];
     extraOptions = ''
@@ -102,12 +101,18 @@
     };
   };
   system = {
-    autoUpgrade = {
-      enable = true;
-      allowReboot = false;
-      dates = "7:30";
-      randomizedDelaySec = "45min";
-    };
+    # autoUpgrade = {
+    #   # enable = true;
+    #   # flake = inputs.self.outPath;
+    #   # allowReboot = false;
+    #   # # randomizedDelaySec = "45min";
+    #   # dates = "6:15";
+    #   # flags = [
+    #   #   "--update-input"
+    #   #   "nixpkgs"
+    #   #   "-L"
+    #   # ];
+    # };
 
     stateVersion = "24.05"; # https://nixos.org/nixos/options.html
   };
