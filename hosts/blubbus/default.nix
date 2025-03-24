@@ -54,7 +54,6 @@
       # "rd.systemd.show_status=false"
 
       "acpi_backlight=nvidia_wmi_ec"
-      # "amd_pstate.shared_mem=1"
     ];
 
     initrd.availableKernelModules = [
@@ -91,29 +90,31 @@
   ];
 
   # Laptop TLP battery saving config
-  services.power-profiles-daemon.enable = false;
-  services.tlp.enable = true;
-  services.tlp.settings = {
-    CPU_SCALING_GOVERNOR_ON_AC = "performance";
-    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+  services.power-profiles-daemon.enable = true;
+  services.auto-epp.enable = true;
+  
+  # services.tlp.enable = true;
+  # services.tlp.settings = {
+  #   CPU_SCALING_GOVERNOR_ON_AC = "performance";
+  #   CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-    CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-    CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+  #   CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+  #   CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
-    PLATFORM_PROFILE_ON_AC = "balanced";
-    PLATFORM_PROFILE_ON_BAT = "low-power";
+  #   PLATFORM_PROFILE_ON_AC = "balanced";
+  #   PLATFORM_PROFILE_ON_BAT = "low-power";
 
-    CPU_BOOST_ON_AC = "1";
-    CPU_BOOST_ON_BAT = "1";
+  #   CPU_BOOST_ON_AC = "1";
+  #   CPU_BOOST_ON_BAT = "1";
 
-    WIFI_PWR_ON_AC = "off";
-    WIFI_PWR_ON_BAT = "on";
+  #   WIFI_PWR_ON_AC = "off";
+  #   WIFI_PWR_ON_BAT = "on";
 
-    DISK_DEVICES = "nvme0n1 nvme1n1";
+  #   DISK_DEVICES = "nvme0n1 nvme1n1";
 
-    USB_AUTOSUSPEND = "1";
-    USB_ALLOWLIST = "0c45:6720 187c:0550";
-  };
+  #   USB_AUTOSUSPEND = "1";
+  #   USB_ALLOWLIST = "0c45:6720 187c:0550";
+  # };
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
