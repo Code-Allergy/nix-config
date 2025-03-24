@@ -55,15 +55,10 @@
     extraModulePackages = [ ];
 
     extraModprobeConfig = ''
-      options kvm_intel nested=1
-      options kvm_intel emulate_invalid_guest_state=0
       options kvm ignore_msrs=1
       options it87 force_id=0x8628
     '';
     kernelParams = [
-      # AMD pstate freq scaler
-      "amd_pstate=active"
-
       # IT8686e sensor
       "acpi_enforce_resources=lax"
       "it87.force_id=0x8628"
@@ -79,14 +74,10 @@
     # Latest kernel vers
     kernelPackages = pkgs.linuxPackages_latest;
   };
-
-  # AMD-PState recommended governor
-  powerManagement.enable = true;
-  powerManagement.cpuFreqGovernor = "powersave";
+  services.fwupd.enable = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.cpu.amd.ryzen-smu.enable = true;
 
   time.timeZone = "America/Regina";
 
@@ -97,7 +88,7 @@
 
   # enable bluetooth on boot
   hardware.bluetooth.powerOnBoot = lib.mkForce true;
-  
+
   system = {
     autoUpgrade = {
       enable = true;

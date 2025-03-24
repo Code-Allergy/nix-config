@@ -92,7 +92,7 @@
   # Laptop TLP battery saving config
   services.power-profiles-daemon.enable = true;
   services.auto-epp.enable = true;
-  
+
   # services.tlp.enable = true;
   # services.tlp.settings = {
   #   CPU_SCALING_GOVERNOR_ON_AC = "performance";
@@ -149,9 +149,7 @@
     };
   };
 
-  # services.gvfs.enable = true;
   services.fwupd.enable = true;
-  services.cpupower-gui.enable = true;
 
   # Lock on lid close
   services.logind.lidSwitch = "suspend";

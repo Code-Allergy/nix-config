@@ -9,6 +9,7 @@
   imports = lib.flatten [
     [
       ./git.nix
+      ./distrobox.nix
     ]
     (lib.optionals isHeaded [
       ./headed.nix
@@ -33,8 +34,6 @@
     # network tools
     wget
     curl
-
-    distrobox
 
     android-tools
 

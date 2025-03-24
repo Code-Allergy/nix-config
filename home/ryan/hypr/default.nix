@@ -23,7 +23,7 @@ in
   };
 
   home.packages = with pkgs; [
-    
+
     hyprcursor
     grim
     slurp
@@ -32,8 +32,6 @@ in
     qview
     wl-clipboard
     hyprnotify
-    xdg-desktop-portal-hyprland
-    kdePackages.xdg-desktop-portal-kde
     hyprsunset
     hyprpicker
     hyprls
@@ -46,6 +44,19 @@ in
         [preferred]
         default = hyprland;gtk
         org.freedesktop.impl.portal.FileChooser = kde
+      '';
+    };
+    ".config/uwsm/env" = {
+      text = ''
+        export HYPRCURSOR_THEME=catppuccin-mocha-blue-cursors
+        export HYPRCURSOR_SIZE=30
+        export XCURSOR_THEME=catppuccin-mocha-blue-cursors
+        export XCURSOR_SIZE=30
+
+        export ELECTRON_OZONE_PLATFORM_HINT=auto
+        export GDK_BACKEND=wayland
+        export QT_QPA_PLATFORM=wayland
+        export XDG_MENU_PREFIX=plasma-
       '';
     };
   };
@@ -93,16 +104,7 @@ in
       $RESIZE_STEP = 30
 
       # Unsure if needed but shrug
-      env = HYPRCURSOR_THEME,catppuccin-mocha-blue-cursors
-      env = HYPRCURSOR_SIZE,30
-      env = XCURSOR_THEME,catppuccin-mocha-blue-cursors
-      env = XCURSOR_SIZE,30
 
-      env = ELECTRON_OZONE_PLATFORM_HINT,auto
-      env = GDK_BACKEND,wayland
-      env = QT_QPA_PLATFORM,wayland
-
-      env = XDG_MENU_PREFIX,plasma-
       #env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
       #env = XDG_CURRENT_DESKTOP,Hyprland
       #env = XDG_SESSION_TYPE,wayland
