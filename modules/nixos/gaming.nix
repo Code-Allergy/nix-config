@@ -8,30 +8,37 @@
 with lib;
 let
   cfg = config.global.config.gaming;
+  headed = config.global.config.headless == false;
 in
 {
   options.global.config.gaming = {
     enable = mkEnableOption "Enable gaming configuration";
     steam = {
       enable = mkEnableOption "Enable Steam" // {
-        default = cfg.enable;
+        default = cfg.enable && headed;
       };
       gamescopeSession = {
         enable = mkEnableOption "Enable GameScope session" // {
-          default = cfg.enable;
+          default = cfg.enable && headed;
         };
+      };
+    };
+
+    lutris = {
+      enable = mkEnableOption "Enable Lutris" // {
+        default = cfg.enable && headed;
       };
     };
 
     gamemode = {
       enable = mkEnableOption "Enable Gamemode" // {
-        default = cfg.enable;
+        default = cfg.enable && headed;
       };
     };
 
     sunshine = {
       enable = mkEnableOption "Enable Sunshine" // {
-        default = cfg.enable;
+        default = cfg.enable && headed;
       };
       startup = mkEnableOption "Enable Sunshine to start on boot" // {
         default = false;
@@ -69,7 +76,7 @@ in
     };
 
     # Use flatpak lutris for gaming for now
-    services.flatpak.packages = [ "net.lutris.Lutris" ];
+    services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
 
     # also enable the gaming module configuration in home-manager
     home-manager.users.ryan.global.config.gaming.enable = cfg.enable;

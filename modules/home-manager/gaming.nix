@@ -8,6 +8,7 @@
 with lib;
 let
   cfg = config.global.config.gaming;
+  headed = config.global.config.headless == false;
 in
 {
   options.global.config.gaming = {
@@ -15,10 +16,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = with pkgs; mkIf headed [
       # Steam tools
       steamcmd
       steamtinkerlaunch
+
+      # Wine
       wine
 
       # Minecraft (JAVA) launcher

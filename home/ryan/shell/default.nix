@@ -1,11 +1,34 @@
 {
   lib,
+  pkgs,
   ...
-}: {
+}:
+{
   # TODO
   imports = [
     ./bash.nix
     ./fish.nix
+  ];
+
+  # default shell tools
+  home.packages = with pkgs; [
+    # run any package with ,
+    comma
+
+    # CLI tools we want everywhere
+    htop
+    bottom
+    eza
+    killall
+    file
+    tealdeer
+
+    # network tools
+    wget
+    curl
+
+    # sshfs
+    sshfs
   ];
 
   # default shell configuration

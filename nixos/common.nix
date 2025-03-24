@@ -1,12 +1,11 @@
 {
   pkgs,
+  inputs,
   ...
 }:
 {
   imports = [
     ../cachix.nix
-    ./rust.nix
-    ./headless.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -42,6 +41,10 @@
     allowUnfree = true;
     android_sdk.accept_licence = true;
   };
+
+  nixpkgs.overlays = [
+    inputs.rust-overlay.overlays.default
+  ];
 
   hardware.enableRedistributableFirmware = true;
 
