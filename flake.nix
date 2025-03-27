@@ -5,10 +5,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # # Temp fix for zed, fix tomorrow
-    # nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/d056063028f6cbe9b99c3a4b52fdad99573db3ab.tar.gz";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
     home-manager = {
