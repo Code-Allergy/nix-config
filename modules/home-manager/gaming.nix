@@ -16,48 +16,50 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; mkIf headed [
-      # Steam tools
-      steamcmd
-      steamtinkerlaunch
+    home.packages =
+      with pkgs;
+      mkIf headed [
+        # Steam tools
+        steamcmd
+        steamtinkerlaunch
 
-      # Wine
-      wine
+        # Wine
+        wineWowPackages.waylandFull
 
-      # Minecraft (JAVA) launcher
-      prismlauncher
+        # Minecraft (JAVA) launcher
+        prismlauncher
 
-      # Minecraft (BEDROCK) launcher
-      mcpelauncher-client
-      mcpelauncher-ui-qt
+        # Minecraft (BEDROCK) launcher
+        mcpelauncher-client
+        mcpelauncher-ui-qt
 
-      # Minecraft ComputerCraft Emulator
-      ccemux
+        # Minecraft ComputerCraft Emulator
+        ccemux
 
-      # Wii/Gamecube Emulator
-      dolphin-emu
+        # Wii/Gamecube Emulator
+        dolphin-emu
 
-      # Wii U Emulator
-      cemu
+        # Wii U Emulator
+        cemu
 
-      # Switch Emulator
-      ryujinx
-      suyu
+        # Switch Emulator
+        ryujinx
+        suyu
 
-      # PS3 Emulator
-      rpcs3
+        # PS3 Emulator
+        rpcs3
 
-      # PS2 Emulator
-      pcsx2
+        # PS2 Emulator
+        pcsx2
 
-      # Game save backup tool
-      ludusavi
+        # Game save backup tool
+        ludusavi
 
-      # Heroic Games Launcher
-      heroic
-      gogdl
-      legendary-heroic
-    ];
+        # Heroic Games Launcher
+        heroic
+        gogdl
+        legendary-heroic
+      ];
 
     programs.mangohud = {
       enable = true;
