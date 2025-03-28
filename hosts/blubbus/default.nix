@@ -18,9 +18,6 @@
     ../../nixos/hardware/display.nix
     ../../nixos/hardware/nvidia.nix
 
-    # Don't think this works
-    ../../nixos/hardware/hibernate-after-sleep.nix
-
     # Fileserver mounts
     ../../nixos/samba-mounts.nix
 
@@ -88,6 +85,14 @@
     # Wifi applet
     networkmanagerapplet
   ];
+
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30s # test value
+  '';
 
   # Laptop TLP battery saving config
   services.power-profiles-daemon.enable = true;
