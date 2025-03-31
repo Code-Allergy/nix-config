@@ -18,7 +18,13 @@
       nerd-fonts.blex-mono
       nerd-fonts.roboto-mono
       nerd-fonts.hack
-      # (nerdfonts.override {fonts = ["FiraCode" "IBMPlexMono" "RobotoMono" "Hack"];})
+
+      # icons
+      font-awesome
+
+      # microsoft fonts
+      corefonts
+      vista-fonts
     ];
 
     fontconfig = {
