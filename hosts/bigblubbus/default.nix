@@ -53,6 +53,8 @@
     ];
 
     kernelModules = [
+      "ip_tables"
+      "iptable_nat"
       "kvm-amd"
       "it87"
     ];
@@ -62,6 +64,7 @@
       options kvm ignore_msrs=1
       options it87 force_id=0x8628
     '';
+
     kernelParams = [
       # IT8686e sensor
       "acpi_enforce_resources=lax"

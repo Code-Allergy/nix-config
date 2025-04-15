@@ -48,6 +48,11 @@
       url = "github:Fuwn/tsutsumi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # disko.url = "github:nix-community/disko";
     # ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
@@ -107,7 +112,7 @@
                 imports = [
                   ./home/${username}/home.nix
                   ./modules/home-manager
-                  catppuccin.homeManagerModules.catppuccin
+                  catppuccin.homeModules.catppuccin
                 ];
               };
             }

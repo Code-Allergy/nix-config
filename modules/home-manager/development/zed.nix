@@ -38,7 +38,6 @@ in
       extensions = [
         "nix"
         "wakatime"
-        "toml"
         "java"
 
         # # Build
@@ -76,7 +75,7 @@ in
         # };
         terminal = {
           env = {
-            EDITOR = "zed --wait";
+            EDITOR = "zeditor --wait";
           };
         };
         file_types = {
@@ -129,12 +128,12 @@ in
               };
             };
             binary = {
-              path = "/run/current-system/sw/bin/rust-analyzer";
+              path_lookup = true;
             };
           };
           nil = {
             binary = {
-              path = "/etc/profiles/per-user/ryan/bin/nil";
+              path_lookup = true;
             };
             initialization_options = {
               formatting = {
@@ -147,13 +146,10 @@ in
               path_lookup = true;
             };
           };
-          rust-analyzer = {
-            binary.path_lookup = true;
-          };
           zls.binary.path_lookup = true;
           wakatime = {
             binary = {
-              path = "/etc/profiles/per-user/ryan/bin/wakatime-ls";
+              path_lookup = true;
               arguments = [
                 "--wakatime-cli"
                 "/etc/profiles/per-user/ryan/bin/wakatime-cli"

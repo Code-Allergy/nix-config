@@ -37,28 +37,24 @@ in
     hyprls
   ];
 
-  # Set kde file picker as default fallback
-  home.file = {
-    ".config/xdg-desktop-portal/hyprland-portals.conf" = {
-      text = ''
-        [preferred]
-        default = hyprland;gtk
-        org.freedesktop.impl.portal.FileChooser = kde
-      '';
-    };
-    ".config/uwsm/env" = {
-      text = ''
-        export HYPRCURSOR_THEME=catppuccin-mocha-blue-cursors
-        export HYPRCURSOR_SIZE=30
-        export XCURSOR_THEME=catppuccin-mocha-blue-cursors
-        export XCURSOR_SIZE=30
+  xdg.configFile = {
+    "menus/applications.menu".text = builtins.readFile ./kde-applications.menu;
+    # "xdg-desktop-portal/hyprland-portals.conf".text = ''
+    #   [preferred]
+    #   default = hyprland;gtk
+    #   org.freedesktop.impl.portal.FileChooser = kde
+    # '';
+    "uwsm/env".text = ''
+      export HYPRCURSOR_THEME=catppuccin-mocha-blue-cursors
+      export HYPRCURSOR_SIZE=30
+      export XCURSOR_THEME=catppuccin-mocha-blue-cursors
+      export XCURSOR_SIZE=30
 
-        export ELECTRON_OZONE_PLATFORM_HINT=auto
-        export GDK_BACKEND=wayland
-        export QT_QPA_PLATFORM=wayland
-        export XDG_MENU_PREFIX=plasma-
-      '';
-    };
+      export ELECTRON_OZONE_PLATFORM_HINT=auto
+      export GDK_BACKEND=wayland
+      export QT_QPA_PLATFORM=wayland
+      # export XDG_MENU_PREFIX=plasma-
+    '';
   };
 
   services.hyprpolkitagent = {
@@ -89,6 +85,29 @@ in
       source = [
         "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
       ];
+      cursor = {
+        default_monitor = "DP-1";
+      };
+      misc = {
+        force_default_wallpaper = 0;
+        vfr = true;
+        vrr = 2;
+        enable_swallow = true;
+        swallow_regex = "^(kitty)$";
+        font_family = "Montserrat";
+      };
+      render = {
+        direct_scanout = 2;
+      };
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
+
+      experimental = {
+        xx_color_management_v4 = true;
+      };
+
       exec-once = [
         "uwsm app -- hyprsunset"
         "uwsm app -- hyprnotify"

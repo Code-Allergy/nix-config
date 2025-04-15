@@ -1,0 +1,15 @@
+stages:
+  - update
+
+update-flake:
+  stage: update
+  image: nixos/nix:latest
+  script:
+    - nix flake update
+    - git config user.name "CI Flake Updater"
+    - git config user.email "gitlab-ci@example.com"
+    - git add flake.lock
+    - git commit -m "Update flake.lock" || echo "No changes to commit"
+    - git push origin HEAD:$CI_COMMIT_REF_NAME
+  only:
+    - schedules

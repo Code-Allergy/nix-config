@@ -75,6 +75,22 @@ in
       openFirewall = cfg.sunshine.enable;
     };
 
+    # services.monado = {
+    #   enable = cfg.steam.enable;
+    #   defaultRuntime = cfg.steam.enable;
+    # };
+
+    # environment.systemPackages = with pkgs; [
+    #   basalt-monado
+    #   opencomposite
+    # ];
+
+    # systemd.user.services.monado.environment = {
+    #   STEAMVR_LH_ENABLE = "1";
+    #   XRT_COMPOSITOR_COMPUTE = "1";
+    #   WMR_HANDTRACKING = "0";
+    # };
+
     # Use flatpak lutris for gaming for now
     services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
 

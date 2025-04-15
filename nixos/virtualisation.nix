@@ -1,10 +1,19 @@
 {
   pkgs,
-  config,
+  inputs,
   ...
 }:
 {
-  environment.systemPackages = with pkgs; [ docker-compose ];
+  environment.systemPackages = with pkgs; [
+    docker-compose
+    podman-compose
+    virtio-win
+    bridge-utils
+
+    # winapps
+    inputs.winapps.packages."${system}".winapps
+    inputs.winapps.packages."${system}".winapps-launcher
+  ];
 
   programs.virt-manager.enable = true;
   virtualisation = {
@@ -39,13 +48,13 @@
     spiceUSBRedirection.enable = true;
   };
 
-  environment.etc = {
-    "ovmf/edk2-x86_64-secure-code.fd" = {
-      source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-x86_64-secure-code.fd";
-    };
+  # environment.etc = {
+  #   "ovmf/edk2-x86_64-secure-code.fd" = {
+  #     source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-x86_64-secure-code.fd";
+  #   };
 
-    "ovmf/edk2-i386-vars.fd" = {
-      source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-i386-vars.fd";
-    };
-  };
+  #   "ovmf/edk2-i386-vars.fd" = {
+  #     source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-i386-vars.fd";
+  #   };
+  # };
 }
