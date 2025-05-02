@@ -5,7 +5,6 @@
 }:
 {
   environment.systemPackages = with pkgs; [
-    docker-compose
     podman-compose
     virtio-win
     bridge-utils

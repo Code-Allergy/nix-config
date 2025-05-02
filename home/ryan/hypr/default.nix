@@ -31,10 +31,10 @@ in
     pavucontrol
     qview
     wl-clipboard
-    hyprnotify
     hyprsunset
     hyprpicker
     hyprls
+    swaynotificationcenter
   ];
 
   xdg.configFile = {
@@ -53,7 +53,7 @@ in
       export ELECTRON_OZONE_PLATFORM_HINT=auto
       export GDK_BACKEND=wayland
       export QT_QPA_PLATFORM=wayland
-      # export XDG_MENU_PREFIX=plasma-
+      export XDG_MENU_PREFIX=plasma-
     '';
   };
 
