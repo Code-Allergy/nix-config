@@ -43,6 +43,9 @@
   catppuccin.flavor = "mocha";
   catppuccin.enable = true;
 
+  # TEMP
+  catppuccin.mako.enable = false;
+
   services.kdeconnect = {
     enable = true;
     package = pkgs.kdePackages.kdeconnect-kde;

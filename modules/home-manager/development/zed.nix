@@ -21,6 +21,7 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       package-version-server
+      nodePackages.prettier
 
       nil
       nixfmt-rfc-style
