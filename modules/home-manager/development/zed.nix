@@ -58,10 +58,27 @@ in
       userSettings = {
         assistant = {
           default_model = {
-            provider = "copilot_chat";
-            model = "claude-3-7-sonnet";
+            provider = "zed.dev";
+            model = "claude-3-7-sonnet-latest";
           };
           version = "2";
+        };
+        agent = {
+          version = "2";
+          enabled = true;
+          button = true;
+          dock = "right";
+          default_width = 640;
+          default_height = 320;
+          default_model = {
+            provider = "zed.dev";
+            model = "claude-3-7-sonnet-latest";
+          };
+          editor_model = {
+            provider = "zed.dev";
+            model = "claude-3-7-sonnet-latest";
+          };
+          single_file_review = true;
         };
         # language_models = {
         #   ollama = {
