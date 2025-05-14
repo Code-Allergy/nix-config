@@ -53,6 +53,9 @@
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Hyprland WM
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # disko.url = "github:nix-community/disko";
     # ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
@@ -87,6 +90,7 @@
           modules = [
             lanzaboote.nixosModules.lanzaboote
             nix-flatpak.nixosModules.nix-flatpak
+            ./cachix.nix
             ./modules/nixos
             ./nixos/common.nix
             (./hosts + "/${hostname}")

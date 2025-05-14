@@ -1,6 +1,14 @@
-{ pkgs, lib, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 {
   programs.hyprland.enable = true;
+  programs.hyprland.package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  programs.hyprland.portalPackage =
+    inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   programs.hyprland.withUWSM = true;
   environment.systemPackages = with pkgs; [
     kdePackages.dolphin
@@ -30,7 +38,7 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
     ];
   };
