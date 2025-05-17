@@ -4,16 +4,19 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.global.config.gaming;
   headed = config.global.config.headless == false;
-in {
+in
+{
   options.global.config.gaming = {
     enable = mkEnableOption "Enable gaming home-manager configuration";
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       mkIf headed [
         # Steam tools
         steamcmd
@@ -40,11 +43,8 @@ in {
 
         # Switch Emulator
         ryujinx
-        suyu
 
         # PS3 Emulator
-        # Broken build nixpkgs-unstable-24-04-2025
-        # https://github.com/NixOS/nixpkgs/pull/400900
         rpcs3
 
         # PS2 Emulator
@@ -63,26 +63,27 @@ in {
       ];
 
     # TEMP
-    xdg.configFile."openvr/openvrpaths.vrpath".text = ''
-      {
-        "config" :
-        [
-          "${config.xdg.dataHome}/Steam/config"
-        ],
-        "external_drivers" : null,
-        "jsonid" : "vrpathreg",
-        "log" :
-        [
-          "${config.xdg.dataHome}/Steam/logs"
-        ],
-        "runtime" :
-        [
-          "${pkgs.opencomposite}/lib/opencomposite"
-        ],
-        "version" : 1
-      }
-    '';
-    xdg.configFile."openxr/1/active_runtime.json".source = "${pkgs.monado}/share/openxr/1/openxr_monado.json";
+    # xdg.configFile."openvr/openvrpaths.vrpath".text = ''
+    #   {
+    #     "config" :
+    #     [
+    #       "${config.xdg.dataHome}/Steam/config"
+    #     ],
+    #     "external_drivers" : null,
+    #     "jsonid" : "vrpathreg",
+    #     "log" :
+    #     [
+    #       "${config.xdg.dataHome}/Steam/logs"
+    #     ],
+    #     "runtime" :
+    #     [
+    #       "${pkgs.opencomposite}/lib/opencomposite"
+    #     ],
+    #     "version" : 1
+    #   }
+    # '';
+    # xdg.configFile."openxr/1/active_runtime.json".source =
+    #   "${pkgs.monado}/share/openxr/1/openxr_monado.json";
 
     programs.mangohud = {
       enable = true;
