@@ -149,6 +149,11 @@ in
               path_lookup = true;
             };
           };
+          pylsp = {
+            binary = {
+              path_lookup = true;
+            };
+          };
           nil = {
             binary = {
               path_lookup = true;
