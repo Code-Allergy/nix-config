@@ -24,7 +24,6 @@ in
   };
 
   home.packages = with pkgs; [
-
     hyprcursor
     grim
     slurp
@@ -36,6 +35,7 @@ in
     hyprpicker
     hyprls
     swaynotificationcenter
+    jq # Added jq
   ];
 
   xdg.configFile = {
@@ -87,10 +87,10 @@ in
       "$INACTIVE_OPACITY" = hyprland_variables.INACTIVE_OPACITY;
       "$MENU" = hyprland_variables.MENU;
       "$WORKSPACE_SWIPE" = hyprland_variables.WORKSPACE_SWIPE;
-      "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # <-- Added
-      source = [ ./hyprland.conf ];
+      "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # Comment cleaned
+      source = [ ./hyprland.conf ]; # Relative path
       cursor = {
-        default_monitor = "DP-1";
+        default_monitor = hyprland_variables.DEFAULT_MONITOR; # Corrected to use variable
       };
       misc = {
         force_default_wallpaper = 0;
@@ -107,11 +107,9 @@ in
         no_update_news = true;
         no_donation_nag = true;
       };
-
       experimental = {
         xx_color_management_v4 = true;
       };
-
       exec-once = [
         "uwsm app -- hyprsunset"
         "uwsm app -- hyprnotify"
@@ -120,7 +118,7 @@ in
         "uwsm app -- vesktop --start-minimized"
         "uwsm app -- corectrl --minimize-systray"
       ] else [
-        # No specific apps for 'blubbus' based on previous autostart.sh content
+        # No hostname-specific startup apps for this configuration
       ]);
     };
 
@@ -203,7 +201,7 @@ in
       bind = $mainMod, Print, exec, grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot copied to clipboard" -a "ss"
 
       # Screenshot current monitor with mainMod + SHIFT + PrintScr
-      # TODO
+      bind = $mainMod SHIFT, Print, exec, grim -o "$(hyprctl -j monitors | jq -r '.[] | select(.focused) | .name')" - | wl-copy && notify-send "Screenshot of current monitor copied" -a "ss" # Implemented
 
       bind = $mainMod CTRL ALT, L, exec, loginctl lock-session
 
