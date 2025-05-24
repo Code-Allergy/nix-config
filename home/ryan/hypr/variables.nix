@@ -9,6 +9,7 @@
         MENU = "fuzzel";
         WORKSPACE_SWIPE = true;
         DEFAULT_MONITOR = "DP-1";
+        SHADOWS_ENABLED = true; # <-- Added
       }
     else
       {
@@ -17,5 +18,6 @@
         MENU = "fuzzel";
         WORKSPACE_SWIPE = true;
         DEFAULT_MONITOR = "eDP-0";
+        SHADOWS_ENABLED = false; # <-- Added
       };
 }
