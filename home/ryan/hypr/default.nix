@@ -87,9 +87,8 @@ in
       "$INACTIVE_OPACITY" = hyprland_variables.INACTIVE_OPACITY;
       "$MENU" = hyprland_variables.MENU;
       "$WORKSPACE_SWIPE" = hyprland_variables.WORKSPACE_SWIPE;
-      source = [
-        "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
-      ];
+      "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # <-- Added
+      source = [ ./hyprland.conf ];
       cursor = {
         default_monitor = "DP-1";
       };
@@ -116,11 +115,13 @@ in
       exec-once = [
         "uwsm app -- hyprsunset"
         "uwsm app -- hyprnotify"
+      ] ++ (if hostname == "bigblubbus" then [
         "uwsm app -- steam -silent"
         "uwsm app -- vesktop --start-minimized"
         "uwsm app -- corectrl --minimize-systray"
-
-      ];
+      ] else [
+        # No specific apps for 'blubbus' based on previous autostart.sh content
+      ]);
     };
 
     extraConfig = ''
