@@ -88,7 +88,9 @@ in
       "$MENU" = hyprland_variables.MENU;
       "$WORKSPACE_SWIPE" = hyprland_variables.WORKSPACE_SWIPE;
       "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # Comment cleaned
-      source = [ ./hyprland.conf ]; # Relative path
+      source = [
+        "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
+      ];
       cursor = {
         default_monitor = hyprland_variables.DEFAULT_MONITOR; # Corrected to use variable
       };
@@ -110,16 +112,23 @@ in
       experimental = {
         xx_color_management_v4 = true;
       };
-      exec-once = [
-        "uwsm app -- hyprsunset"
-        "uwsm app -- hyprnotify"
-      ] ++ (if hostname == "bigblubbus" then [
-        "uwsm app -- steam -silent"
-        "uwsm app -- vesktop --start-minimized"
-        "uwsm app -- corectrl --minimize-systray"
-      ] else [
-        # No hostname-specific startup apps for this configuration
-      ]);
+      exec-once =
+        [
+          "uwsm app -- hyprsunset"
+          "uwsm app -- hyprnotify"
+        ]
+        ++ (
+          if hostname == "bigblubbus" then
+            [
+              "uwsm app -- steam -silent"
+              "uwsm app -- vesktop --start-minimized"
+              "uwsm app -- corectrl --minimize-systray"
+            ]
+          else
+            [
+              # No hostname-specific startup apps for this configuration
+            ]
+        );
     };
 
     extraConfig = ''
