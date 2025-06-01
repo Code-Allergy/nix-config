@@ -20,7 +20,7 @@ in
   config = mkIf cfg.enable {
     programs.vscode = {
       enable = true;
-      package = pkgs.vscodium-fhs;
+      package = pkgs.vscode-fhs;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
           ms-vscode.cpptools
