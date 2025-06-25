@@ -64,6 +64,8 @@
     shellAliases = {
       # Allows sudo to be used with aliases
       sudo = "sudo ";
+      
+      fuck = "f";
 
       # GIT aliases
       g = "git";
