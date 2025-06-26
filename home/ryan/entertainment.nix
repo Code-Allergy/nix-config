@@ -3,7 +3,7 @@
   home.packages = with pkgs; [
     jellyfin-media-player
     jellycli
-    # feishin TODO: BROKEN 
+    feishin
     spotube
     youtube-music
     vlc
