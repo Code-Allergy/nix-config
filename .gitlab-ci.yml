@@ -13,3 +13,4 @@ update-flake:
     - git push origin HEAD:$CI_COMMIT_REF_NAME
   only:
     - schedules
+
