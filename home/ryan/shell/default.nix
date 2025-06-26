@@ -48,7 +48,7 @@
     ];
     sessionVariables = {
       EDITOR = lib.mkForce "vim";
-      VISIAL = "vim";
+      VISUAL = "vim";
       PAGER = "less";
       LESS = "-R";
       BROWSER = "firefox";
