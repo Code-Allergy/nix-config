@@ -115,7 +115,6 @@ in
       exec-once =
         [
           "uwsm app -- hyprsunset"
-          "uwsm app -- hyprnotify"
         ]
         ++ (
           if hostname == "bigblubbus" then
