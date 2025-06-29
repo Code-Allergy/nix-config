@@ -5,7 +5,7 @@
     SambaConfigCommon = {
       fsType = "cifs";
       options = [
-        "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,"
+        "x-systemd.automount,noauto,x-systemd.idle-timeout=60,"
         "x-systemd.mount-timeout=5s,credentials=/etc/nixos/samba-creds,uid=1000,gid=100"
       ];
     };
