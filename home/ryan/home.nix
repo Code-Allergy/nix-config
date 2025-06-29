@@ -52,15 +52,16 @@
     indicator = true;
   };
 
-  services.conky = {
-    enable = true;
-    extraConfig = ''
-      conky.config = {
-          out_to_x = false,
-          out_to_wayland = true,
-      };
-    '';
-  };
+  # Unused, and crashing constantly as of June 29, 2025
+  # services.conky = {
+  #   enable = true;
+  #   extraConfig = ''
+  #     conky.config = {
+  #         out_to_x = false,
+  #         out_to_wayland = true,
+  #     };
+  #   '';
+  # };
 
   # mime default applications
   xdg.mimeApps.defaultApplications = {
