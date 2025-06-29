@@ -164,6 +164,33 @@
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
+      checks = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          format = pkgs.runCommand "nixpkgs-fmt-check" {
+            nativeBuildInputs = [ pkgs.nixpkgs-fmt pkgs.findutils ];
+          } ''
+            find ${self} -name '*.nix' -print0 | xargs -0 nixpkgs-fmt --check
+            touch $out
+          '';
+
+          deadnix = pkgs.runCommand "deadnix-check" {
+            nativeBuildInputs = [ pkgs.deadnix pkgs.findutils ];
+          } ''
+            find ${self} -name '*.nix' -print0 | xargs -0 deadnix
+            touch $out
+          '';
+
+          statix = pkgs.runCommand "statix-check" {
+            nativeBuildInputs = [ pkgs.statix ];
+          } ''
+            statix check ${self}
+            touch $out
+          '';
+        });
+
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
 
