@@ -56,6 +56,10 @@
       "loglevel=3"
       # "rd.systemd.show_status=false"
 
+      # "nvidia.NVreg_UsePageAttributeTable=1"
+      # "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      # "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+
       "acpi_backlight=nvidia_wmi_ec"
     ];
 
@@ -66,7 +70,7 @@
       "usb_storage"
       "sd_mod"
     ];
-    # initrd.kernelModules = ["dm-snapshot"];
+
     initrd.luks.devices = {
       root = {
         device = "/dev/disk/by-uuid/d19873f6-caa4-43a2-8032-0b6cc8e72190";
@@ -96,9 +100,6 @@
     enable = true;
     powertop.enable = true;
   };
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30s # test value
-  '';
 
   # Laptop TLP battery saving config
   services.power-profiles-daemon.enable = true;

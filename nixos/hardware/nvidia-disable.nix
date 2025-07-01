@@ -1,3 +1,5 @@
+# Fully disable NVIDIA drivers and hardware, forcing D3cold when nothing else works.
+# Unused currently.
 {
   boot.extraModprobeConfig = ''
     blacklist nouveau
