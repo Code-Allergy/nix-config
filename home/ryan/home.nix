@@ -2,6 +2,7 @@
   lib,
   pkgs,
   isHeaded,
+  hostname,
   ...
 }:
 {
@@ -27,6 +28,8 @@
   # NEW modules config (2025)
   global.config = {
     development.enable = true;
+    # ollama keeps GPU from entering D3cold state, so we disable it.
+    development.ollama.enable = hostname != "blubbus";
   };
 
   # Common packages -- TO REMOVE
