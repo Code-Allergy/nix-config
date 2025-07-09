@@ -108,6 +108,7 @@
 
     profiles = {
       default = {
+        extensions.force = true;
         id = 0;
       };
     };
