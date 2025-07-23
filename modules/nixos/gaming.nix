@@ -56,6 +56,11 @@ in
       localNetworkGameTransfers.openFirewall = cfg.steam.enable; # Open ports in the firewall for Steam Local Network Game Transfers
     };
 
+    programs.gamescope = {
+      enable = cfg.steam.enable;
+      capSysNice = cfg.steam.enable;
+    };
+
     programs.gamemode = {
       enable = cfg.gamemode.enable;
       settings = {
