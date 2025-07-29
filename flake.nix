@@ -75,7 +75,6 @@
       # Supported systems for your flake packages, shell, etc.
       systems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
-
       mkNixosSystem =
         {
           hostname,
@@ -116,7 +115,7 @@
                 imports = [
                   ./home/${username}/home.nix
                   ./modules/home-manager
-                  catppuccin.homeModules.catppuccin
+                  # catppuccin.homeModules.catppuccin
                 ];
               };
             }
