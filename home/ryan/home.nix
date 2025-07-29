@@ -43,9 +43,11 @@
   ];
   programs.bat.enable = true;
 
-  # Firefox module conflict
-  # catppuccin.flavor = "mocha";
-  # catppuccin.enable = true;
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
+
+  # TEMP
+  catppuccin.mako.enable = false;
 
   services.kdeconnect = {
     enable = true;
