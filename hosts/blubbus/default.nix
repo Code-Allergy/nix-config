@@ -17,6 +17,7 @@
     ../../nixos/hardware/bluetooth.nix
     ../../nixos/hardware/display.nix
     ../../nixos/hardware/nvidia.nix
+    # ../../nixos/hardware/hibernate-after-sleep.nix
     ../../nixos/vpn.nix
 
     # Fileserver mounts
@@ -56,9 +57,10 @@
       "loglevel=3"
       # "rd.systemd.show_status=false"
 
-      # "nvidia.NVreg_UsePageAttributeTable=1"
-      # "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      # "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+      # hibernation
+      "nvidia.NVreg_UsePageAttributeTable=1"
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_TemporaryFilePath=/var/tmp"
 
       "acpi_backlight=nvidia_wmi_ec"
     ];
