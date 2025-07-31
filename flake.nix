@@ -55,7 +55,7 @@
     };
 
     # Hyprland WM
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # disko.url = "github:nix-community/disko";
     # ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
