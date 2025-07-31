@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   hostname,
   lib,
@@ -77,9 +76,6 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 
     settings = {
       # Spread the variables
@@ -112,40 +108,25 @@ in
       experimental = {
         xx_color_management_v4 = true;
       };
-      exec-once =
-        [
-          "uwsm app -- hyprsunset"
-        ]
-        ++ (
-          if hostname == "bigblubbus" then
-            [
-              "uwsm app -- steam -silent"
-              "uwsm app -- vesktop --start-minimized"
-              "uwsm app -- corectrl --minimize-systray"
-            ]
-          else
-            [
-              # No hostname-specific startup apps for this configuration
-            ]
-        );
+      exec-once = [
+        "uwsm app -- hyprsunset"
+      ]
+      ++ (
+        if hostname == "bigblubbus" then
+          [
+            "uwsm app -- steam -silent"
+            "uwsm app -- vesktop --start-minimized"
+            "uwsm app -- corectrl --minimize-systray"
+          ]
+        else
+          [
+            # No hostname-specific startup apps for this configuration
+          ]
+      );
     };
 
     extraConfig = ''
-      # TODO ENVIRONMENT VARIABLES
       $RESIZE_STEP = 30
-
-      # Unsure if needed but shrug
-
-      #env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
-      #env = XDG_CURRENT_DESKTOP,Hyprland
-      #env = XDG_SESSION_TYPE,wayland
-      #env = WLR_RENDERER,vulkan
-      #env = QT_AUTO_SCREEN_SCALE_FACTOR,1
-      #env = QT_QPA_PLATFORMTHEME,qt5ct
-      #env = SDL_VIDEODRIVER,wayland
-      #env = _JAVA_AWT_WM_NONREPARENTING,1
-      #env = CLUTTER_BACKEND,wayland
-      #env = NIXOS_OZONE_WL,1
 
       bind = CTRL ALT, T, exec, uwsm app -- $terminal
       bind = $mainMod, R, exec, $MENU
