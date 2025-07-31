@@ -5,6 +5,7 @@
     packages = [
       "com.usebottles.bottles"
       "com.github.tchx84.Flatseal"
+      "org.vinegarhq.Sober"
     ];
   };
 }
