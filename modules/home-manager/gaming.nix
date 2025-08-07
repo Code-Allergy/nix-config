@@ -42,7 +42,7 @@ in
         cemu
 
         # Switch Emulator
-        ryujinx
+        ryubing
 
         # PS3 Emulator
         rpcs3
