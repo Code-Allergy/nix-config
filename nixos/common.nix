@@ -11,7 +11,7 @@
   environment.systemPackages = with pkgs; [
     sbctl # secureboot
     nixos-generators # nix system-image generator
-
+    nix-index
     libsecret
     gnupg
   ];
@@ -91,11 +91,13 @@
       auto-optimise-store = true
       keep-outputs = true
       keep-derivations = true
-      max-free = ${toString (500 * 1024 * 1024)}
+      max-free = ${toString (2 * 1024 * 1024 * 1024)} # 2GB
+      min-free = ${toString (512 * 1024 * 1024)} # aggressive GC below 512MB
     '';
 
     gc = {
       automatic = true;
+      persistent = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
