@@ -10,4 +10,9 @@
     flavor = "mocha";
     enable = true;
   };
+
+  # services.open-webui = {
+  #   enable = true;
+  #   port = 8888;
+  # };
 }

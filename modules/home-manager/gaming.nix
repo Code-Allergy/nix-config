@@ -59,7 +59,7 @@ in
         # Heroic Games Launcher
         heroic
         gogdl
-        legendary-heroic
+        # legendary-heroic
       ];
 
     # TEMP
