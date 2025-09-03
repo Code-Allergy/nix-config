@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    jellyfin-media-player
+    # jellyfin-media-player
     jellycli
     feishin
     spotube
