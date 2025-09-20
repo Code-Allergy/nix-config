@@ -143,8 +143,10 @@
   services.fwupd.enable = true;
 
   # Lock on lid close
-  services.logind.lidSwitch = "suspend";
-  services.logind.lidSwitchExternalPower = "lock";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "lock";
+  };
 
   # Locale & Time
   time.timeZone = "America/Regina";
