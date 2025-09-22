@@ -59,7 +59,7 @@ in
         assistant = {
           default_model = {
             provider = "zed.dev";
-            model = "claude-3-7-sonnet-latest";
+            model = "claude-4-0-sonnet-latest";
           };
           version = "2";
         };
@@ -72,11 +72,11 @@ in
           default_height = 320;
           default_model = {
             provider = "zed.dev";
-            model = "claude-3-7-sonnet-latest";
+            model = "claude-4-0-sonnet-latest";
           };
           editor_model = {
             provider = "zed.dev";
-            model = "claude-3-7-sonnet-latest";
+            model = "claude-4-0-sonnet-latest";
           };
           single_file_review = true;
         };
