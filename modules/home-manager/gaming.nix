@@ -29,14 +29,14 @@ in
         prismlauncher
 
         # Minecraft (BEDROCK) launcher
-        mcpelauncher-client
-        mcpelauncher-ui-qt
+        # mcpelauncher-client
+        # mcpelauncher-ui-qt
 
         # Minecraft ComputerCraft Emulator
         ccemux
 
         # Wii/Gamecube Emulator
-        dolphin-emu
+        #dolphin-emu #TODO mbedtls 2 insecure
 
         # Wii U Emulator
         cemu
@@ -51,7 +51,7 @@ in
         pcsx2
 
         # Retroarch for other emus
-        retroarch
+        # retroarch
 
         # Game save backup tool
         ludusavi
