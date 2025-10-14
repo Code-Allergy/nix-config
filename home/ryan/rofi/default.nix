@@ -13,7 +13,7 @@
       pkgs.rofi-emoji
       pkgs.rofi-bluetooth
       pkgs.rofi-pulse-select
-      pkgs.rofi-file-browser
+      # pkgs.rofi-file-browser
     ];
 
     extraConfig = {
