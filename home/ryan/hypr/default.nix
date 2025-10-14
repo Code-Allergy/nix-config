@@ -65,22 +65,20 @@ in
     enable = lib.mkForce true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-hyprland
-      # (config.lib.nixGL.wrap xdg-desktop-portal-hyprland)
-      # xdg-desktop-portal-wlr
       xdg-desktop-portal-gtk
-      kdePackages.xdg-desktop-portal-kde
+      # kdePackages.xdg-desktop-portal-kde
     ];
-    configPackages = [
-      pkgs.kdePackages.xdg-desktop-portal-kde
-    ];
+    # configPackages = [
+    #   pkgs.kdePackages.xdg-desktop-portal-kde
+    # ];
     config = {
-      hyprland = {
+      common = {
         default = [
           "hyprland"
           "gtk"
-          "kde"
+          # "kde"
         ];
-        "org.freedesktop.impl.portal.FileChooser" = "kde";
+        # "org.freedesktop.impl.portal.FileChooser" = "kde";
       };
     };
   };
