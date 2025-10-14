@@ -61,6 +61,30 @@ in
     enable = true;
   };
 
+  xdg.portal = {
+    enable = lib.mkForce true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      # (config.lib.nixGL.wrap xdg-desktop-portal-hyprland)
+      # xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+      kdePackages.xdg-desktop-portal-kde
+    ];
+    configPackages = [
+      pkgs.kdePackages.xdg-desktop-portal-kde
+    ];
+    config = {
+      hyprland = {
+        default = [
+          "hyprland"
+          "gtk"
+          "kde"
+        ];
+        "org.freedesktop.impl.portal.FileChooser" = "kde";
+      };
+    };
+  };
+
   # fuzzel
   programs.fuzzel = {
     enable = true;
@@ -76,6 +100,8 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
+    package = null;
+    portalPackage = null;
 
     settings = {
       # Spread the variables

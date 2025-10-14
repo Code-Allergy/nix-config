@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
@@ -29,18 +30,10 @@
 
   ];
 
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
-      xdg-desktop-portal-gtk
-    ];
-  };
-
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    package = pkgs.kdePackages.sddm;
+    package = lib.mkDefault pkgs.kdePackages.sddm;
   };
   services.displayManager.defaultSession = "hyprland-uwsm";
 
