@@ -12,7 +12,7 @@
     ./networking.nix
 
     ../../nixos/environments/hyprland.nix
-    # ../../nixos/environments/plasma.nix
+    ../../nixos/environments/plasma.nix
     ../../nixos/samba-mounts.nix
     ../../nixos/virtualisation.nix
     ../../nixos/flatpak.nix
@@ -32,7 +32,7 @@
 
   environment.systemPackages = with pkgs; [
     lm_sensors
-    openrgb-with-all-plugins
+    # openrgb-with-all-plugins
   ];
 
   boot = {
