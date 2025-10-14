@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 with lib;
@@ -36,7 +37,7 @@ in
         ccemux
 
         # Wii/Gamecube Emulator
-        #dolphin-emu #TODO mbedtls 2 insecure
+        dolphin-emu
 
         # Wii U Emulator
         cemu
@@ -51,7 +52,7 @@ in
         pcsx2
 
         # Retroarch for other emus
-        # retroarch
+        # retroarch # TODO mbedtls 2 insecure
 
         # Game save backup tool
         ludusavi
@@ -60,6 +61,9 @@ in
         heroic
         gogdl
         # legendary-heroic
+
+        # Osu!
+        inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
       ];
 
     # TEMP
