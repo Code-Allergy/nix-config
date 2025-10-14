@@ -13,6 +13,7 @@
       "libvirtd"
       "audio"
       "video"
+      "render"
       "kvm"
       "adbusers"
       "dialout"
