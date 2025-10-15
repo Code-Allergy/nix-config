@@ -46,6 +46,13 @@ in
           root = false;
           additional_packages = "git vim tmux";
         };
+        kali = {
+          image = "docker.io/kalilinux/kali-rolling:latest";
+          home = "~/containers/kali-distrobox";
+          init = false;
+          root = false;
+          additional_packages = "git vim tmux";
+        };
       };
     };
   };
