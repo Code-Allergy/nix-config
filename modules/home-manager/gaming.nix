@@ -27,7 +27,20 @@ in
         wineWowPackages.waylandFull
 
         # Minecraft (JAVA) launcher
-        prismlauncher
+        (prismlauncher.override {
+          additionalLibs = [
+            bzip2
+            openssl
+            nss
+            nspr
+          ];
+          jdks = [
+            temurin-jre-bin
+            temurin-jre-bin-25
+            temurin-jre-bin-17
+            temurin-jre-bin-8
+          ];
+        })
 
         # Minecraft (BEDROCK) launcher
         # mcpelauncher-client
