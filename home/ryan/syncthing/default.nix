@@ -3,15 +3,17 @@
   lib,
   isHeaded,
   ...
-}: {
+}:
+{
   services.syncthing.enable = true;
 
-  home.packages = with pkgs;
+  home.packages =
+    with pkgs;
     lib.flatten [
       [
       ]
       (lib.optionals isHeaded [
-        syncthingtray-qt6
+        syncthingtray
       ])
     ];
 }
