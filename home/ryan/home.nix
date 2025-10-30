@@ -35,7 +35,7 @@
   # Common packages -- TO REMOVE
   home.packages = with pkgs; [
     # Document editing
-    onlyoffice-bin
+    onlyoffice-desktopeditors
     libreoffice-qt
     hunspell
     hunspellDicts.uk_UA
