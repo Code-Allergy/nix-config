@@ -18,25 +18,33 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       (optionals headed [
         sublime-merge
-      ]) ++ [
+      ])
+      ++ [
         # Github/Gitlab CLI tools
         gh
         glab
       ];
 
-
     programs.git = {
       enable = true;
       package = pkgs.gitFull;
       maintenance.enable = true;
-      userName = "Ryan Schaffer";
-      userEmail = "rys686@mail.usask.ca";
-      delta.enable = true;
+      settings = {
+        user = {
+          name = "Ryan Schaffer";
+          email = "rys686@mail.usask.ca";
+        };
+      };
       lfs.enable = true;
     };
     programs.gitui.enable = true; # rust git tui
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
+    };
   };
 }
