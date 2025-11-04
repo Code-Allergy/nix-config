@@ -8,7 +8,6 @@
       roboto-mono
 
       noto-fonts
-      noto-fonts-emoji
       noto-fonts-color-emoji
       noto-fonts-monochrome-emoji
 
