@@ -3,7 +3,7 @@
   home.packages = with pkgs; [
     # jellyfin-media-player
     jellycli
-    feishin
+    # feishin
     spotube
     youtube-music
     vlc
