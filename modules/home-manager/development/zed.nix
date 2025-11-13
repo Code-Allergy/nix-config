@@ -26,7 +26,7 @@ in
       nil
       nixfmt-rfc-style
       wakatime-cli
-      inputs.tsutsumi.packages.${pkgs.system}.wakatime-ls
+      inputs.tsutsumi.packages.${pkgs.stdenv.hostPlatform.system}.wakatime-ls
 
       # nix formatter + lsp
       alejandra

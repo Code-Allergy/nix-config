@@ -10,8 +10,8 @@
     bridge-utils
 
     # winapps
-    inputs.winapps.packages."${system}".winapps
-    inputs.winapps.packages."${system}".winapps-launcher
+    inputs.winapps.packages."${stdenv.hostPlatform.system}".winapps
+    inputs.winapps.packages."${stdenv.hostPlatform.system}".winapps-launcher
   ];
 
   programs.virt-manager.enable = true;
