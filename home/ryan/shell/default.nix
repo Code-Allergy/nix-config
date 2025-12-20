@@ -47,8 +47,8 @@
       "$HOME/bin"
     ];
     sessionVariables = {
-      EDITOR = lib.mkForce "vim";
-      VISUAL = "vim";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
       PAGER = "less";
       LESS = "-R";
       BROWSER = "firefox";
@@ -64,7 +64,7 @@
     shellAliases = {
       # Allows sudo to be used with aliases
       sudo = "sudo ";
-      
+
       fuck = "f";
 
       # GIT aliases
