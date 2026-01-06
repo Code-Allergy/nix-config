@@ -31,7 +31,6 @@ in
       cargo-cross
       cargo-zigbuild
       cargo-nextest
-      cargo-spellcheck
       cargo-modules
       cargo-bloat
       cargo-binstall
