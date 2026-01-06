@@ -26,9 +26,9 @@ in
     home.packages = with pkgs; [
       # JetBrains IDEs
       android-studio
-      jetbrains.pycharm-professional
+      jetbrains.pycharm
       jetbrains.webstorm
-      jetbrains.idea-ultimate
+      jetbrains.idea
       jetbrains.clion
       jetbrains.rust-rover
       jetbrains.rider
@@ -37,9 +37,9 @@ in
     programs.jetbrains-remote = mkIf cfg.remote.enable {
       enable = true;
       ides = with pkgs.jetbrains; [
-        pycharm-professional
+        pycharm
         webstorm
-        idea-ultimate
+        idea
         clion
         rust-rover
         rider
