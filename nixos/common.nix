@@ -14,6 +14,9 @@
     nix-index
     libsecret
     gnupg
+
+    # android adb
+    android-tools
   ];
 
   programs.fish.enable = true;
@@ -77,9 +80,6 @@
   # earlyoom
   services.earlyoom.enable = true;
   services.earlyoom.freeMemThreshold = 10;
-
-  # android ADB
-  programs.adb.enable = true;
 
   # system config
   nix = {
