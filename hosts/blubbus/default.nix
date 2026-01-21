@@ -18,7 +18,7 @@
     ../../nixos/hardware/display.nix
     ../../nixos/hardware/nvidia.nix
     # ../../nixos/hardware/hibernate-after-sleep.nix
-    ../../nixos/vpn.nix
+    #../../nixos/vpn.nix
 
     # Fileserver mounts
     ../../nixos/samba-mounts.nix

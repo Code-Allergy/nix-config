@@ -16,7 +16,7 @@
     ../../nixos/samba-mounts.nix
     ../../nixos/virtualisation.nix
     ../../nixos/flatpak.nix
-    ../../nixos/vpn.nix
+    #../../nixos/vpn.nix
 
     ../../nixos/hardware/amdgpu.nix
     ../../nixos/hardware/audio.nix
