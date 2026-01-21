@@ -35,7 +35,7 @@
     wayland.enable = true;
     package = lib.mkDefault pkgs.kdePackages.sddm;
   };
-  services.displayManager.defaultSession = "hyprland";
+  services.displayManager.defaultSession = "hyprland-uwsm";
 
   security.pam.services.hyprlock = { };
   qt.platformTheme = "kde";
