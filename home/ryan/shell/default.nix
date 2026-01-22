@@ -1,5 +1,5 @@
 {
-  lib,
+  self,
   pkgs,
   ...
 }:
@@ -42,7 +42,7 @@
   home = {
     preferXdgDirectories = true;
     sessionPath = [
-      "$HOME/nix-config/scripts"
+      (self + "/scripts")
       "$HOME/.local/bin"
       "$HOME/bin"
     ];

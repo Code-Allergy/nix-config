@@ -107,6 +107,7 @@
                   outputs
                   hostname
                   isHeaded
+                  self
                   ;
               };
               home-manager.users.${username} = {

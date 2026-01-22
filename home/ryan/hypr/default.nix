@@ -2,13 +2,14 @@
   pkgs,
   hostname,
   lib,
+  self,
   ...
 }:
 let
   inherit (import ./variables.nix { inherit hostname; }) hyprland_variables;
   inherit (import ./configs/hypridle.nix) hypridle_config;
-  inherit (import ./configs/hyprlock.nix) hyprlock_config;
-  inherit (import ./configs/hyprpaper.nix) hyprpaper_config;
+  inherit (import ./configs/hyprlock.nix { inherit self; }) hyprlock_config;
+  inherit (import ./configs/hyprpaper.nix { inherit self; }) hyprpaper_config;
 in
 {
   imports = [
@@ -109,6 +110,7 @@ in
       "$WORKSPACE_SWIPE" = hyprland_variables.WORKSPACE_SWIPE;
       "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # Comment cleaned
       source = [
+        # TODO: remove literal, incorporate this config
         "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
       ];
       cursor = {
@@ -237,7 +239,7 @@ in
   programs.hyprlock = {
     enable = true;
     settings = {
-      source = lib.mkForce "/home/ryan/nix-config/home/ryan/hypr/themes/mocha.conf";
+      source = lib.mkForce (self + "/home/ryan/hypr/themes/mocha.conf");
     };
     extraConfig = hyprlock_config;
   };
