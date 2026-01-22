@@ -1,3 +1,4 @@
+{ self }:
 {
   hyprlock_config = ''
     $accent = $mauve
@@ -13,7 +14,7 @@
     # BACKGROUND
     background {
       monitor =
-      path = $HOME/nix-config/wallpapers/lockscreen.png
+      path = ${self + "/wallpapers/lockscreen.png"}
       blur_passes = 0
       color = $base
     }
