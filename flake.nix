@@ -41,11 +41,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    tsutsumi = {
-      url = "github:Fuwn/tsutsumi";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";

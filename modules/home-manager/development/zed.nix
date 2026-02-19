@@ -25,7 +25,6 @@ in
       nil
       nixfmt
       #wakatime-cli
-      #inputs.tsutsumi.packages.${pkgs.stdenv.hostPlatform.system}.wakatime-ls
 
       # nix formatter + lsp
       alejandra
