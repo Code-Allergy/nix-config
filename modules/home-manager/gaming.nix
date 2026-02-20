@@ -24,7 +24,7 @@ in
         steamtinkerlaunch
 
         # Wine
-        wineWowPackages.waylandFull
+        wineWow64Packages.waylandFull
 
         # Minecraft (JAVA) launcher
         (prismlauncher.override {
