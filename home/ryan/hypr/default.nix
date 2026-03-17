@@ -159,7 +159,7 @@ in
       bind = $mainMod, V, togglefloating,
 
       bind = $mainMod, P, pseudo, # dwindle
-      bind = $mainMod, TAB, togglesplit, # dwindle
+      bind = $mainMod, TAB, layoutmsg, togglesplit # dwindle
 
       # Move focus with mainMod + arrow keys
       bind = $mainMod, H, movefocus, l
