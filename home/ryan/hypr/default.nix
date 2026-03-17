@@ -31,7 +31,7 @@ in
     pavucontrol
     qview
     wl-clipboard
-    hyprsunset
+    # hyprsunset
     hyprpicker
     hyprls
     swaynotificationcenter
@@ -132,7 +132,7 @@ in
         no_donation_nag = true;
       };
       exec-once = [
-        "uwsm app -- hyprsunset"
+        # "uwsm app -- hyprsunset"
       ]
       ++ (
         if hostname == "bigblubbus" then
