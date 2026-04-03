@@ -14,6 +14,7 @@
   programs.yazi = {
     enable = true;
     package = pkgs.yazi;
+    shellWrapperName = "y";
     settings = {
       manager = {
         show_hidden = true;

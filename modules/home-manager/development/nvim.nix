@@ -56,7 +56,7 @@ in
         # coc-git
       ];
 
-      extraLuaConfig = ''
+      initLua = ''
         -- Use a dark background
         vim.o.background = "dark"
 

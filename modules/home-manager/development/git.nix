@@ -33,6 +33,7 @@ in
       enable = true;
       package = pkgs.gitFull;
       maintenance.enable = true;
+      signing.format = "openpgp";
       settings = {
         user = {
           name = "Ryan Schaffer";
