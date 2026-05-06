@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 {
@@ -9,6 +10,7 @@
       kdePackages.plasma-browser-integration
       tridactyl-native
     ];
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
     policies = {
       AppAutoUpdate = false;
       DisableTelemetry = true;
