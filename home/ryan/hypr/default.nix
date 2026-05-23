@@ -118,7 +118,6 @@ in
       };
       misc = {
         force_default_wallpaper = 0;
-        vfr = true;
         vrr = 2;
         enable_swallow = true;
         swallow_regex = "^(kitty)$";
