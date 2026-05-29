@@ -44,14 +44,11 @@
   security.pam.services.sddm.enableGnomeKeyring = true;
 
   # Allow unfree packages
-  nixpkgs.config = {
-    allowUnfree = true;
-    android_sdk.accept_licence = true;
-  };
 
-  nixpkgs.overlays = [
-    inputs.rust-overlay.overlays.default
-  ];
+
+#  nixpkgs.overlays = [
+#    inputs.rust-overlay.overlays.default
+#  ];
 
   hardware.enableRedistributableFirmware = true;
 

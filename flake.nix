@@ -4,7 +4,7 @@
   description = "Ryan's Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
 
     # Home manager
@@ -48,11 +48,11 @@
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main";
+	
+	nixos-wsl = {
+	  url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
+	};
 
     # Hyprland WM
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
@@ -77,6 +77,31 @@
       systems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
+      mkPkgs = system: import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          android_sdk.accept_licence = true;
+        };
+        overlays = [ (final: prev: {
+          fetchurl = args:
+            # Guard with isAttrs because some callers in nixpkgs (e.g.
+            # makeOverridable wrappers / callPackage auto-call) pass a
+            # function-shaped value here at evaluation time; only
+            # actual fetch requests (attribute sets carrying url + hash)
+            # get the User-Agent injection.
+            if builtins.isAttrs args then
+              prev.fetchurl (args // {
+                curlOptsList = (args.curlOptsList or []) ++
+                  [ "-A" "my-nixos-build-test" ];
+              })
+            else
+              prev.fetchurl args;
+        }) 
+        inputs.rust-overlay.overlays.default
+        ];
+      };
+
       mkNixosSystem =
         {
           hostname,
@@ -84,6 +109,7 @@
           isHeaded ? true,
         }:
         nixpkgs.lib.nixosSystem {
+          pkgs = mkPkgs "x86_64-linux";
           specialArgs = {
             inherit inputs outputs;
             inherit hostname username isHeaded;
@@ -185,6 +211,11 @@
         };
         blubbus = mkNixosSystem {
           hostname = "blubbus";
+          username = "ryan";
+          isHeaded = true;
+        };
+		work-laptop = mkNixosSystem {
+          hostname = "work-laptop";
           username = "ryan";
           isHeaded = true;
         };

@@ -27,20 +27,20 @@
 
   # NEW modules config (2025)
   global.config = {
-    development.enable = true;
+    development.enable = false;
     # ollama keeps GPU from entering D3cold state, so we disable it.
     development.ollama.enable = hostname != "blubbus";
   };
 
   # Common packages -- TO REMOVE
-  home.packages = with pkgs; [
-    # Document editing
-    onlyoffice-desktopeditors
-    libreoffice-qt
-    hunspell
-    hunspellDicts.uk_UA
-    hunspellDicts.th_TH
-  ];
+#  home.packages = with pkgs; [
+#    # Document editing
+#    onlyoffice-desktopeditors
+#    libreoffice-qt
+#    hunspell
+#    hunspellDicts.uk_UA
+#    hunspellDicts.th_TH
+#  ];
   programs.bat.enable = true;
 
   catppuccin.flavor = "mocha";
