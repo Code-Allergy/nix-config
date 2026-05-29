@@ -49,6 +49,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Hyprland WM
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # disko.url = "github:nix-community/disko";
@@ -63,6 +68,7 @@
       nix-flatpak,
       lanzaboote,
       catppuccin,
+      nixos-wsl,
       ...
     }@inputs:
     let
@@ -85,6 +91,7 @@
           modules = [
             lanzaboote.nixosModules.lanzaboote
             nix-flatpak.nixosModules.nix-flatpak
+            nixos-wsl.nixosModules.default
             ./cachix.nix
             ./modules/nixos
             ./nixos/common.nix
