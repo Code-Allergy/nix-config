@@ -29,8 +29,8 @@ in
           ms-vscode.cmake-tools
           ms-vscode.hexeditor
           ms-vscode-remote.remote-ssh
-          ms-python.python
-          ms-python.vscode-pylance
+          # ms-python.python
+          # ms-python.vscode-pylance
           file-icons.file-icons
           esbenp.prettier-vscode
           vscjava.vscode-maven
