@@ -48,6 +48,7 @@
 
   # TEMP
   catppuccin.mako.enable = false;
+  catppuccin.hyprland.enable = false;
 
   services.kdeconnect = {
     enable = true;
