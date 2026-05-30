@@ -19,6 +19,8 @@ in
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;
+      withRuby = true;
+      withPython3 = true;
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;

@@ -107,6 +107,7 @@ in
       systemd.enable = false;
       package = null;
       portalPackage = null;
+      configType = "hyprlang";
 
       settings = {
         # Spread the variables
