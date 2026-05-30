@@ -13,6 +13,7 @@
     modules.dev.enable = true;
     # ollama keeps GPU from entering D3cold state, so we disable it.
     modules.ai.ollama.enable = hostname != "blubbus";
+    modules.desktop.hyprland.enable = isHeaded;
   };
 
   # Common packages -- TO REMOVE
