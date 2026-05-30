@@ -10,10 +10,35 @@ with lib;
 {
   options.global.config = {
     headless = mkEnableOption "Enable headless home-manager configuration";
+    development.enable = mkEnableOption "Enable development configuration";
   };
 
   imports = [
-    ./development
+    ./ai/ollama.nix
+    ./app/browsers.nix
+    ./app/chromium.nix
+    ./app/communication.nix
+    ./app/entertainment.nix
+    ./app/firefox.nix
+    ./app/jetbrains.nix
+    ./app/keyring
+    ./app/kitty
+    ./app/nvim.nix
+    ./app/obs.nix
+    ./app/syncthing
+    ./app/vscode.nix
+    ./app/yazi
+    ./app/zed.nix
+    ./desktop/hypr
+    ./desktop/qtile
+    ./desktop/rofi
+    ./dev/distrobox.nix
+    ./dev/rust.nix
     ./gaming.nix
+    ./shell/bash.nix
+    ./shell/default.nix
+    ./shell/fish.nix
+    ./shell/git.nix
+    ./shell/ssh.nix
   ];
 }

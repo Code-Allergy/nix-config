@@ -6,24 +6,7 @@
   ...
 }:
 {
-  imports = lib.flatten [
-    [
-      ./shell
-      ./keyring
-      ./ssh
-      ./yazi
-    ]
-    (lib.optionals isHeaded [
-      ./communication.nix
-      ./entertainment.nix
-      (import ./syncthing { inherit pkgs lib isHeaded; }) # TEMP
-      ./browsers
-      ./kitty
-      ./hypr
-      ./obs.nix
-      ./rofi
-    ])
-  ];
+  imports = [ ];
 
   # NEW modules config (2025)
   global.config = {
