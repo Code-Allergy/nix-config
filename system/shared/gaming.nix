@@ -7,11 +7,11 @@
 
 with lib;
 let
-  cfg = config.global.config.gaming;
-  headed = config.global.config.headless == false;
+  cfg = config.neer.modules.gaming;
+  headed = config.neer.profiles.headless.enable == false;
 in
 {
-  options.global.config.gaming = {
+  options.neer.modules.gaming = {
     enable = mkEnableOption "Enable gaming configuration";
     steam = {
       enable = mkEnableOption "Enable Steam" // {
@@ -100,6 +100,6 @@ in
     services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
 
     # also enable the gaming module configuration in home-manager
-    home-manager.users.ryan.global.config.gaming.enable = cfg.enable;
+    home-manager.users.ryan.neer.modules.gaming.enable = cfg.enable;
   };
 }

@@ -8,12 +8,12 @@
 with lib;
 
 let
-  devCfg = config.global.config.development;
-  headed = config.global.config.headless == false;
+  devCfg = config.neer.modules.dev;
+  headed = config.neer.profiles.headless.enable == false;
   cfg = devCfg.git;
 in
 {
-  options.global.config.development.git.enable = mkEnableOption "Enable Git" // {
+  options.neer.modules.dev.git.enable = mkEnableOption "Enable Git" // {
     default = devCfg.enable; # Inherit enable state from main module
   };
 

@@ -8,12 +8,12 @@
 with lib;
 
 let
-  devCfg = config.global.config.development;
-  headed = config.global.config.headless == false;
+  devCfg = config.neer.modules.dev;
+  headed = config.neer.profiles.headless.enable == false;
   cfg = devCfg.vscode;
 in
 {
-  options.global.config.development.vscode.enable = mkEnableOption "Enable VSCode" // {
+  options.neer.modules.dev.vscode.enable = mkEnableOption "Enable VSCode" // {
     default = devCfg.enable && headed; # Inherit enable state from main module
   };
 

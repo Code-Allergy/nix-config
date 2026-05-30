@@ -8,9 +8,9 @@
 
 with lib;
 {
-  options.global.config = {
-    headless = mkEnableOption "Enable headless home-manager configuration";
-    development.enable = mkEnableOption "Enable development configuration";
+  options.neer = {
+    profiles.headless.enable = mkEnableOption "Enable headless home-manager configuration";
+    modules.dev.enable = mkEnableOption "Enable development configuration";
   };
   # List your module files here
   imports = [
@@ -18,6 +18,6 @@ with lib;
   ];
 
   config = {
-    home-manager.users.ryan.global.config.headless = config.global.config.headless;
+    home-manager.users.ryan.neer.profiles.headless.enable = config.neer.profiles.headless.enable;
   };
 }

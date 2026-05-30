@@ -8,12 +8,12 @@
 with lib;
 
 let
-  devCfg = config.global.config.development;
-  headed = config.global.config.headless == false;
+  devCfg = config.neer.modules.dev;
+  headed = config.neer.profiles.headless.enable == false;
   cfg = devCfg.distrobox;
 in
 {
-  options.global.config.development.distrobox.enable = mkEnableOption "Enable Distrobox" // {
+  options.neer.modules.dev.distrobox.enable = mkEnableOption "Enable Distrobox" // {
     default = devCfg.enable; # Inherit enable state from main module
   };
 

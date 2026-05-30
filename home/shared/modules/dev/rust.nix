@@ -8,11 +8,11 @@
 with lib;
 
 let # This can be a languages/rust.nix file later or something
-  devCfg = config.global.config.development;
+  devCfg = config.neer.modules.dev;
   cfg = devCfg.rust;
 in
 {
-  options.global.config.development.rust.enable = mkEnableOption "Enable Rust" // {
+  options.neer.modules.dev.rust.enable = mkEnableOption "Enable Rust" // {
     default = devCfg.enable; # Inherit enable state from main module
   };
 

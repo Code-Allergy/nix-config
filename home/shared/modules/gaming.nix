@@ -6,11 +6,11 @@
 }:
 with lib;
 let
-  cfg = config.global.config.gaming;
-  headed = config.global.config.headless == false;
+  cfg = config.neer.modules.gaming;
+  headed = config.neer.profiles.headless.enable == false;
 in
 {
-  options.global.config.gaming = {
+  options.neer.modules.gaming = {
     enable = mkEnableOption "Enable gaming home-manager configuration";
   };
 

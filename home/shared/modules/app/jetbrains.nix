@@ -8,12 +8,12 @@
 with lib;
 # TODO - more configurations
 let
-  devCfg = config.global.config.development;
-  headed = config.global.config.headless == false;
+  devCfg = config.neer.modules.dev;
+  headed = config.neer.profiles.headless.enable == false;
   cfg = devCfg.jetbrains;
 in
 {
-  options.global.config.development.jetbrains = {
+  options.neer.modules.dev.jetbrains = {
     enable = mkEnableOption "Enable Jetbrains IDEs" // {
       default = devCfg.enable && headed; # Inherit enable state from main module
     };

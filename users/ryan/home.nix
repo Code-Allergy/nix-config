@@ -9,10 +9,10 @@
   imports = [ ];
 
   # NEW modules config (2025)
-  global.config = {
-    development.enable = true;
+  neer = {
+    modules.dev.enable = true;
     # ollama keeps GPU from entering D3cold state, so we disable it.
-    development.ollama.enable = hostname != "blubbus";
+    modules.ai.ollama.enable = hostname != "blubbus";
   };
 
   # Common packages -- TO REMOVE

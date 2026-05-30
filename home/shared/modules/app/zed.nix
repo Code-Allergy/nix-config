@@ -8,12 +8,12 @@
 with lib;
 
 let
-  devCfg = config.global.config.development;
-  headed = config.global.config.headless == false;
+  devCfg = config.neer.modules.dev;
+  headed = config.neer.profiles.headless.enable == false;
   cfg = devCfg.zed;
 in
 {
-  options.global.config.development.zed.enable = mkEnableOption "Enable Zed" // {
+  options.neer.modules.dev.zed.enable = mkEnableOption "Enable Zed" // {
     default = devCfg.enable && headed; # Inherit enable state from main module
   };
 

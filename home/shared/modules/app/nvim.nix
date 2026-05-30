@@ -8,11 +8,11 @@
 with lib;
 
 let
-  devCfg = config.global.config.development;
+  devCfg = config.neer.modules.dev;
   cfg = devCfg.nvim;
 in
 {
-  options.global.config.development.nvim.enable = mkEnableOption "Enable Neovim" // {
+  options.neer.modules.dev.nvim.enable = mkEnableOption "Enable Neovim" // {
     default = devCfg.enable; # Inherit enable state from main module
   };
 

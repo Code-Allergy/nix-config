@@ -7,16 +7,15 @@
 with lib;
 
 let
-  devCfg = config.global.config.development;
-  cfg = devCfg.ollama;
+  cfg = config.neer.modules.ai.ollama;
 in
 {
-  options.global.config.development.ollama = {
+  options.neer.modules.ai.ollama = {
     enable = mkEnableOption "Enable Ollama" // {
-      default = devCfg.enable; # Inherit enable state from main module
+      default = config.neer.modules.dev.enable; # Inherit enable state from dev module for now
     };
     amdOverride = mkEnableOption "Enable AMD GPU override" // {
-      default = devCfg.enable; # By default use AMD rocm for this module, maybe later we can add support for other GPUs
+      default = config.neer.modules.dev.enable; # By default use AMD rocm for this module
     };
   };
 

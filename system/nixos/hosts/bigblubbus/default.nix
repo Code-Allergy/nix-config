@@ -26,8 +26,8 @@
   ];
 
   # New (2025) module configuration
-  global.config = {
-    gaming.enable = true;
+  neer = {
+    modules.gaming.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
