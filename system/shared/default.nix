@@ -10,6 +10,7 @@ with lib;
 {
   options.global.config = {
     headless = mkEnableOption "Enable headless home-manager configuration";
+    development.enable = mkEnableOption "Enable development configuration";
   };
   # List your module files here
   imports = [
