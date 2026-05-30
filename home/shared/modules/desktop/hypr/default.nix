@@ -15,11 +15,13 @@ let
   inherit (import ./configs/hyprpaper.nix { inherit self; }) hyprpaper_config;
 in
 {
+  imports = [ ./waybar.nix ]; # todo: fix this :)
   options.neer.modules.desktop.hyprland = {
     enable = mkEnableOption "Enable Hyprland desktop environment";
   };
 
   config = mkIf cfg.enable {
+
     # Keep the import inside the config if possible, or we may need to make waybar.nix aware of cfg.enable
     # For now, we will just wrap the whole home-manager config
 
@@ -118,7 +120,7 @@ in
         "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # Comment cleaned
         source = [
           # TODO: remove literal, incorporate this config
-          "/home/ryan/nix-config/home/ryan/hypr/hyprland.conf"
+          "/home/ryan/nix-config/home/shared/modules/desktop/hypr/hyprland.conf"
         ];
         cursor = {
           default_monitor = hyprland_variables.DEFAULT_MONITOR; # Corrected to use variable
