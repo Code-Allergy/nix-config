@@ -3,28 +3,29 @@
   lib,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     # Hardware config
     (modulesPath + "/profiles/qemu-guest.nix")
 
     # Hardware
-    ../../nixos/hardware/audio.nix
-    ../../nixos/hardware/bluetooth.nix
-    # ../../nixos/hardware/display.nix
+    ../../hardware/audio.nix
+    ../../hardware/bluetooth.nix
+    # ../../hardware/display.nix
 
     # Fileserver mounts
-    # ../../nixos/samba-mounts.nix
+    # ../../samba-mounts.nix
 
     # Register ryan as default user
-    ../../nixos/users/ryan
+    ../../users/ryan
 
     # Run qtile environment
-    ../../nixos/environments/qtile.nix
-    # ../../nixos/environments/gnome.nix
+    ../../environments/qtile.nix
+    # ../../environments/gnome.nix
 
     # common configs for all deployments
-    ../../nixos/common.nix
+    ../../common.nix
   ];
 
   # Bootloader.
@@ -38,15 +39,27 @@
 
     plymouth = {
       enable = true;
-      themePackages = [pkgs.catppuccin-plymouth pkgs.nixos-bgrt-plymouth];
+      themePackages = [
+        pkgs.catppuccin-plymouth
+        pkgs.nixos-bgrt-plymouth
+      ];
       theme = "bgrt";
     };
 
-    kernelParams = ["quiet" "splash"];
-    initrd.availableKernelModules = ["ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk"];
-    initrd.kernelModules = [];
-    kernelModules = ["kvm-amd"];
-    extraModulePackages = [];
+    kernelParams = [
+      "quiet"
+      "splash"
+    ];
+    initrd.availableKernelModules = [
+      "ahci"
+      "xhci_pci"
+      "virtio_pci"
+      "sr_mod"
+      "virtio_blk"
+    ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-amd" ];
+    extraModulePackages = [ ];
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
@@ -62,7 +75,7 @@
       fsType = "vfat";
     };
   };
-  swapDevices = [];
+  swapDevices = [ ];
 
   networking.useDHCP = lib.mkDefault true;
 
@@ -75,7 +88,7 @@
 
   # Laptop TLP battery saving config
   services.tlp.enable = true;
-  services.tlp.settings = {};
+  services.tlp.settings = { };
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
@@ -92,8 +105,8 @@
     };
 
     firewall = {
-      allowedTCPPorts = [];
-      allowedUDPPorts = [];
+      allowedTCPPorts = [ ];
+      allowedUDPPorts = [ ];
       enable = true;
     };
   };

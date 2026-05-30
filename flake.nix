@@ -93,13 +93,13 @@
             nix-flatpak.nixosModules.nix-flatpak
             nixos-wsl.nixosModules.default
             ./cachix.nix
-            ./modules/nixos
-            ./nixos/common.nix
-            (./hosts + "/${hostname}")
+            ./system/shared
+            ./system/nixos/common.nix
+            (./system/nixos/hosts + "/${hostname}")
             # Conditional headed/headless configuration
-            (if isHeaded then ./nixos/headed.nix else ./nixos/headless.nix)
+            (if isHeaded then ./system/nixos/headed.nix else ./system/nixos/headless.nix)
 
-            ./nixos/users/${username}
+            ./users/${username}/nixos.nix
             catppuccin.nixosModules.catppuccin
             # Home-manager module
             home-manager.nixosModules.home-manager
@@ -117,8 +117,8 @@
               };
               home-manager.users.${username} = {
                 imports = [
-                  ./home/${username}/home.nix
-                  ./modules/home-manager
+                  ./users/${username}/home.nix
+                  ./home/shared/modules
                   catppuccin.homeModules.catppuccin
                 ];
               };
@@ -142,7 +142,7 @@
             inherit isHeaded username;
           };
           modules = [
-            ./home/${configName}/home.nix
+            ./users/${configName}/home.nix
 
             {
               home = {
@@ -162,20 +162,20 @@
     {
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
-      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      packages = forAllSystems (system: import ./nix/pkgs nixpkgs.legacyPackages.${system});
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
       # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays { inherit inputs; };
+      overlays = import ./nix/overlays { inherit inputs; };
 
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
-      nixosModules = import ./modules/nixos;
+      nixosModules.default = import ./system/shared;
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
-      homeManagerModules = import ./modules/home-manager;
+      homeManagerModules.default = import ./home/shared/modules;
 
       nixosConfigurations = {
         bigblubbus = mkNixosSystem {

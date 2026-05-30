@@ -10,21 +10,21 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
 
-    ../../nixos/virtualisation.nix
+    ../../virtualisation.nix
 
     # Hardware
-    ../../nixos/hardware/audio.nix
-    ../../nixos/hardware/bluetooth.nix
-    ../../nixos/hardware/display.nix
-    ../../nixos/hardware/nvidia.nix
-    # ../../nixos/hardware/hibernate-after-sleep.nix
-    ../../nixos/vpn.nix
+    ../../hardware/audio.nix
+    ../../hardware/bluetooth.nix
+    ../../hardware/display.nix
+    ../../hardware/nvidia.nix
+    # ../../hardware/hibernate-after-sleep.nix
+    ../../vpn.nix
 
     # Fileserver mounts
-    ../../nixos/samba-mounts.nix
+    ../../samba-mounts.nix
 
-    ../../nixos/environments/plasma.nix
-    ../../nixos/environments/hyprland.nix
+    ../../environments/plasma.nix
+    ../../environments/hyprland.nix
   ];
 
   # New (2025) module configuration
@@ -111,7 +111,7 @@
   services.acpid.enable = true;
 
   # Display brightness
-  programs.light.enable = true;
+  hardware.acpilight.enable = true;
 
   # Network config
   networking = {

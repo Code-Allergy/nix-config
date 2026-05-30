@@ -11,18 +11,18 @@
     ./fs.nix
     ./networking.nix
 
-    ../../nixos/environments/hyprland.nix
-    ../../nixos/environments/plasma.nix
-    ../../nixos/samba-mounts.nix
-    ../../nixos/virtualisation.nix
-    ../../nixos/flatpak.nix
-    ../../nixos/vpn.nix
+    ../../environments/hyprland.nix
+    ../../environments/plasma.nix
+    ../../samba-mounts.nix
+    ../../virtualisation.nix
+    ../../flatpak.nix
+    ../../vpn.nix
 
-    ../../nixos/hardware/amdgpu.nix
-    ../../nixos/hardware/audio.nix
-    ../../nixos/hardware/bluetooth.nix
-    ../../nixos/hardware/printing.nix
-    ../../nixos/hardware/footpetal.nix
+    ../../hardware/amdgpu.nix
+    ../../hardware/audio.nix
+    ../../hardware/bluetooth.nix
+    ../../hardware/printing.nix
+    ../../hardware/footpetal.nix
   ];
 
   # New (2025) module configuration
