@@ -273,7 +273,7 @@ rec {
               };
             }
           )
-          # (import ../system/shared/secrets)
+          (import ../system/shared/secrets)
         ];
       in
       if buildTarget == "iso" then
