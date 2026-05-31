@@ -511,10 +511,10 @@ rec {
         userConf = import (strToFile user ../users);
       in
       nix-on-droid.lib.nixOnDroidConfiguration {
-        inherit system;
+        inherit system pkgs;
         modules = [
           (
-            { ... }:
+            { pkgs, ... }:
             {
               # Don't rely on the configuration to enable a flake-compatible version of Nix.
               nix = {
