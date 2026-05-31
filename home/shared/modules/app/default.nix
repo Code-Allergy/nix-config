@@ -8,13 +8,12 @@
     ./kdeconnect
     ./entertainment
     ./kitty
-    # ./firefox.nix
+    ./jetbrains
+    ./vscode
+    ./zed
 
-    ./jetbrains.nix
     ./keyring
     ./nvim.nix
 
-    ./vscode.nix
-    ./zed.nix
   ];
 }

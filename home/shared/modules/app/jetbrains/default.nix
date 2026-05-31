@@ -1,24 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+# TODO: Split these modules out based on applications.
+{ config, lib, ... }:
 
 with lib;
-# TODO - more configurations
 let
-  devCfg = config.neer.modules.dev;
-  headed = config.neer.profiles.headless.enable == false;
-  cfg = devCfg.jetbrains;
+  cfg = config.neer.modules.app.jetbrains;
 in
 {
-  options.neer.modules.dev.jetbrains = {
-    enable = mkEnableOption "Enable Jetbrains IDEs" // {
-      default = devCfg.enable && headed; # Inherit enable state from main module
-    };
-    remote.enable = mkEnableOption "Enable Jetbrains Remote" // {
-      default = cfg.enable;
+  options.neer.modules.app.jetbrains = {
+    enable = mkEnableOption "Enable All Jetbrains IDEs";
+    remote = {
+      enable = mkEnableOption "Enable Jetbrains Remote";
     };
   };
 

@@ -1,20 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 with lib;
-
 let
-  devCfg = config.neer.modules.dev;
-  headed = config.neer.profiles.headless.enable == false;
-  cfg = devCfg.vscode;
+  cfg = config.neer.modules.app.vscode;
 in
 {
-  options.neer.modules.dev.vscode.enable = mkEnableOption "Enable VSCode" // {
-    default = devCfg.enable && headed; # Inherit enable state from main module
+  options.neer.modules.app.vscode = {
+    enable = mkEnableOption "Enable VSCode";
   };
 
   config = mkIf cfg.enable {

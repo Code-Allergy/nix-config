@@ -1,20 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 with lib;
-
 let
-  devCfg = config.neer.modules.dev;
-  headed = config.neer.profiles.headless.enable == false;
-  cfg = devCfg.zed;
+  cfg = config.neer.modules.app.zed;
 in
 {
-  options.neer.modules.dev.zed.enable = mkEnableOption "Enable Zed" // {
-    default = devCfg.enable && headed; # Inherit enable state from main module
+  options.neer.modules.app.zed = {
+    enable = mkEnableOption "Enable Zed";
   };
 
   config = mkIf cfg.enable {
