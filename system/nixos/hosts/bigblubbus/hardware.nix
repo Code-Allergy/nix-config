@@ -12,7 +12,6 @@
     ../../modules/flatpak.nix
     ../../modules/vpn.nix
 
-    ../../hardware/audio.nix
     ../../hardware/footpetal.nix
   ];
 

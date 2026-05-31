@@ -10,7 +10,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
 
     # Hardware
-    ../../hardware/audio.nix
     ../../hardware/bluetooth.nix
 
     # Fileserver mounts

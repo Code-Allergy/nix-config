@@ -4,7 +4,6 @@
     ./fs.nix
 
     # Hardware
-    ../../hardware/audio.nix
     # ../../hardware/hibernate-after-sleep.nix
     ../../modules/vpn.nix
 
