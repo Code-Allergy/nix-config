@@ -14,11 +14,15 @@
   ];
   neer = {
     modules = {
+      desktop = {
+        hyprland.enable = true;
+      };
       ai.ollama.enable = false;
       gaming.enable = true;
 
       app = {
         browsers.enable = true; # enable ALL browsers
+        entertainment.enable = true;
         syncthing.enable = true;
         kitty.enable = true;
       };

@@ -8,7 +8,7 @@
 
     # ./chromium.nix
 
-    ./entertainment.nix
+    ./entertainment
     # ./firefox.nix
     ./jetbrains.nix
     ./keyring
