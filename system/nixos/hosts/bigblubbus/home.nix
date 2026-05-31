@@ -26,6 +26,10 @@
         syncthing.enable = true;
         kdeconnect.enable = true;
         kitty.enable = true;
+
+        vscode.enable = true;
+        zed.enable = true;
+        jetbrains.enable = true;
       };
 
       dev = {
@@ -33,9 +37,7 @@
         rust.enable = true;
         git.enable = true;
         nvim.enable = true;
-        vscode.enable = true;
-        zed.enable = true;
-        jetbrains.enable = true;
+
       };
     };
   };

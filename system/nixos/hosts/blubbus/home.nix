@@ -15,6 +15,10 @@
       app = {
         browsers.enable = true; # enable ALL browsers
         syncthing.enable = true;
+
+        vscode.enable = true;
+        zed.enable = true;
+        jetbrains.enable = true;
       };
 
       dev = {
@@ -22,9 +26,7 @@
         rust.enable = true;
         git.enable = true;
         nvim.enable = true;
-        vscode.enable = true;
-        zed.enable = true;
-        jetbrains.enable = true;
+
       };
     };
   };

@@ -1,5 +1,10 @@
 # TODO: Split these modules out based on applications.
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 let
