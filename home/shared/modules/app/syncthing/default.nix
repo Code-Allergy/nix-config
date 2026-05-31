@@ -1,19 +1,8 @@
-{
-  pkgs,
-  lib,
-  isHeaded,
-  ...
-}:
+{ pkgs, ... }:
 {
   services.syncthing.enable = true;
 
-  home.packages =
-    with pkgs;
-    lib.flatten [
-      [
-      ]
-      (lib.optionals isHeaded [
-        syncthingtray
-      ])
-    ];
+  home.packages = with pkgs; [
+    syncthingtray
+  ];
 }

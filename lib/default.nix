@@ -80,7 +80,6 @@ rec {
       username,
       configName ? username,
       hostname ? configName,
-      isHeaded ? true,
       homeDirectory ? null,
       extraModules ? [ ],
       ...
@@ -98,7 +97,6 @@ rec {
           username
           hostname
           system
-          isHeaded
           ;
       };
       modules = [
@@ -120,7 +118,6 @@ rec {
       self,
       hostname,
       username,
-      isHeaded ? true,
       system ? "x86_64-linux",
       ...
     }:
@@ -135,7 +132,6 @@ rec {
           inputs
           self
           hostname
-          isHeaded
           userConf
           system
           ;
@@ -150,7 +146,7 @@ rec {
         ../system/shared
         ../system/nixos/common.nix
         (../system/nixos/hosts + "/${hostname}")
-        (if isHeaded then ../system/nixos/headed.nix else ../system/nixos/headless.nix)
+        ../system/nixos/headed.nix
         ../system/nixos/modules/user
         inputs.catppuccin.nixosModules.catppuccin
         inputs.home-manager.nixosModules.home-manager
@@ -162,7 +158,6 @@ rec {
               inputs
               self
               hostname
-              isHeaded
               userConf
               system
               ;

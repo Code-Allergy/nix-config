@@ -84,12 +84,10 @@
         bigblubbus = {
           hostname = "bigblubbus";
           username = "ryan";
-          isHeaded = true;
         };
         blubbus = {
           hostname = "blubbus";
           username = "ryan";
-          isHeaded = true;
         };
       };
 
