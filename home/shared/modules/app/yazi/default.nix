@@ -1,3 +1,4 @@
+# TODO: move to shell applications
 {
   pkgs,
   lib,
