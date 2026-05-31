@@ -5,8 +5,6 @@
 
     # Hardware
     ../../hardware/audio.nix
-    ../../hardware/display.nix
-    ../../hardware/nvidia.nix
     # ../../hardware/hibernate-after-sleep.nix
     ../../modules/vpn.nix
 

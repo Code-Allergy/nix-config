@@ -12,7 +12,6 @@
     # Hardware
     ../../hardware/audio.nix
     ../../hardware/bluetooth.nix
-    # ../../hardware/display.nix
 
     # Fileserver mounts
     # ../../modules/samba-mounts.nix

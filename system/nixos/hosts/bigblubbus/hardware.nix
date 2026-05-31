@@ -12,9 +12,7 @@
     ../../modules/flatpak.nix
     ../../modules/vpn.nix
 
-    ../../hardware/amdgpu.nix
     ../../hardware/audio.nix
-    ../../hardware/printing.nix
     ../../hardware/footpetal.nix
   ];
 

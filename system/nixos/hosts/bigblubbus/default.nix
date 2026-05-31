@@ -12,6 +12,7 @@
         gaming.enable = true;
         virtualization.enable = true;
         bluetooth.enable = true;
+        amdgpu.enable = true;
       };
     };
   };
