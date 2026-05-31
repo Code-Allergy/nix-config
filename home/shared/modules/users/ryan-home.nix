@@ -6,10 +6,10 @@
   imports = [ ];
 
   # NEW modules config (2025)
-  neer = {
-    modules.dev.enable = true;
-    modules.desktop.hyprland.enable = true;
-  };
+  # neer = {
+  #   modules.dev.enable = true;
+  #   modules.desktop.hyprland.enable = true;
+  # };
 
   # Common packages -- TO REMOVE
   home.packages = with pkgs; [

@@ -20,6 +20,7 @@
       app = {
         browsers.enable = true; # enable ALL browsers
         syncthing.enable = true;
+        kitty.enable = true;
       };
 
       dev = {
