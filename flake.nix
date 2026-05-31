@@ -121,6 +121,12 @@
       #   name: cfg: nameValuePair name (mkNixosSystem ({ inherit self; } // cfg))
       # ) nixosConfigurationSpecs;
       #
+      #
+      nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
+        default = {
+          user = "droid";
+        };
+      };
 
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {
@@ -134,6 +140,25 @@
           buildTarget = "nixos";
         };
       };
-      # droidtop // nixtop // hometop // darwintop // vmtop;
+
+      top =
+        let
+          droidtop = genAttrs (builtins.attrNames self.nixOnDroidConfigurations) (
+            attr: self.nixOnDroidConfigurations.${attr}.config.system.build.toplevel
+          );
+          nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
+            attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
+          );
+          # hometop = genAttrs (builtins.attrNames self.homeConfigurations) (
+          #   attr: self.homeConfigurations.${attr}.activationPackage
+          # );
+          # darwintop = genAttrs (builtins.attrNames self.darwinConfigurations) (
+          #   attr: self.darwinConfigurations.${attr}.system
+          # );
+          vmtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
+            attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
+          );
+        in
+        droidtop // nixtop // vmtop;
     };
 }
