@@ -1,6 +1,7 @@
 {
   imports = [
     ./browsers
+    ./obs
     # ./chromium.nix
     ./communication.nix
     ./entertainment.nix
@@ -9,7 +10,7 @@
     ./keyring
     ./kitty
     ./nvim.nix
-    ./obs.nix
+
     ./syncthing
     ./vscode.nix
     ./yazi
