@@ -1,14 +1,15 @@
-{ inputs, self }:
-let
-  lib = inputs.nixpkgs.lib;
-in
+{ inputs }:
+
 rec {
-  inherit (lib)
+  inherit (inputs.nixpkgs.lib)
+    genAttrs
     hasInfix
     hasPrefix
+    mapAttrs'
     mkIf
     mkMerge
     mkOption
+    nameValuePair
     optionalAttrs
     types
     ;
@@ -67,5 +68,109 @@ rec {
         inherit username;
         homeDirectory = resolvedHomeDirectory;
       };
+    };
+
+  mkHomeConfiguration =
+    {
+      self,
+      system,
+      username,
+      configName ? username,
+      hostname ? configName,
+      isHeaded ? true,
+      homeDirectory ? null,
+      extraModules ? [ ],
+      ...
+    }:
+    let
+      userConf = import ../users/${configName}.nix;
+    in
+    inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      extraSpecialArgs = {
+        inherit
+          inputs
+          self
+          userConf
+          username
+          hostname
+          system
+          isHeaded
+          ;
+      };
+      modules = [
+        (mkUserHome {
+          inherit
+            userConf
+            username
+            configName
+            system
+            homeDirectory
+            extraModules
+            ;
+        })
+      ];
+    };
+
+  mkNixosSystem =
+    {
+      self,
+      hostname,
+      username,
+      isHeaded ? true,
+      system ? "x86_64-linux",
+      ...
+    }:
+    let
+      userConf = import ../users/${username}.nix;
+      loginName = userConf.userName or username;
+    in
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit system;
+      specialArgs = {
+        inherit
+          inputs
+          self
+          hostname
+          isHeaded
+          userConf
+          system
+          ;
+        username = loginName;
+        user = userConf;
+      };
+      modules = [
+        inputs.lanzaboote.nixosModules.lanzaboote
+        inputs.nix-flatpak.nixosModules.nix-flatpak
+        inputs.nixos-wsl.nixosModules.default
+        ../cachix.nix
+        ../system/shared
+        ../system/nixos/common.nix
+        (../system/nixos/hosts + "/${hostname}")
+        (if isHeaded then ../system/nixos/headed.nix else ../system/nixos/headless.nix)
+        ../system/nixos/modules/user
+        inputs.catppuccin.nixosModules.catppuccin
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {
+            inherit
+              inputs
+              self
+              hostname
+              isHeaded
+              userConf
+              system
+              ;
+            username = loginName;
+          };
+          home-manager.users.${loginName} = mkUserHome {
+            inherit userConf system;
+            username = loginName;
+            configName = username;
+          };
+        }
+      ];
     };
 }

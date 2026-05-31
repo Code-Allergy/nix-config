@@ -1,8 +1,6 @@
 # TODO
 # harden system - firejail, apparmor, etc
 {
-  description = "Ryan's Flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
@@ -63,121 +61,39 @@
   outputs =
     {
       self,
-      nixpkgs,
-      home-manager,
-      nix-flatpak,
-      lanzaboote,
-      catppuccin,
-      nixos-wsl,
       ...
     }@inputs:
+    with self.lib;
     let
-      inherit (self) outputs;
-      neerLib = import ./lib { inherit inputs self; };
       # Supported systems for your flake packages, shell, etc.
-      systems = [ "x86_64-linux" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forAllSystems = genAttrs systems;
 
-      mkNixosSystem =
-        {
-          hostname,
-          username,
-          isHeaded ? true,
-        }:
-        let
-          userConf = import ./users/${username}.nix;
-        in
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs self;
-            inherit
-              hostname
-              username
-              isHeaded
-              userConf
-              ;
-            user = userConf;
-          };
-          modules = [
-            lanzaboote.nixosModules.lanzaboote
-            nix-flatpak.nixosModules.nix-flatpak
-            nixos-wsl.nixosModules.default
-            ./cachix.nix
-            ./system/shared
-            ./system/nixos/common.nix
-            (./system/nixos/hosts + "/${hostname}")
-            # Conditional headed/headless configuration
-            (if isHeaded then ./system/nixos/headed.nix else ./system/nixos/headless.nix)
-
-            ./system/nixos/modules/user
-            catppuccin.nixosModules.catppuccin
-            # Home-manager module
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = {
-                inherit
-                  inputs
-                  outputs
-                  hostname
-                  isHeaded
-                  self
-                  userConf
-                  ;
-              };
-              home-manager.users.${username} = neerLib.mkUserHome {
-                inherit
-                  userConf
-                  username
-                  isHeaded
-                  ;
-                configName = username;
-              };
-            }
-          ];
+      nixosConfigurationSpecs = {
+        bigblubbus = {
+          hostname = "bigblubbus";
+          username = "ryan";
+          isHeaded = true;
         };
-
-      # Function to create a home-manager configuration
-      mkHomeConfiguration =
-        {
-          system,
-          username,
-          isHeaded ? true,
-          configName ? username, # Allows us to have username "aliases" for different configurations
-          homeDirectory ? null,
-        }:
-        let
-          userConf = import ./users/${configName}.nix;
-        in
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = {
-            inherit
-              inputs
-              outputs
-              self
-              userConf
-              ;
-            inherit isHeaded username;
-          };
-          modules = [
-            (neerLib.mkUserHome {
-              inherit
-                system
-                userConf
-                username
-                isHeaded
-                homeDirectory
-                configName
-                ;
-            })
-          ];
+        blubbus = {
+          hostname = "blubbus";
+          username = "ryan";
+          isHeaded = true;
         };
+      };
+
+      homeConfigurationSpecs = {
+        ryan = {
+          system = "x86_64-linux";
+          username = "ryan";
+        };
+      };
+
     in
     {
-      lib = neerLib;
-
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system: import ./nix/pkgs nixpkgs.legacyPackages.${system});
@@ -191,28 +107,12 @@
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
       nixosModules.default = import ./system/shared;
-      # Reusable home-manager modules you might want to export
-      # These are usually stuff you would upstream into home-manager
-      homeManagerModules.default = import ./home/shared/modules;
+      nixosConfigurations = mapAttrs' (
+        name: cfg: nameValuePair name (neerLib.mkNixosSystem cfg)
+      ) nixosConfigurationSpecs;
 
-      nixosConfigurations = {
-        bigblubbus = mkNixosSystem {
-          hostname = "bigblubbus";
-          username = "ryan";
-          isHeaded = true;
-        };
-        blubbus = mkNixosSystem {
-          hostname = "blubbus";
-          username = "ryan";
-          isHeaded = true;
-        };
-      };
-
-      homeConfigurations = forAllSystems (system: {
-        "ryan" = mkHomeConfiguration {
-          inherit system;
-          username = "ryan";
-        };
-      });
+      homeConfigurations = mapAttrs' (
+        name: cfg: nameValuePair name (neerLib.mkHomeConfiguration cfg)
+      ) homeConfigurationSpecs;
     };
 }
