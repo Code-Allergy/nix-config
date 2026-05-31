@@ -53,6 +53,7 @@ in
       #   default = hyprland;gtk
       #   org.freedesktop.impl.portal.FileChooser = kde
       # '';
+      "hypr/hyprland_ext.conf".source = ./hyprland.conf;
       "uwsm/env".text = ''
         export HYPRCURSOR_THEME=catppuccin-mocha-blue-cursors
         export HYPRCURSOR_SIZE=30
@@ -120,7 +121,7 @@ in
         "$SHADOWS_ENABLED" = hyprland_variables.SHADOWS_ENABLED; # Comment cleaned
         source = [
           # TODO: remove literal, incorporate this config
-          "/home/ryan/nix-config/home/shared/modules/desktop/hypr/hyprland.conf"
+          "${config.xdg.configHome}/hypr/hyprland_ext.conf"
         ];
         cursor = {
           default_monitor = hyprland_variables.DEFAULT_MONITOR; # Corrected to use variable
