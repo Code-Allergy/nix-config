@@ -1,10 +1,10 @@
 {
   imports = [
-    ./browsers.nix
-    ./chromium.nix
+    ./browsers
+    # ./chromium.nix
     ./communication.nix
     ./entertainment.nix
-    ./firefox.nix
+    # ./firefox.nix
     ./jetbrains.nix
     ./keyring
     ./kitty
