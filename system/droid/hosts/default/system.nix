@@ -9,7 +9,7 @@
 with pkgs;
 with userConf;
 {
-  system.stateVersion = "26.05";
+  system.stateVersion = "24.05";
   # programs.zsh.enable = true;
   # security.sudo.wheelNeedsPassword = false;
   nix = {
