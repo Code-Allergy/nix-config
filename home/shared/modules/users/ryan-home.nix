@@ -29,12 +29,6 @@
   catppuccin.mako.enable = false;
   catppuccin.hyprland.enable = false;
 
-  services.kdeconnect = {
-    enable = true;
-    package = pkgs.kdePackages.kdeconnect-kde;
-    indicator = true;
-  };
-
   # Unused, and crashing constantly as of June 29, 2025
   # services.conky = {
   #   enable = true;

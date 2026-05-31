@@ -24,6 +24,7 @@
         browsers.enable = true; # enable ALL browsers
         entertainment.enable = true;
         syncthing.enable = true;
+        kdeconnect.enable = true;
         kitty.enable = true;
       };
 

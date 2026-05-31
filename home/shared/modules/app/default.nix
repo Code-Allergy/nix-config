@@ -5,14 +5,13 @@
     ./discord
     ./syncthing
     ./yazi
-
-    # ./chromium.nix
-
+    ./kdeconnect
     ./entertainment
+    ./kitty
     # ./firefox.nix
+
     ./jetbrains.nix
     ./keyring
-    ./kitty
     ./nvim.nix
 
     ./vscode.nix
