@@ -7,7 +7,7 @@
 
 with lib;
 
-let # This can be a languages/rust.nix file later or something
+let
   devCfg = config.neer.modules.dev;
   cfg = devCfg.rust;
 in
@@ -17,8 +17,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    # TODO: Re-enable the Rust toolchain + rust-overlay once the refactor settles.
+    # For now we keep the Rust helper tools that don't require the toolchain package.
     home.packages = with pkgs; [
-      (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
       taplo # toml formatter & lsp
       cargo-watch
       cargo-deny

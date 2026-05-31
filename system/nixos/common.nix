@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 {
@@ -49,9 +48,8 @@
     android_sdk.accept_licence = true;
   };
 
-  nixpkgs.overlays = [
-    inputs.rust-overlay.overlays.default
-  ];
+  # TODO: Re-enable rust-overlay once Rust toolchain support returns.
+  nixpkgs.overlays = [ ];
 
   hardware.enableRedistributableFirmware = true;
 

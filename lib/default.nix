@@ -88,7 +88,10 @@ rec {
       userConf = import ../users/${configName}.nix;
     in
     inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config = import ../nix/config.nix;
+      };
       extraSpecialArgs = {
         inherit
           inputs

@@ -67,7 +67,6 @@
     let
       systems = [
         "x86_64-linux"
-        "aarch64-linux"
       ];
       forEachSystem = genAttrs systems;
       # overlayList = builtins.attrValues (import ./nix/overlays self);
@@ -104,7 +103,9 @@
       legacyPackages = pkgsBySystem;
       packages = forEachSystem (_system: { });
       formatter = forEachSystem (system: pkgsBySystem.${system}.alejandra);
-      devShell = forEachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
+      devShells = forEachSystem (system: {
+        default = import ./shell.nix { pkgs = pkgsBySystem.${system}; };
+      });
       # overlay = forEachSystem (
       #   system: _final: _prev:
       #   self.packages."${system}"
@@ -134,15 +135,23 @@
         name: cfg: nameValuePair name (mkHomeConfiguration ({ inherit self; } // cfg))
       ) homeConfigurationSpecs;
 
-      top =
-        let
-          nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
-            attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
-          );
-          hometop = genAttrs (builtins.attrNames self.homeConfigurations) (
-            attr: self.homeConfigurations.${attr}.activationPackage
-          );
-        in
-        nixtop // hometop;
+      # checks = forEachSystem (
+      #   system:
+      #   let
+      #     nixosChecks =
+      #       mapAttrs' (name: cfg: nameValuePair "nixos-${name}" cfg.config.system.build.toplevel)
+      #         (
+      #           filterAttrs (
+      #             _: cfg: cfg.pkgs.system == cfg.pkgs.stdenv.hostPlatform.system
+      #           ) self.nixosConfigurations
+      #         );
+      #     homeChecks = mapAttrs' (name: cfg: nameValuePair "home-${name}" cfg.activationPackage) (
+      #       filterAttrs (
+      #         _: cfg: cfg.activationPackage.system == cfg.pkgs.stdenv.hostPlatform.system
+      #       ) self.homeConfigurations
+      #     );
+      #   in
+      #   nixosChecks // homeChecks
+      # );
     };
 }
