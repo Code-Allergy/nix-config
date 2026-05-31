@@ -73,6 +73,7 @@
     }@inputs:
     let
       inherit (self) outputs;
+      neerLib = import ./lib { inherit inputs self; };
       # Supported systems for your flake packages, shell, etc.
       systems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -83,12 +84,19 @@
           username,
           isHeaded ? true,
         }:
+        let
+          userConf = import ./users/${username}.nix;
+        in
         nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit inputs outputs;
-            inherit hostname username isHeaded;
-            userConf = import ./users/${username}.nix;
-            user = import ./users/${username}.nix;
+            inherit inputs outputs self;
+            inherit
+              hostname
+              username
+              isHeaded
+              userConf
+              ;
+            user = userConf;
           };
           modules = [
             lanzaboote.nixosModules.lanzaboote
@@ -115,14 +123,16 @@
                   hostname
                   isHeaded
                   self
+                  userConf
                   ;
               };
-              home-manager.users.${username} = {
-                imports = [
-                  ./home/shared/modules/users/${username}-home.nix
-                  ./home/shared/modules
-                  catppuccin.homeModules.catppuccin
-                ];
+              home-manager.users.${username} = neerLib.mkUserHome {
+                inherit
+                  userConf
+                  username
+                  isHeaded
+                  ;
+                configName = username;
               };
             }
           ];
@@ -137,31 +147,37 @@
           configName ? username, # Allows us to have username "aliases" for different configurations
           homeDirectory ? null,
         }:
+        let
+          userConf = import ./users/${configName}.nix;
+        in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
-            inherit inputs outputs;
+            inherit
+              inputs
+              outputs
+              self
+              userConf
+              ;
             inherit isHeaded username;
           };
           modules = [
-            ./home/shared/modules/users/${configName}-home.nix
-
-            {
-              home = {
-                inherit username;
-                homeDirectory =
-                  if homeDirectory != null then
-                    homeDirectory
-                  else if nixpkgs.lib.hasPrefix "darwin" system then
-                    "/Users/${username}"
-                  else
-                    "/home/${username}";
-              };
-            }
+            (neerLib.mkUserHome {
+              inherit
+                system
+                userConf
+                username
+                isHeaded
+                homeDirectory
+                configName
+                ;
+            })
           ];
         };
     in
     {
+      lib = neerLib;
+
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system: import ./nix/pkgs nixpkgs.legacyPackages.${system});

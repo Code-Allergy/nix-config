@@ -1,85 +1,93 @@
 {
   config,
-  lib,
   pkgs,
+  self,
   userConf,
   ...
 }:
+with self.lib;
 let
   cfg = config.neer.modules.user;
 
-  isPasswdCompatible = str: !(lib.hasInfix ":" str || lib.hasInfix "\n" str);
-  passwdEntry =
-    type:
-    lib.types.addCheck type isPasswdCompatible
-    // {
-      name = "passwdEntry ${type.name}";
-      description = "${type.description}, not containing newlines or colons";
-    };
-
-  defaultExtraGroups = [
-    "plugdev"
+  defaultExtraGroups = existsOrDefault "extraGroups" userConf [
+    "input"
+    "uinput"
+    "audio"
+    "docker"
+    "games"
+    "locate"
+    "libvirtd"
     "networkmanager"
     "wheel"
-    "podman"
-    "docker"
-    "libvirtd"
-    "audio"
     "video"
-    "render"
+    "netdev"
+    "k3s"
     "kvm"
+    "render"
     "adbusers"
     "dialout"
+    "plugdev"
   ];
+
+  defaultHashedPassword = existsOrDefault "hashedPassword" userConf null;
+  defaultInitialPassword = existsOrDefault "initialPassword" userConf "CHANGEME123!";
 in
 {
   options.neer.modules.user = {
-    name = lib.mkOption {
-      type = lib.types.str;
+    name = mkOption {
+      type = types.str;
       default = userConf.userName;
       description = "User's account name.";
     };
 
-    extraGroups = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
+    extraGroups = mkOption {
+      type = types.listOf types.str;
       default = defaultExtraGroups;
       description = "The user's auxiliary groups.";
     };
 
-    hashedPassword = lib.mkOption {
-      type = with lib.types; nullOr (passwdEntry str);
-      default = lib.attrByPath [ "hashedPassword" ] null userConf;
+    hashedPassword = mkOption {
+      type = with types; nullOr (passwdEntry str);
+      default = defaultHashedPassword;
       description = ''
         Specifies the hashed password for the user.
       '';
     };
 
-    initialPassword = lib.mkOption {
-      type = with lib.types; nullOr str;
-      default = lib.attrByPath [ "initialPassword" ] "CHANGEME123!" userConf;
+    initialPassword = mkOption {
+      type = with types; nullOr str;
+      default = defaultInitialPassword;
       description = "Initial password used when no hashed password is provided.";
     };
   };
 
-  config = {
-    users.groups.uinput = { };
+  config = mkMerge [
+    {
+      users.groups = {
+        input = { };
+        uinput = { };
+        games = { };
+        locate = { };
+        k3s = { };
+      };
 
-    users.users.${cfg.name} = {
-      isNormalUser = true;
-      description = userConf.displayName or cfg.name;
-      extraGroups = cfg.extraGroups;
-      shell = pkgs.fish;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE4N8Fiv6jdkPy8yMeE35HoFypjobZ2sq1I/G8iWui5T codeallergy@gmail.com"
-      ];
-    }
-    // lib.optionalAttrs (cfg.hashedPassword != null) {
-      hashedPassword = cfg.hashedPassword;
-    }
-    // lib.optionalAttrs (cfg.hashedPassword == null && cfg.initialPassword != null) {
-      initialPassword = cfg.initialPassword;
-    };
+      users.users.${cfg.name} = {
+        isNormalUser = true;
+        description = existsOrDefault "displayName" userConf cfg.name;
+        extraGroups = cfg.extraGroups;
+        shell = pkgs.fish;
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE4N8Fiv6jdkPy8yMeE35HoFypjobZ2sq1I/G8iWui5T codeallergy@gmail.com"
+        ];
+      }
+      // optionalAttrs (cfg.hashedPassword != null) {
+        hashedPassword = cfg.hashedPassword;
+      }
+      // optionalAttrs (cfg.hashedPassword == null && cfg.initialPassword != null) {
+        initialPassword = cfg.initialPassword;
+      };
 
-    nix.settings.trusted-users = [ cfg.name ];
-  };
+      nix.settings.trusted-users = [ cfg.name ];
+    }
+  ];
 }
