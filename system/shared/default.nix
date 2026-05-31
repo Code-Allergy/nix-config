@@ -1,24 +1,14 @@
-# Add your reusable NixOS modules to this directory, on their own file (https://nixos.wiki/wiki/Module).
-# These should be stuff you would like to share with others, not your personal configurations.
-{
-  lib,
-  config,
-  ...
-}:
+{ lib, ... }:
 
+with builtins;
 with lib;
 {
-  options.neer = {
-    profiles.headless.enable = mkEnableOption "Enable headless home-manager configuration";
-    modules.dev.enable = mkEnableOption "Enable development configuration";
-  };
-  # List your module files here
-  imports = [
-    ./gaming.nix
-  ];
-
-  config = {
-    home-manager.users.${config.neer.modules.user.name}.neer.profiles.headless.enable =
-      config.neer.profiles.headless.enable;
-  };
+  imports =
+    let
+      paths = filterAttrs (n: v: v != null && !(hasPrefix "_" n)) (readDir ./.);
+      files = filterAttrs (n: v: v == "regular" && n != "default.nix") paths;
+      dirs = filterAttrs (n: v: v == "directory") paths;
+      map' = p: map (x: "${toString ./.}/${x}") (attrNames p);
+    in
+    map' dirs ++ map' files;
 }

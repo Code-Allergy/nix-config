@@ -8,7 +8,8 @@
 with lib;
 let
   cfg = config.neer.modules.gaming;
-  headed = config.neer.profiles.headless.enable == false;
+  headed = true;
+  # headed = config.neer.profiles.headless.enable == false;
 in
 {
   options.neer.modules.gaming = {
@@ -98,8 +99,5 @@ in
 
     # Use flatpak lutris for gaming for now
     services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
-
-    # also enable the gaming module configuration in home-manager
-    home-manager.users.${config.neer.modules.user.name}.neer.modules.gaming.enable = cfg.enable;
   };
 }
