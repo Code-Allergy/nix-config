@@ -1,27 +1,31 @@
 {
   pkgs,
+  lib,
+  config,
   ...
 }:
-#let
-# yazi-plugins = pkgs.fetchFromGitHub {
-#   owner = "yazi-rs";
-#   repo = "plugins";
-#   rev = "7458b6c791923d519298df6fef67728f4d19e560";
-#   # hash = lib.fakeSha256;
-# };
-# in {
+with lib;
+let
+  cfg = config.neer.modules.app.yazi;
+in
 {
-  programs.yazi = {
-    enable = true;
-    package = pkgs.yazi;
-    shellWrapperName = "y";
-    settings = {
-      manager = {
-        show_hidden = true;
-      };
-      preview = {
-        max_width = 1000;
-        max_height = 1000;
+  options.neer.modules.app.yazi = {
+    enable = mkEnableOption "Enable yazi";
+  };
+
+  config = mkIf cfg.enable {
+    programs.yazi = {
+      enable = true;
+      package = pkgs.yazi;
+      shellWrapperName = "y";
+      settings = {
+        manager = {
+          show_hidden = true;
+        };
+        preview = {
+          max_width = 1000;
+          max_height = 1000;
+        };
       };
     };
 
