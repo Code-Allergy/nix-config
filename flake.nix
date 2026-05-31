@@ -54,11 +54,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    # # agenix for secrets (used by some droid helpers)
-    # agenix = {
-    #   url = "github:ryantm/agenix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    # agenix for secrets (used by some droid helpers)
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Hyprland WM
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
@@ -122,12 +122,6 @@
       # ) nixosConfigurationSpecs;
       #
 
-      nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
-        default = {
-          user = "droid";
-        };
-      };
-
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {
           user = "ryan";
@@ -140,26 +134,6 @@
           buildTarget = "nixos";
         };
       };
-
-      top =
-        let
-          droidtop = genAttrs (builtins.attrNames inputs.self.nixOnDroidConfigurations) (
-            attr: inputs.self.nixOnDroidConfigurations.${attr}.config.system.build.toplevel
-          );
-          nixtop = genAttrs (builtins.attrNames inputs.self.nixosConfigurations) (
-            attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
-          );
-          # hometop = genAttrs (builtins.attrNames inputs.self.homeConfigurations) (
-          #   attr: inputs.self.homeConfigurations.${attr}.activationPackage
-          # );
-          # darwintop = genAttrs (builtins.attrNames inputs.self.darwinConfigurations) (
-          #   attr: inputs.self.darwinConfigurations.${attr}.system
-          # );
-          vmtop = genAttrs (builtins.attrNames inputs.self.nixosConfigurations) (
-            attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
-          );
-        in
-        droidtop // nixtop;
       # droidtop // nixtop // hometop // darwintop // vmtop;
     };
 }

@@ -93,7 +93,7 @@ rec {
     {
       imports = [
         # (hyprland.homeManagerModules.default)
-        # (agenix.homeManagerModules.default)
+        (agenix.homeManagerModules.default)
         # (import ../home/darwin/modules)
         (catppuccin.homeModules.catppuccin)
         (import ../home/nixos/modules)
@@ -117,40 +117,6 @@ rec {
       name = "passwdEntry ${type.name}";
       description = "${type.description}, not containing newlines or colons";
     };
-
-  # mkUserHome =
-  #   {
-  #     userConf,
-  #     username ? userConf.userName,
-  #     configName ? username,
-  #     config ? ../home/shared/modules/users/${configName}-home.nix,
-  #     system ? "x86_64-linux",
-  #     homeDirectory ? null,
-  #     extraModules ? [ ],
-  #     ...
-  #   }:
-  #   let
-  #     resolvedHomeDirectory =
-  #       if homeDirectory != null then
-  #         homeDirectory
-  #       else if hasPrefix "darwin" system then
-  #         "/Users/${username}"
-  #       else
-  #         "/home/${username}";
-  #   in
-  #   {
-  #     imports = [
-  #       (import ../home/shared/modules)
-  #       inputs.catppuccin.homeModules.catppuccin
-  #       (import config)
-  #     ]
-  #     ++ extraModules;
-
-  #     home = {
-  #       inherit username;
-  #       homeDirectory = resolvedHomeDirectory;
-  #     };
-  #   };
 
   mkHomeConfiguration =
     {
@@ -252,69 +218,18 @@ rec {
           (inputs.lanzaboote.nixosModules.lanzaboote)
           (inputs.catppuccin.nixosModules.catppuccin)
           (inputs.nix-flatpak.nixosModules.nix-flatpak)
+          (inputs.agenix.nixosModules.default)
           # (disko.nixosModules.disko)
-          # (inputs.agenix.nixosModules.default)
           (import ../system/nixos/modules)
           (import ../system/shared)
           (import (strToPath config ../system/nixos/hosts))
         ];
-        #Darwin = Mac Target
-        # darwinModules = [
-        #   (inputs.agenix.darwinModules.default)
-        #   (inputs.home-manager.darwinModules.home-manager)
-        #   ({
-        #     home-manager = {
-        #       useGlobalPkgs = true;
-        #       useUserPackages = true;
-        #       sharedModules = [
-        #         inputs.nixvim.homeModules.nixvim
-        #       ];
-        #       extraSpecialArgs =
-        #         let
-        #           self = inputs.self;
-        #           user = userConf;
-        #         in
-        #         {
-        #           inherit
-        #             inputs
-        #             pkgs
-        #             self
-        #             system
-        #             user
-        #             userConf
-        #             secrets
-        #             ;
-        #         };
-        #     };
-        #   })
-        #   (
-        #     { config, ... }:
-        #     {
-        #       system.activationScripts.applications.text = pkgs.lib.mkForce (''
-        #             echo "setting up ~/Applications/Nix..."
-        #             rm -rf ~/Applications/Nix
-        #             mkdir -p ~/Applications/Nix
-        #             chown mdavis67 ~/Applications/Nix
-        #             find ${config.system.build.applications}/Applications -maxdepth 1 -type l | while read -r f; do
-        #             src="$(/usr/bin/stat -f%Y "$f")"
-        #             appname="$(basename "$src")"
-        #             osascript -e "tell app \"Finder\" to make alias file at POSIX file \"/Users/mdavis67/Applications/Nix/\" to POSIX file \"$src\" with properties {name: \"$appname\"}";
-        #         done
-        #       '');
-        #     }
-        #   )
-
-        #   (import ../system/darwin/modules)
-        #   (import ../system/shared/secrets)
-        #   (import ../system/shared/profiles/macbook.nix)
-        #   (import (strToPath config ../system/darwin/hosts))
-        # ];
         commonModules = [
-          # ({
-          #   environment.systemPackages = [ agenix.packages.${system}.default ];
-          #   age.identityPaths = [ "/home/${userConf.userName}/.ssh/id_rsa" ];
+          ({
+            environment.systemPackages = [ agenix.packages.${system}.default ];
+            age.identityPaths = [ "/home/${userConf.userName}/.ssh/id_rsa" ];
 
-          # })
+          })
           (
             { name, ... }:
             {
