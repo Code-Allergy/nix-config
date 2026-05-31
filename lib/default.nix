@@ -480,7 +480,7 @@ rec {
                     system
                     user
                     userConf
-                    secrets
+                    # secrets
                     ;
                 };
             };
@@ -500,7 +500,7 @@ rec {
               system
               user
               userConf
-              secrets
+              # secrets
               agenix
               home-manager
               ;
