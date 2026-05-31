@@ -35,10 +35,6 @@ with lib;
     ./dev/distrobox.nix
     ./dev/rust.nix
     ./gaming.nix
-    ./shell/bash.nix
-    ./shell/default.nix
-    ./shell/fish.nix
-    ./shell/git.nix
-    ./shell/ssh.nix
+    ./shell
   ];
 }

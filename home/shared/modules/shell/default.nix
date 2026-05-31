@@ -8,6 +8,8 @@
   imports = [
     ./bash.nix
     ./fish.nix
+    ./git.nix
+    ./ssh.nix
   ];
 
   # default shell tools
