@@ -77,33 +77,47 @@ in
         k3s = { };
       };
 
-      users.users.${cfg.name} = {
-        isNormalUser = true;
-        description = existsOrDefault "displayName" userConf cfg.name;
-        extraGroups = cfg.extraGroups;
-        shell = pkgs.fish;
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE4N8Fiv6jdkPy8yMeE35HoFypjobZ2sq1I/G8iWui5T codeallergy@gmail.com"
-        ];
-      }
-      // optionalAttrs (cfg.hashedPassword != null) {
-        hashedPassword = cfg.hashedPassword;
-      }
-      // optionalAttrs (cfg.hashedPassword == null && cfg.initialPassword != null) {
-        initialPassword = cfg.initialPassword;
+      home-manager.users."${userConf.userName}" = mkUserHome {
+        inherit system userConf;
+        config = cfg.home;
+      };
+
+      users = {
+        users.${cfg.name} =
+          with cfg;
+          {
+            inherit extraGroups;
+            isNormalUser = true;
+            name = "${userConf.userName}";
+            home = "/home/${userConf.userName}";
+            description = existsOrDefault "displayName" userConf cfg.name;
+            shell = pkgs.fish;
+            uid = 1000;
+            openssh.authorizedKeys.keys = [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE4N8Fiv6jdkPy8yMeE35HoFypjobZ2sq1I/G8iWui5T codeallergy@gmail.com"
+            ];
+          }
+          // optionalAttrs (cfg.hashedPassword != null) {
+            hashedPassword = cfg.hashedPassword;
+          }
+          // optionalAttrs (cfg.hashedPassword == null && cfg.initialPassword != null) {
+            initialPassword = cfg.initialPassword;
+          };
+
+        mutableUsers = true;
       };
 
       nix.settings.trusted-users = [ cfg.name ];
     }
 
-    (mkIf true {
-      home-manager.users.${cfg.name} = mkUserHome {
-        userConf = userConf;
-        username = cfg.name;
-        configName = cfg.name;
-        system = pkgs.stdenv.hostPlatform.system;
-        extraModules = optional (cfg.home != null) (import cfg.home);
-      };
-    })
+    # (mkIf true {
+    #   home-manager.users.${cfg.name} = mkUserHome {
+    #     userConf = userConf;
+    #     username = cfg.name;
+    #     configName = cfg.name;
+    #     system = pkgs.stdenv.hostPlatform.system;
+    #     extraModules = optional (cfg.home != null) (import cfg.home);
+    #   };
+    # })
   ];
 }

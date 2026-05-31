@@ -85,12 +85,12 @@
         };
       };
 
-      homeConfigurationSpecs = {
-        ryan = {
-          system = "x86_64-linux";
-          username = "ryan";
-        };
-      };
+      # homeConfigurationSpecs = {
+      #   ryan = {
+      #     system = "x86_64-linux";
+      #     username = "ryan";
+      #   };
+      # };
 
     in
     {
@@ -126,9 +126,9 @@
         name: cfg: nameValuePair name (mkNixosSystem ({ inherit self; } // cfg))
       ) nixosConfigurationSpecs;
 
-      homeConfigurations = mapAttrs' (
-        name: cfg: nameValuePair name (mkHomeConfiguration ({ inherit self; } // cfg))
-      ) homeConfigurationSpecs;
+      # homeConfigurations = mapAttrs' (
+      #   name: cfg: nameValuePair name (mkHomeConfiguration ({ inherit self; } // cfg))
+      # ) homeConfigurationSpecs;
 
       # checks = forEachSystem (
       #   system:
