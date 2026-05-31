@@ -139,7 +139,7 @@
           buildTarget = "nixos";
         };
         pixel9-android-avf = {
-          user = "droid";
+          user = "ryan";
           hostname = "pixel9-android-avf";
           system = "aarch64-linux";
           buildTarget = "nixos-avf";

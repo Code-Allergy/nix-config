@@ -6,7 +6,7 @@
 }:
 {
   # just a test :)
-  avf.defaultUser = "droid";
+  avf.defaultUser = "ryan";
   avf.enableGraphics = true;
 
   time.timeZone = "America/Regina";
@@ -15,14 +15,14 @@
   neer = {
     modules = {
       user.home = ./home.nix;
-      system = {
-        gaming.enable = true;
-        virtualization.enable = true;
-        bluetooth = {
-          enable = true;
-          powerOnBoot = false;
-        };
-      };
+      # system = {
+      #   gaming.enable = true;
+      #   virtualization.enable = true;
+      #   bluetooth = {
+      #     enable = true;
+      #     powerOnBoot = false;
+      #   };
+      # };
     };
   };
 
