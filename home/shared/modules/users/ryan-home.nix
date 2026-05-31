@@ -1,6 +1,5 @@
 {
   pkgs,
-  hostname,
   ...
 }:
 {
@@ -9,8 +8,6 @@
   # NEW modules config (2025)
   neer = {
     modules.dev.enable = true;
-    # ollama keeps GPU from entering D3cold state, so we disable it.
-    modules.ai.ollama.enable = hostname != "blubbus";
     modules.desktop.hyprland.enable = true;
   };
 

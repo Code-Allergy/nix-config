@@ -149,7 +149,6 @@ rec {
         ../system/shared
         ../system/nixos/modules
         (../system/nixos/hosts + "/${hostname}")
-        ../system/nixos/modules/user
         inputs.catppuccin.nixosModules.catppuccin
         inputs.home-manager.nixosModules.home-manager
         {
@@ -165,12 +164,8 @@ rec {
               ;
             username = loginName;
           };
-          home-manager.users.${loginName} = mkUserHome {
-            inherit userConf system;
-            username = loginName;
-            configName = username;
-          };
         }
+        ../system/nixos/modules/user
       ];
     };
 }

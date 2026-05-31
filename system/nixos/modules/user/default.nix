@@ -40,6 +40,12 @@ in
       description = "User's account name.";
     };
 
+    home = mkOption {
+      type = with types; nullOr path;
+      default = null;
+      description = "Path to host-local home-manager overrides.";
+    };
+
     extraGroups = mkOption {
       type = types.listOf types.str;
       default = defaultExtraGroups;
@@ -89,5 +95,15 @@ in
 
       nix.settings.trusted-users = [ cfg.name ];
     }
+
+    (mkIf true {
+      home-manager.users.${cfg.name} = mkUserHome {
+        userConf = userConf;
+        username = cfg.name;
+        configName = cfg.name;
+        system = pkgs.stdenv.hostPlatform.system;
+        extraModules = optional (cfg.home != null) (import cfg.home);
+      };
+    })
   ];
 }
