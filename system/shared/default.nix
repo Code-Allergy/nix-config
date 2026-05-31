@@ -18,6 +18,7 @@ with lib;
   ];
 
   config = {
-    home-manager.users.ryan.neer.profiles.headless.enable = config.neer.profiles.headless.enable;
+    home-manager.users.${config.neer.modules.user.name}.neer.profiles.headless.enable =
+      config.neer.profiles.headless.enable;
   };
 }

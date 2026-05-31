@@ -100,6 +100,6 @@ in
     services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
 
     # also enable the gaming module configuration in home-manager
-    home-manager.users.ryan.neer.modules.gaming.enable = cfg.enable;
+    home-manager.users.${config.neer.modules.user.name}.neer.modules.gaming.enable = cfg.enable;
   };
 }

@@ -87,6 +87,8 @@
           specialArgs = {
             inherit inputs outputs;
             inherit hostname username isHeaded;
+            userConf = import ./users/${username}.nix;
+            user = import ./users/${username}.nix;
           };
           modules = [
             lanzaboote.nixosModules.lanzaboote
@@ -99,7 +101,7 @@
             # Conditional headed/headless configuration
             (if isHeaded then ./system/nixos/headed.nix else ./system/nixos/headless.nix)
 
-            ./users/${username}/nixos.nix
+            ./system/nixos/modules/user
             catppuccin.nixosModules.catppuccin
             # Home-manager module
             home-manager.nixosModules.home-manager
@@ -117,7 +119,7 @@
               };
               home-manager.users.${username} = {
                 imports = [
-                  ./users/${username}/home.nix
+                  ./home/shared/modules/users/${username}-home.nix
                   ./home/shared/modules
                   catppuccin.homeModules.catppuccin
                 ];
@@ -142,7 +144,7 @@
             inherit isHeaded username;
           };
           modules = [
-            ./users/${configName}/home.nix
+            ./home/shared/modules/users/${configName}-home.nix
 
             {
               home = {

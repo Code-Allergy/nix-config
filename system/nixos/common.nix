@@ -83,9 +83,6 @@
 
   # system config
   nix = {
-    settings.trusted-users = [
-      "ryan"
-    ];
     extraOptions = ''
       experimental-features = nix-command flakes
       auto-optimise-store = true
