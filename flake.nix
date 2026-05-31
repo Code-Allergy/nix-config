@@ -197,16 +197,6 @@
           inherit system;
           username = "ryan";
         };
-
-        # Tuxworld nix-home configuration
-        "rys686" = mkHomeConfiguration {
-          inherit system;
-          username = "rys686";
-          configName = "ryan";
-          homeDirectory = "/student/rys686";
-          isHeaded = false;
-        };
-        # Add more configurations as needed
       });
     };
 }
