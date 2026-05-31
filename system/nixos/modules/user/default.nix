@@ -70,11 +70,7 @@ in
   config = mkMerge [
     {
       users.groups = {
-        input = { };
         uinput = { };
-        games = { };
-        locate = { };
-        k3s = { };
       };
 
       home-manager.users."${userConf.userName}" = mkUserHome {

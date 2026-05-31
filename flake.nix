@@ -122,10 +122,22 @@
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
       nixosModules.default = import ./system/shared;
-      nixosConfigurations = mapAttrs' (
-        name: cfg: nameValuePair name (mkNixosSystem ({ inherit self; } // cfg))
-      ) nixosConfigurationSpecs;
+      # nixosConfigurations = mapAttrs' (
+      #   name: cfg: nameValuePair name (mkNixosSystem ({ inherit self; } // cfg))
+      # ) nixosConfigurationSpecs;
 
+      nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
+        bigblubbus = {
+          user = "ryan";
+          hostname = "bigblubbus";
+          buildTarget = "nixos";
+        };
+        # blubbus = {
+        #   user = "ryan";
+        #   hostname = "blubbus";
+        #   buildTarget = "nixos";
+        # };
+      };
       # homeConfigurations = mapAttrs' (
       #   name: cfg: nameValuePair name (mkHomeConfiguration ({ inherit self; } // cfg))
       # ) homeConfigurationSpecs;
