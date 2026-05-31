@@ -2,8 +2,12 @@
   imports = [
     ./browsers
     ./obs
+    ./discord
+    ./syncthing
+    ./yazi
+
     # ./chromium.nix
-    ./communication.nix
+
     ./entertainment.nix
     # ./firefox.nix
     ./jetbrains.nix
@@ -11,9 +15,7 @@
     ./kitty
     ./nvim.nix
 
-    ./syncthing
     ./vscode.nix
-    ./yazi
     ./zed.nix
   ];
 }
