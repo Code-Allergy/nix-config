@@ -34,7 +34,7 @@ with lib;
     ./desktop/rofi
     ./dev/distrobox.nix
     ./dev/rust.nix
-    ./gaming.nix
+    ./gaming
     ./shell
   ];
 }
