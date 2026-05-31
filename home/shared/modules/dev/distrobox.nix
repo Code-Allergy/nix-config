@@ -9,7 +9,7 @@ with lib;
 
 let
   devCfg = config.neer.modules.dev;
-  headed = config.neer.profiles.headless.enable == false;
+  headed = true; # TEMP: removal of headed
   cfg = devCfg.distrobox;
 in
 {

@@ -1,0 +1,7 @@
+{
+  imports = [
+    ./hypr
+    ./qtile
+    ./rofi
+  ];
+}
