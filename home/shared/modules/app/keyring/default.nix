@@ -1,3 +1,4 @@
+# TODO: module for this
 { pkgs, ... }:
 {
   # gnome-keyring

@@ -19,6 +19,7 @@
 
       app = {
         browsers.enable = true; # enable ALL browsers
+        syncthing.enable = true;
       };
 
       dev = {
