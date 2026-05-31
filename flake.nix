@@ -47,6 +47,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # nix-on-droid (Android)
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    # # agenix for secrets (used by some droid helpers)
+    # agenix = {
+    #   url = "github:ryantm/agenix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
     # Hyprland WM
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # disko.url = "github:nix-community/disko";
@@ -73,24 +86,6 @@
           # overlays = overlayList;
         }
       );
-
-      nixosConfigurationSpecs = {
-        bigblubbus = {
-          hostname = "bigblubbus";
-          username = "ryan";
-        };
-        blubbus = {
-          hostname = "blubbus";
-          username = "ryan";
-        };
-      };
-
-      # homeConfigurationSpecs = {
-      #   ryan = {
-      #     system = "x86_64-linux";
-      #     username = "ryan";
-      #   };
-      # };
 
     in
     {
@@ -128,9 +123,6 @@
       #
 
       nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
-        nix-on-droid = {
-          user = "droid";
-        };
         default = {
           user = "droid";
         };
@@ -151,9 +143,9 @@
 
       top =
         let
-          # droidtop = genAttrs (builtins.attrNames inputs.self.nixOnDroidConfigurations) (
-          #   attr: inputs.self.nixOnDroidConfigurations.${attr}.config.system.build.toplevel
-          # );
+          droidtop = genAttrs (builtins.attrNames inputs.self.nixOnDroidConfigurations) (
+            attr: inputs.self.nixOnDroidConfigurations.${attr}.config.system.build.toplevel
+          );
           nixtop = genAttrs (builtins.attrNames inputs.self.nixosConfigurations) (
             attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
           );
@@ -167,7 +159,7 @@
             attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
           );
         in
-        nixtop;
+        droidtop // nixtop;
       # droidtop // nixtop // hometop // darwintop // vmtop;
     };
 }
