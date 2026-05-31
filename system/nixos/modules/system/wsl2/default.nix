@@ -1,0 +1,67 @@
+{
+  config,
+  lib,
+  userConf,
+  inputs,
+  hostname,
+  ...
+}:
+with userConf;
+with lib;
+let
+  cfg = config.neer.modules.system.wsl2;
+in
+{
+  options.neer.modules.system.wsl2 = {
+    enable = mkEnableOption "WSL2 System Config";
+  };
+
+  config = mkIf cfg.enable {
+    wsl = {
+      enable = true;
+      wslConf.automount.root = "/mnt";
+      wslConf.interop.appendWindowsPath = true;
+      wslConf.network.generateHosts = false;
+      defaultUser = userName;
+      startMenuLaunchers = true;
+      docker-desktop.enable = false;
+    };
+    programs.nix-ld.enable = true;
+    system.stateVersion = "26.05";
+    programs.zsh.enable = true;
+    time.timeZone = "America/Regina";
+    networking.hostName = "${hostname}";
+    systemd.tmpfiles.rules = [
+      "d /home/${userName}/.config 0755 ${userName} users"
+      "d /home/${userName}/.config/lvim 0755 ${userName} users"
+    ];
+    # Turn on flag for proprietary software
+    nix = {
+      nixPath = [
+        "nixpkgs=${inputs.nixpkgs.outPath}"
+        "nixos-config=/etc/nixos/configuration.nix"
+        "/nix/var/nix/profiles/per-user/root/channels"
+      ];
+
+      settings = {
+        trusted-users = [ "${userName}" ];
+        accept-flake-config = true;
+        #auto-optimize-store = true;
+      };
+
+      extraOptions = ''
+        experimental-features = nix-command flakes
+      '';
+
+      gc = {
+        automatic = true;
+        options = "--delete-older-than 7d";
+      };
+      registry = {
+        nixpkgs = {
+          flake = inputs.nixpkgs;
+        };
+      };
+    };
+  };
+}
