@@ -10,6 +10,7 @@
     ./fish.nix
     ./git.nix
     ./ssh.nix
+    ./nvim.nix
   ];
 
   # default shell tools
