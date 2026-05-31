@@ -8,6 +8,10 @@
       system = {
         gaming.enable = true;
         virtualization.enable = true;
+        bluetooth = {
+          enable = true;
+          powerOnBoot = false;
+        };
       };
     };
   };

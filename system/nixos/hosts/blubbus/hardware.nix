@@ -5,7 +5,6 @@
 
     # Hardware
     ../../hardware/audio.nix
-    ../../hardware/bluetooth.nix
     ../../hardware/display.nix
     ../../hardware/nvidia.nix
     # ../../hardware/hibernate-after-sleep.nix
