@@ -11,8 +11,6 @@
     ../../modules/samba-mounts.nix
     ../../modules/flatpak.nix
     ../../modules/vpn.nix
-
-    ../../hardware/footpetal.nix
   ];
 
   environment.systemPackages = with pkgs; [
