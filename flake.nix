@@ -125,6 +125,16 @@
       # nixosConfigurations = mapAttrs' (
       #   name: cfg: nameValuePair name (mkNixosSystem ({ inherit self; } // cfg))
       # ) nixosConfigurationSpecs;
+      #
+
+      nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
+        nix-on-droid = {
+          user = "droid";
+        };
+        default = {
+          user = "droid";
+        };
+      };
 
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {
@@ -138,27 +148,26 @@
           buildTarget = "nixos";
         };
       };
-      # homeConfigurations = mapAttrs' (
-      #   name: cfg: nameValuePair name (mkHomeConfiguration ({ inherit self; } // cfg))
-      # ) homeConfigurationSpecs;
 
-      # checks = forEachSystem (
-      #   system:
-      #   let
-      #     nixosChecks =
-      #       mapAttrs' (name: cfg: nameValuePair "nixos-${name}" cfg.config.system.build.toplevel)
-      #         (
-      #           filterAttrs (
-      #             _: cfg: cfg.pkgs.system == cfg.pkgs.stdenv.hostPlatform.system
-      #           ) self.nixosConfigurations
-      #         );
-      #     homeChecks = mapAttrs' (name: cfg: nameValuePair "home-${name}" cfg.activationPackage) (
-      #       filterAttrs (
-      #         _: cfg: cfg.activationPackage.system == cfg.pkgs.stdenv.hostPlatform.system
-      #       ) self.homeConfigurations
-      #     );
-      #   in
-      #   nixosChecks // homeChecks
-      # );
+      top =
+        let
+          # droidtop = genAttrs (builtins.attrNames inputs.self.nixOnDroidConfigurations) (
+          #   attr: inputs.self.nixOnDroidConfigurations.${attr}.config.system.build.toplevel
+          # );
+          nixtop = genAttrs (builtins.attrNames inputs.self.nixosConfigurations) (
+            attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
+          );
+          # hometop = genAttrs (builtins.attrNames inputs.self.homeConfigurations) (
+          #   attr: inputs.self.homeConfigurations.${attr}.activationPackage
+          # );
+          # darwintop = genAttrs (builtins.attrNames inputs.self.darwinConfigurations) (
+          #   attr: inputs.self.darwinConfigurations.${attr}.system
+          # );
+          vmtop = genAttrs (builtins.attrNames inputs.self.nixosConfigurations) (
+            attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel
+          );
+        in
+        nixtop;
+      # droidtop // nixtop // hometop // darwintop // vmtop;
     };
 }
