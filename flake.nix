@@ -104,6 +104,7 @@
       legacyPackages = pkgsBySystem;
       packages = forEachSystem (_system: { });
       formatter = forEachSystem (system: pkgsBySystem.${system}.alejandra);
+      devShell = forEachSystem (system: import ./shell.nix { pkgs = pkgsBySystem."${system}"; });
       # overlay = forEachSystem (
       #   system: _final: _prev:
       #   self.packages."${system}"
