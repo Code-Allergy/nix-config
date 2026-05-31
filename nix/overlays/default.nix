@@ -1,24 +1,17 @@
-# This file defines overlays
-{ inputs, ... }:
-{
-  # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev: import ../pkgs final.pkgs;
+self:
 
-  # This one contains whatever you want to overlay
-  # You can change versions, add patches, set compilation flags, anything really.
-  # https://nixos.wiki/wiki/Overlays
-  modifications = final: prev: {
-    # example = prev.example.overrideAttrs (oldAttrs: rec {
-    # ...
-    # });
-  };
-
-  # When applied, the stable nixpkgs set (declared in the flake inputs) will
-  # be accessible through 'pkgs.stable'
-  stable-packages = final: _prev: {
-    stable = import inputs.nixpkgs-stable {
-      system = final.system;
-      config.allowUnfree = true;
-    };
-  };
-}
+with self.lib;
+let
+  dirs = filterAttrs (n: v: v != null && !(hasPrefix "_" n) && (v == "directory")) (
+    builtins.readDir ./.
+  );
+  paths = mapAttrs (name: value: "${toString ./.}/${name}") dirs;
+  result = mapAttrs (
+    name: value:
+    import value {
+      inherit self;
+      inherit (self) inputs;
+    }
+  ) paths;
+in
+result

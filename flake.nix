@@ -65,12 +65,19 @@
     }@inputs:
     with self.lib;
     let
-      # Supported systems for your flake packages, shell, etc.
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
-      forAllSystems = genAttrs systems;
+      forEachSystem = genAttrs systems;
+      pkgsBySystem = forEachSystem (
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          config = import ./nix/config.nix;
+          #overlays = self.overlays."${system}";
+        }
+      );
 
       nixosConfigurationSpecs = {
         bigblubbus = {
@@ -94,15 +101,26 @@
 
     in
     {
-      # Your custom packages
-      # Accessible through 'nix build', 'nix shell', etc
-      packages = forAllSystems (system: import ./nix/pkgs nixpkgs.legacyPackages.${system});
-      # Formatter for your nix files, available through 'nix fmt'
-      # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-
-      # Your custom packages and modifications, exported as overlays
-      overlays = import ./nix/overlays { inherit inputs; };
+      lib = import ./lib { inherit inputs; } // inputs.nixpkgs.lib;
+      packages = forEachSystem (system: import ./nix/pkgs self system);
+      formatter = forEachSystem (system: inputs.nixpkgs.legacyPackages.${system}.alejandra);
+      overlay = forEachSystem (
+        system: _final: _prev:
+        self.packages."${system}"
+      );
+      overlays = forEachSystem (
+        system:
+        with inputs;
+        let
+          ovs = attrValues (import ./nix/overlays self);
+        in
+        [
+          (self.overlay."${system}")
+          # (nur.overlays.default)
+          # # (_:_: { inherit (eww.packages."${system}") eww; })
+        ]
+        ++ ovs
+      );
 
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
