@@ -12,6 +12,10 @@
       ai.ollama.enable = false;
       gaming.enable = true;
 
+      app = {
+        browsers.enable = true; # enable ALL browsers
+      };
+
       dev = {
         distrobox.enable = true;
         rust.enable = true;
