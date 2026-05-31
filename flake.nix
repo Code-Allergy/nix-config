@@ -65,19 +65,18 @@
     }@inputs:
     with self.lib;
     let
-      config = import ./nix/config.nix;
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
       forEachSystem = genAttrs systems;
-      overlayList = builtins.attrValues (import ./nix/overlays self);
+      # overlayList = builtins.attrValues (import ./nix/overlays self);
       pkgsBySystem = forEachSystem (
         system:
         import inputs.nixpkgs {
           inherit system;
-          inherit config;
-          overlays = overlayList;
+          config = import ./nix/config.nix;
+          # overlays = overlayList;
         }
       );
 
@@ -135,5 +134,16 @@
       homeConfigurations = mapAttrs' (
         name: cfg: nameValuePair name (mkHomeConfiguration ({ inherit self; } // cfg))
       ) homeConfigurationSpecs;
+
+      top =
+        let
+          nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
+            attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
+          );
+          hometop = genAttrs (builtins.attrNames self.homeConfigurations) (
+            attr: self.homeConfigurations.${attr}.activationPackage
+          );
+        in
+        nixtop // hometop;
     };
 }
