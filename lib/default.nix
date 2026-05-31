@@ -147,9 +147,8 @@ rec {
         inputs.nixos-wsl.nixosModules.default
         ../cachix.nix
         ../system/shared
-        ../system/nixos/common.nix
+        ../system/nixos/modules
         (../system/nixos/hosts + "/${hostname}")
-        ../system/nixos/headed.nix
         ../system/nixos/modules/user
         inputs.catppuccin.nixosModules.catppuccin
         inputs.home-manager.nixosModules.home-manager

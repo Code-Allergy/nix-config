@@ -15,7 +15,7 @@
     # ../../hardware/display.nix
 
     # Fileserver mounts
-    # ../../samba-mounts.nix
+    # ../../modules/samba-mounts.nix
 
     # Register ryan as default user
     ../../users/ryan
@@ -23,9 +23,6 @@
     # Run qtile environment
     ../../environments/qtile.nix
     # ../../environments/gnome.nix
-
-    # common configs for all deployments
-    ../../common.nix
   ];
 
   # Bootloader.

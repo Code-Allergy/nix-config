@@ -13,10 +13,10 @@
 
     ../../environments/hyprland.nix
     ../../environments/plasma.nix
-    ../../samba-mounts.nix
-    ../../virtualisation.nix
-    ../../flatpak.nix
-    ../../vpn.nix
+    ../../modules/samba-mounts.nix
+    ../../modules/virtualisation.nix
+    ../../modules/flatpak.nix
+    ../../modules/vpn.nix
 
     ../../hardware/amdgpu.nix
     ../../hardware/audio.nix

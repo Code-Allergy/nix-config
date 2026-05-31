@@ -10,7 +10,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
 
-    ../../virtualisation.nix
+    ../../modules/virtualisation.nix
 
     # Hardware
     ../../hardware/audio.nix
@@ -18,10 +18,10 @@
     ../../hardware/display.nix
     ../../hardware/nvidia.nix
     # ../../hardware/hibernate-after-sleep.nix
-    ../../vpn.nix
+    ../../modules/vpn.nix
 
     # Fileserver mounts
-    ../../samba-mounts.nix
+    ../../modules/samba-mounts.nix
 
     ../../environments/plasma.nix
     ../../environments/hyprland.nix
