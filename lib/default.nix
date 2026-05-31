@@ -1,10 +1,13 @@
-{ inputs }:
+{ inputs, ... }:
 
 rec {
   inherit (inputs.nixpkgs.lib)
+    attrValues
+    filterAttrs
     genAttrs
     hasInfix
     hasPrefix
+    mapAttrs
     mapAttrs'
     mkIf
     mkMerge
