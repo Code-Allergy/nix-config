@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  hostname,
   lib,
   self,
   ...
@@ -13,6 +12,7 @@ let
   inherit (import ./configs/hypridle.nix) hypridle_config;
   inherit (import ./configs/hyprlock.nix { inherit self; }) hyprlock_config;
   inherit (import ./configs/hyprpaper.nix { inherit self; }) hyprpaper_config;
+  hostname = "bigblubbus";
 in
 {
   imports = [ ./waybar.nix ]; # todo: fix this :)

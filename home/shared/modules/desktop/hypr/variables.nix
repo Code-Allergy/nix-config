@@ -1,5 +1,7 @@
-{ hostname }:
-
+{ ... }:
+let
+  hostname = "bigblubbus";
+in
 {
   hyprland_variables =
     if hostname == "bigblubbus" then

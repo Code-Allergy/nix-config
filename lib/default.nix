@@ -95,6 +95,7 @@ rec {
         # (hyprland.homeManagerModules.default)
         # (agenix.homeManagerModules.default)
         # (import ../home/darwin/modules)
+        (catppuccin.homeModules.catppuccin)
         (import ../home/nixos/modules)
         (import config)
         mkCommonHomeConfig
@@ -191,64 +192,6 @@ rec {
             extraModules
             ;
         })
-      ];
-    };
-
-  mkNixosSystem =
-    {
-      self,
-      hostname,
-      username,
-      system ? "x86_64-linux",
-      ...
-    }:
-    let
-      userConf = import ../users/${username}.nix;
-      loginName = userConf.userName or username;
-    in
-    inputs.nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = {
-        inherit
-          inputs
-          self
-          hostname
-          userConf
-          system
-          ;
-        username = loginName;
-        user = userConf;
-      };
-      modules = [
-        inputs.lanzaboote.nixosModules.lanzaboote
-        inputs.catppuccin.nixosModules.catppuccin
-        inputs.nix-flatpak.nixosModules.nix-flatpak
-        inputs.nixos-wsl.nixosModules.default
-        (import ../system/shared)
-        (import ../system/nixos/modules)
-        (../system/nixos/hosts + "/${hostname}")
-        inputs.home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {
-            inherit
-              inputs
-              self
-              hostname
-              userConf
-              system
-              ;
-            username = loginName;
-          };
-        }
-        (
-          { ... }:
-          {
-            system.stateVersion = "24.05";
-          }
-        )
-        ../system/nixos/modules/user
       ];
     };
 
