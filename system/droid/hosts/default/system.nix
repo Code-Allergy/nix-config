@@ -10,8 +10,8 @@ with pkgs;
 with userConf;
 {
   system.stateVersion = "26.05";
-  programs.zsh.enable = true;
-  security.sudo.wheelNeedsPassword = false;
+  # programs.zsh.enable = true;
+  # security.sudo.wheelNeedsPassword = false;
   nix = {
     extraOptions = ''
       experimental-features = nix-command flakes
