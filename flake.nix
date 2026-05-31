@@ -47,11 +47,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nix-on-droid (Android)
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-23.11";
+    nixos-avf = {
+      url = "github:nix-community/nixos-avf";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
 
     # agenix for secrets (used by some droid helpers)
@@ -75,6 +73,7 @@
     let
       systems = [
         "x86_64-linux"
+        "aarch64-linux"
       ];
       forEachSystem = genAttrs systems;
       # overlayList = builtins.attrValues (import ./nix/overlays self);
@@ -122,11 +121,11 @@
       # ) nixosConfigurationSpecs;
       #
       #
-      nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
-        default = {
-          user = "droid";
-        };
-      };
+      # nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
+      #   default = {
+      #     user = "droid";
+      #   };
+      # };
 
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {
@@ -139,13 +138,16 @@
           hostname = "blubbus";
           buildTarget = "nixos";
         };
+        pixel9-android-avf = {
+          user = "droid";
+          hostname = "pixel9-android-avf";
+          system = "aarch64-linux";
+          buildTarget = "nixos-avf";
+        };
       };
 
       top =
         let
-          droidtop = genAttrs (builtins.attrNames self.nixOnDroidConfigurations) (
-            attr: self.nixOnDroidConfigurations.${attr}.config.system.build.toplevel
-          );
           nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
             attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
           );
@@ -159,6 +161,6 @@
             attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
           );
         in
-        droidtop // nixtop // vmtop;
+        nixtop // vmtop;
     };
 }

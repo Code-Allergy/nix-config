@@ -349,6 +349,29 @@ rec {
                 ;
             };
         }
+
+      else if buildTarget == "nixos-avf" then
+        nixosSystem {
+          inherit system;
+          modules = commonModules ++ nixosModules ++ [ inputs.nixos-avf.nixosModules.avf ];
+          specialArgs =
+            let
+              self = inputs.self;
+              user = userConf;
+            in
+            {
+              inherit
+                inputs
+                name
+                self
+                system
+                user
+                userConf
+                hostname
+                secrets
+                ;
+            };
+        }
       #handles VM builds. Default will not cross compile.
       else if buildTarget == "vm" then
         nixosSystem {
@@ -405,106 +428,106 @@ rec {
     );
 
   ################################## DROID ##################################
-  mkNixOnDroidConfiguration =
-    name:
-    {
-      config ? name,
-      user ? "",
-      system ? "aarch64-linux",
-      hostname ? "nix-on-droid",
-      args ? { },
-    }:
-    nameValuePair name (
-      let
-        pkgs = import nixpkgs {
-          system = "aarch64-linux";
-          overlays = [
-            nix-on-droid.overlays.default
-            # add other overlays
-          ];
-        };
-        userConf = import (strToFile user ../users);
-      in
-      nix-on-droid.lib.nixOnDroidConfiguration {
-        inherit system pkgs;
-        modules = [
-          (
-            { pkgs, ... }:
-            {
-              # Don't rely on the configuration to enable a flake-compatible version of Nix.
-              nix = {
-                package = pkgs.nixVersions.stable;
-                extraOptions = "experimental-features = nix-command flakes";
-              };
-            }
-          )
+  # mkNixOnDroidConfiguration =
+  # name:
+  # {
+  #   config ? name,
+  #   user ? "",
+  #   system ? "aarch64-linux",
+  #   hostname ? "nix-on-droid",
+  #   args ? { },
+  # }:
+  # nameValuePair name (
+  #   let
+  #     pkgs = import nixpkgs {
+  #       system = "aarch64-linux";
+  #       overlays = [
+  #         nix-on-droid.overlays.default
+  #         # add other overlays
+  #       ];
+  #     };
+  #     userConf = import (strToFile user ../users);
+  #   in
+  #   nix-on-droid.lib.nixOnDroidConfiguration {
+  #     inherit system pkgs;
+  #     modules = [
+  #       (
+  #         { pkgs, ... }:
+  #         {
+  #           # Don't rely on the configuration to enable a flake-compatible version of Nix.
+  #           nix = {
+  #             package = pkgs.nixVersions.stable;
+  #             extraOptions = "experimental-features = nix-command flakes";
+  #           };
+  #         }
+  #       )
 
-          (
-            { inputs, ... }:
-            {
-              # Re-expose self and nixpkgs as flakes.
-              nix.registry = {
-                self.flake = inputs.self;
-                nixpkgs = {
-                  from = {
-                    id = "nixpkgs";
-                    type = "indirect";
-                  };
-                  flake = inputs.nixpkgs;
-                };
-              };
-            }
-          )
-          (
-            { ... }:
-            {
-              environment.etcBackupExtension = ".bak";
-              system.stateVersion = "24.05";
-            }
-          )
-          ({
-            home-manager = {
-              # useUserPackages = true;
-              config = ../home/droid/home.nix;
-              useGlobalPkgs = true;
-              extraSpecialArgs =
-                let
-                  self = inputs.self;
-                  user = userConf;
-                in
-                # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
-                {
-                  inherit
-                    inputs
-                    self
-                    system
-                    user
-                    userConf
-                    # secrets
-                    ;
-                };
-            };
-          })
-          (import (strToPath config ../system/droid/hosts))
+  #       (
+  #         { inputs, ... }:
+  #         {
+  #           # Re-expose self and nixpkgs as flakes.
+  #           nix.registry = {
+  #             self.flake = inputs.self;
+  #             nixpkgs = {
+  #               from = {
+  #                 id = "nixpkgs";
+  #                 type = "indirect";
+  #               };
+  #               flake = inputs.nixpkgs;
+  #             };
+  #           };
+  #         }
+  #       )
+  #       (
+  #         { ... }:
+  #         {
+  #           environment.etcBackupExtension = ".bak";
+  #           system.stateVersion = "24.05";
+  #         }
+  #       )
+  #       ({
+  #         home-manager = {
+  #           # useUserPackages = true;
+  #           config = ../home/droid/home.nix;
+  #           useGlobalPkgs = true;
+  #           extraSpecialArgs =
+  #             let
+  #               self = inputs.self;
+  #               user = userConf;
+  #             in
+  #             # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
+  #             {
+  #               inherit
+  #                 inputs
+  #                 self
+  #                 system
+  #                 user
+  #                 userConf
+  #                 # secrets
+  #                 ;
+  #             };
+  #         };
+  #       })
+  #       (import (strToPath config ../system/droid/hosts))
 
-        ];
-        extraSpecialArgs =
-          let
-            self = inputs.self;
-            user = userConf;
-          in
-          {
-            inherit
-              inputs
-              self
-              system
-              user
-              userConf
-              # secrets
-              agenix
-              home-manager
-              ;
-          };
-      }
-    );
+  #     ];
+  #     extraSpecialArgs =
+  #       let
+  #         self = inputs.self;
+  #         user = userConf;
+  #       in
+  #       {
+  #         inherit
+  #           inputs
+  #           self
+  #           system
+  #           user
+  #           userConf
+  #           # secrets
+  #           agenix
+  #           home-manager
+  #           ;
+  #       };
+  #   }
+  # );
 }
