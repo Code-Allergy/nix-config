@@ -1,13 +1,11 @@
 {
   pkgs,
   lib,
-  modulesPath,
   ...
 }:
 {
   imports = [
     # Hardware config
-    (modulesPath + "/installer/scan/not-detected.nix")
     ./fs.nix
 
     ../../modules/virtualisation.nix
