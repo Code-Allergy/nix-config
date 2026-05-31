@@ -3,8 +3,6 @@
   imports = [
     ./fs.nix
 
-    ../../modules/virtualisation.nix
-
     # Hardware
     ../../hardware/audio.nix
     ../../hardware/bluetooth.nix

@@ -9,7 +9,6 @@
     ./fs.nix
 
     ../../modules/samba-mounts.nix
-    ../../modules/virtualisation.nix
     ../../modules/flatpak.nix
     ../../modules/vpn.nix
 
@@ -81,4 +80,5 @@
 
   # enable bluetooth on boot
   hardware.bluetooth.powerOnBoot = lib.mkForce true;
+  services.fwupd.enable = true;
 }

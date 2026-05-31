@@ -6,11 +6,6 @@
     ./networking.nix
   ];
 
-  # New (2025) module configuration
-  neer = {
-    modules.gaming.enable = true;
-  };
-
   # Lock on lid close
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";

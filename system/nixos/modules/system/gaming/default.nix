@@ -7,12 +7,12 @@
 
 with lib;
 let
-  cfg = config.neer.modules.gaming;
+  cfg = config.neer.modules.system.gaming;
   headed = true;
   # headed = config.neer.profiles.headless.enable == false;
 in
 {
-  options.neer.modules.gaming = {
+  options.neer.modules.system.gaming = {
     enable = mkEnableOption "Enable gaming configuration";
     steam = {
       enable = mkEnableOption "Enable Steam" // {
