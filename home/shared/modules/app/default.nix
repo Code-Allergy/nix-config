@@ -1,19 +1,12 @@
+{ lib, ... }:
+
+with builtins;
+with lib;
 {
-  imports = [
-    ./browsers
-    ./obs
-    ./discord
-    ./syncthing
-    ./yazi
-    ./kdeconnect
-    ./entertainment
-    ./kitty
-    ./jetbrains
-    ./vscode
-    ./zed
-
-    ./keyring
-    ./nvim.nix
-
-  ];
+  imports =
+    let
+      dirs = filterAttrs (n: v: v != null && !(hasPrefix "_" n) && (v == "directory")) (readDir ./.);
+      paths = map (x: "${toString ./.}/${x}") (attrNames dirs);
+    in
+    paths;
 }
