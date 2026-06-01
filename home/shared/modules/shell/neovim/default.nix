@@ -8,14 +8,10 @@
 with lib;
 
 let
-  devCfg = config.neer.modules.dev;
-  cfg = devCfg.nvim;
+  cfg = config.neer.modules.shell.neovim;
 in
 {
-  options.neer.modules.dev.nvim.enable = mkEnableOption "Enable Neovim" // {
-    default = devCfg.enable; # Inherit enable state from main module
-  };
-
+  options.neer.modules.shell.neovim.enable = mkEnableOption "Enable Neovim";
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;

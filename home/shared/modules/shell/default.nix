@@ -1,47 +1,16 @@
+{ self, lib, ... }:
+
+with builtins;
+with lib;
 {
-  self,
-  pkgs,
-  ...
-}:
-{
-  # TODO
-  imports = [
-    ./bash.nix
-    ./fish.nix
-    ./git.nix
-    ./ssh.nix
-    ./nvim.nix
-  ];
+  imports =
+    let
+      dirs = filterAttrs (n: v: v != null && !(hasPrefix "_" n) && (v == "directory")) (readDir ./.);
+      paths = map (x: "${toString ./.}/${x}") (attrNames dirs);
+    in
+    paths;
 
-  # default shell tools
-  home.packages = with pkgs; [
-    # run any package with ,
-    comma
-
-    # CLI tools we want everywhere
-    htop
-    bottom
-    eza
-    killall
-    file
-
-    # network tools
-    wget
-    curl
-
-    # sshfs
-    sshfs
-  ];
-
-  programs.tealdeer = {
-    enable = true;
-    settings.updates = {
-      auto_update = true;
-      auto_update_interval_hours = 24;
-    };
-  };
-
-  # default shell configuration
+  # some general shell configs
   home = {
     preferXdgDirectories = true;
     sessionPath = [
@@ -67,7 +36,6 @@
     shellAliases = {
       # Allows sudo to be used with aliases
       sudo = "sudo ";
-
       fuck = "f";
 
       # GIT aliases
@@ -82,12 +50,7 @@
       gb = "git branch";
 
       nix-switch = "sudo nixos-rebuild switch";
-
       serve = "python3 -m http.server";
     };
-  };
-
-  programs.starship = {
-    enable = true;
   };
 }

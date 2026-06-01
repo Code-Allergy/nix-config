@@ -24,9 +24,13 @@
       dev = {
         distrobox.enable = true;
         rust.enable = true;
-        git.enable = true;
-        nvim.enable = true;
+      };
 
+      shell = {
+        bash.enable = true;
+        git.enable = true;
+        # fish.enable = true;
+        neovim.enable = true;
       };
     };
   };

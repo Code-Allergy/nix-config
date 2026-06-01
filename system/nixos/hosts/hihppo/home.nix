@@ -14,10 +14,6 @@
   ];
   neer = {
     modules = {
-      desktop = {
-        hyprland.enable = true;
-      };
-
       app = {
         browsers.enable = true; # enable ALL browsers
         entertainment.enable = false;
@@ -33,9 +29,14 @@
       dev = {
         distrobox.enable = false;
         rust.enable = false;
-        git.enable = true;
-        nvim.enable = true;
+      };
 
+      shell = {
+        bash.enable = true;
+        git.enable = true;
+        # fish.enable = true;
+        neovim.enable = true;
+        starship.enable = false;
       };
     };
   };
