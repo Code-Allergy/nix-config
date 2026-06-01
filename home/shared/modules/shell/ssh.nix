@@ -16,5 +16,9 @@
         addKeysToAgent = "yes";
       };
     };
+
+    extraConfig = ''
+      Include ~/.ssh/config.d/*.conf
+    '';
   };
 }
