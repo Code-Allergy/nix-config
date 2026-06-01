@@ -12,6 +12,7 @@
           enable = true;
           powerOnBoot = false;
         };
+        tailscale.enable = true;
       };
     };
   };

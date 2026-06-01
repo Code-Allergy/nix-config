@@ -13,6 +13,7 @@
         virtualization.enable = true;
         bluetooth.enable = true;
         amdgpu.enable = true;
+        tailscale.enable = true;
       };
     };
   };
