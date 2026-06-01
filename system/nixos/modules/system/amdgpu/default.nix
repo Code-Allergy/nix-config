@@ -47,12 +47,24 @@ in
 
     systemd.packages = with pkgs; [ lact ];
     systemd.services.lactd.wantedBy = [ "multi-user.target" ];
-
-    # early load amdgpu kernel module, for hidpi support during boot
     hardware.amdgpu.initrd.enable = true;
-    # enable overclocking, feature mask: 0xfffd7fff (supposedly less chance of flickering)
     hardware.amdgpu.overdrive.enable = true;
-    # hardware.amdgpu.overdrive.ppfeaturemask = "0xffffffff";
+
+    security = {
+      # CoreCtrl Configuration
+      polkit.extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if ((action.id == "org.corectrl.helper.init" ||
+              action.id == "org.corectrl.helperkiller.init") &&
+              subject.local == true &&
+              subject.active == true &&
+              subject.isInGroup("users")) {
+                  return polkit.Result.YES;
+              }
+        });
+      '';
+      # Other security options: https://nixos.org/nixos/options.html#security
+    };
 
     environment.variables = {
       NIXOS_OZONE_WL = "1"; # Electron apps use Wayland

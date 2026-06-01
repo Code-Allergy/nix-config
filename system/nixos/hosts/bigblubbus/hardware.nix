@@ -51,16 +51,11 @@
       # Display
       "video=DP-1:1920x1080@144"
       "video=HDMI-A-1:1920x1080@60:rotate:3"
-
-      # AMDGPU
-      "amdgpu.ppfeaturemask=0xffffffff"
     ];
 
     # Latest kernel vers
     kernelPackages = pkgs.linuxPackages_latest;
   };
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   services.hardware.openrgb = {
@@ -68,7 +63,5 @@
     package = pkgs.openrgb-with-all-plugins;
   };
 
-  # enable bluetooth on boot
-  hardware.bluetooth.powerOnBoot = lib.mkForce true;
   services.fwupd.enable = true;
 }

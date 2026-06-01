@@ -37,22 +37,6 @@
 
   hardware.enableRedistributableFirmware = true;
 
-  security = {
-    # CoreCtrl Configuration
-    polkit.extraConfig = ''
-      polkit.addRule(function(action, subject) {
-        if ((action.id == "org.corectrl.helper.init" ||
-            action.id == "org.corectrl.helperkiller.init") &&
-            subject.local == true &&
-            subject.active == true &&
-            subject.isInGroup("users")) {
-                return polkit.Result.YES;
-            }
-      });
-    '';
-    # Other security options: https://nixos.org/nixos/options.html#security
-  };
-
   # use zram via zram-generator (preferred for AVF devices)
   services.zram-generator = {
     enable = true;
