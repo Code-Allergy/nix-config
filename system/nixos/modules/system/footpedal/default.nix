@@ -5,10 +5,10 @@
 }:
 with lib;
 let
-  cfg = config.neer.modules.system.footpetal;
+  cfg = config.neer.modules.system.footpedal;
 in
 {
-  options.neer.modules.system.footpetal = {
+  options.neer.modules.system.footpedal = {
     enable = mkEnableOption "Enable footpetal udev";
   };
 

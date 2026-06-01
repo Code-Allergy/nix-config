@@ -10,10 +10,8 @@ let
 in
 {
   options.neer.modules.system.audio = {
-    enable = mkOption {
-      type = types.bool;
+    enable = mkEnableOption "Enable audio hardware/tools" // {
       default = true;
-      description = "Enable audio hardware";
     };
   };
 

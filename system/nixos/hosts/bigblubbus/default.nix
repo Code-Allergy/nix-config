@@ -14,6 +14,8 @@
         bluetooth.enable = true;
         amdgpu.enable = true;
         tailscale.enable = true;
+
+        footpedal.enable = true;
       };
     };
   };

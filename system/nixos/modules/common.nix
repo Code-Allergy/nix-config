@@ -26,12 +26,6 @@
   };
   security.pam.services.sddm.enableGnomeKeyring = true;
 
-  # Allow unfree packages
-  # nixpkgs.config = {
-  #   allowUnfree = true;
-  #   android_sdk.accept_licence = true;
-  # };
-
   # TODO: Re-enable rust-overlay once Rust toolchain support returns.
   nixpkgs.overlays = [ ];
 
