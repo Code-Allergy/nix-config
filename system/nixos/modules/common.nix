@@ -53,10 +53,17 @@
     # Other security options: https://nixos.org/nixos/options.html#security
   };
 
-  # use zram
-  zramSwap = {
+  # use zram via zram-generator (preferred for AVF devices)
+  services.zram-generator = {
     enable = true;
-    algorithm = "zstd";
+    settings = {
+      "zram0" = {
+        "zram-size" = "ram / 4";
+      };
+      "" = {
+        "compression-algorithm" = "zstd";
+      };
+    };
   };
 
   # earlyoom

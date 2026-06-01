@@ -138,12 +138,17 @@
           hostname = "blubbus";
           buildTarget = "nixos";
         };
-        pixel9-android-avf = {
+        hihppo = {
           user = "ryan";
-          hostname = "pixel9-android-avf";
-          system = "aarch64-linux";
-          buildTarget = "nixos-avf";
+          hostname = "hihppo";
+          buildTarget = "wsl";
         };
+        # pixel9-android-avf = {
+        #   user = "ryan";
+        #   hostname = "pixel9-android-avf";
+        #   system = "aarch64-linux";
+        #   buildTarget = "nixos-avf";
+        # };
       };
 
       top =
@@ -151,12 +156,6 @@
           nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
             attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
           );
-          # hometop = genAttrs (builtins.attrNames self.homeConfigurations) (
-          #   attr: self.homeConfigurations.${attr}.activationPackage
-          # );
-          # darwintop = genAttrs (builtins.attrNames self.darwinConfigurations) (
-          #   attr: self.darwinConfigurations.${attr}.system
-          # );
           vmtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
             attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
           );

@@ -27,13 +27,18 @@ in
       docker-desktop.enable = false;
     };
     programs.nix-ld.enable = true;
-    system.stateVersion = "26.05";
+    system.stateVersion = "24.05";
     programs.zsh.enable = true;
     time.timeZone = "America/Regina";
     networking.hostName = "${hostname}";
     systemd.tmpfiles.rules = [
       "d /home/${userName}/.config 0755 ${userName} users"
       "d /home/${userName}/.config/lvim 0755 ${userName} users"
+    ];
+
+    environment.pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
     ];
     # Turn on flag for proprietary software
     nix = {
@@ -55,7 +60,7 @@ in
 
       gc = {
         automatic = true;
-        options = "--delete-older-than 7d";
+        options = mkForce "--delete-older-than 7d";
       };
       registry = {
         nixpkgs = {
