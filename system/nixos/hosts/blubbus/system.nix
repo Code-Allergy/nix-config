@@ -4,6 +4,12 @@
     ./hardware.nix
     ./fs.nix
     ./networking.nix
+
+    ../../modules/vpn.nix
+    ../../modules/samba-mounts.nix
+
+    ../../environments/plasma.nix
+    ../../environments/hyprland.nix
   ];
 
   # Lock on lid close

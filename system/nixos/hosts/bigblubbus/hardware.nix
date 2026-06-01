@@ -7,10 +7,6 @@
 {
   imports = [
     ./fs.nix
-
-    ../../modules/samba-mounts.nix
-    ../../modules/flatpak.nix
-    ../../modules/vpn.nix
   ];
 
   environment.systemPackages = with pkgs; [

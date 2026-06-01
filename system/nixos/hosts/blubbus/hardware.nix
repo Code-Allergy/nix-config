@@ -2,16 +2,6 @@
 {
   imports = [
     ./fs.nix
-
-    # Hardware
-    # ../../hardware/hibernate-after-sleep.nix
-    ../../modules/vpn.nix
-
-    # Fileserver mounts
-    ../../modules/samba-mounts.nix
-
-    ../../environments/plasma.nix
-    ../../environments/hyprland.nix
   ];
 
   # Bootloader.
