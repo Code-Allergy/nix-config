@@ -1,13 +1,10 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
-  # Theme / appearance defaults
-  config = {
-    catppuccin.flavor = "mocha";
-    catppuccin.enable = true;
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
+  catppuccin.autoEnable = true;
 
-    # frontend / renderer tweaks
-    catppuccin.mako.enable = false;
-    catppuccin.hyprland.enable = false;
-  };
+  # TODO: check if hyprland is broken still after lua config transition?
+  catppuccin.hyprland.enable = false;
 }

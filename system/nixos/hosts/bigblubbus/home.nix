@@ -20,6 +20,7 @@
         jetbrains.enable = true;
         kdeconnect.enable = true;
         kitty.enable = true;
+        office.enable = true;
         syncthing.enable = true;
         vscode.enable = true;
         zed.enable = true;

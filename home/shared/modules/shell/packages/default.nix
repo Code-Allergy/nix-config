@@ -23,6 +23,9 @@
 
     # enable bat program
     programs.bat.enable = true;
+
+    # enable FUCK
+    programs.pay-respects.enable = true;
   };
 
 }

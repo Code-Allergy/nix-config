@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -17,8 +16,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.copyq.enable = true;
-    programs.pay-respects.enable = true;
+    services.copyq.enable = true; # Clipboard manager
     systemd.user.startServices = "sd-switch";
     services.mpris-proxy.enable = true;
   };

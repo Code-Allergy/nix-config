@@ -9,6 +9,7 @@
   catppuccin = {
     flavor = "mocha";
     enable = true;
+    autoEnable = true;
   };
 
   # services.open-webui = {
