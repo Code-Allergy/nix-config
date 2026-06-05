@@ -15,6 +15,7 @@
       app = {
         browsers.enable = true; # enable ALL browsers
         syncthing.enable = true;
+        discord.enable = true;
 
         vscode.enable = true;
         zed.enable = true;

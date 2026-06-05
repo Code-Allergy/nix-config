@@ -26,6 +26,7 @@
         syncthing.enable = true;
         kdeconnect.enable = true;
         kitty.enable = true;
+        discord.enable = true;
 
         vscode.enable = true;
         zed.enable = true;
