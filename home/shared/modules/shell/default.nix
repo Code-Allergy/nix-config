@@ -1,7 +1,6 @@
 {
   self,
   lib,
-  username,
   ...
 }:
 
@@ -34,7 +33,6 @@ with lib;
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_CACHE_HOME = "$HOME/.cache";
       XDG_SESSION_TYPE = "wayland";
-      XDG_SESSION_DESKTOP = "hyprland"; # This probably shouldn't be hardcoded
       XDG_SESSION_CLASS = "user";
     };
 
