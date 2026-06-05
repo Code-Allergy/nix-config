@@ -9,9 +9,6 @@
   # `home/shared/modules/*` and keep this file as the host toggle layer.
   #
 
-  imports = [
-    ../../../../home/shared/modules/users/ryan-home.nix
-  ];
   neer = {
     modules = {
       app = {

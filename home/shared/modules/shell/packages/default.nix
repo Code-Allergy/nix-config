@@ -20,6 +20,9 @@
       # sshfs
       sshfs
     ];
+
+    # enable bat program
+    programs.bat.enable = true;
   };
 
 }
