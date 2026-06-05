@@ -1,4 +1,9 @@
-{ self, lib, ... }:
+{
+  self,
+  lib,
+  username,
+  ...
+}:
 
 with builtins;
 with lib;
@@ -18,7 +23,7 @@ with lib;
       "$HOME/.local/bin"
       "$HOME/bin"
     ];
-    sessionVariables = {
+    sessionVariables = lib.mkDefault {
       EDITOR = "nvim";
       VISUAL = "nvim";
       PAGER = "less";

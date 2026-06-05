@@ -3,5 +3,6 @@
     ./hypr
     ./qtile
     ./rofi
+    ./virtmanager
   ];
 }

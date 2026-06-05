@@ -78,7 +78,6 @@ let
 
 in
 rec {
-
   firstOrDefault = first: default: if first != null then first else default;
   existsOrDefault =
     name: set: default:
@@ -96,6 +95,7 @@ rec {
         (agenix.homeManagerModules.default)
         # (import ../home/darwin/modules)
         (catppuccin.homeModules.catppuccin)
+        (nix-flatpak.homeManagerModules.nix-flatpak)
         (import ../home/nixos/modules)
         (import config)
         mkCommonHomeConfig
@@ -217,7 +217,6 @@ rec {
           (inputs.nixos-wsl.nixosModules.wsl)
           (inputs.lanzaboote.nixosModules.lanzaboote)
           (inputs.catppuccin.nixosModules.catppuccin)
-          (inputs.nix-flatpak.nixosModules.nix-flatpak)
           (inputs.agenix.nixosModules.default)
           # (disko.nixosModules.disko)
           (import ../system/nixos/modules)

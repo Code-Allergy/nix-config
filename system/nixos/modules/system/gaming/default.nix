@@ -97,7 +97,5 @@ in
     #   WMR_HANDTRACKING = "0";
     # };
 
-    # Use flatpak lutris for gaming for now
-    services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
   };
 }

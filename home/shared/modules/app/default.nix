@@ -9,4 +9,12 @@ with lib;
       paths = map (x: "${toString ./.}/${x}") (attrNames dirs);
     in
     paths;
+
+  # flatpaks are enabled at the home level.
+  services.flatpak = {
+    enable = true;
+    packages = [
+      "com.github.tchx84.Flatseal"
+    ];
+  };
 }
