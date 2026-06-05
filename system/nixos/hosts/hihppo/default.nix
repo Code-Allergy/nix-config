@@ -14,5 +14,7 @@
         # amdgpu.enable = true;
       };
     };
+
+    profiles.work.enable = true;
   };
 }

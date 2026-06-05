@@ -4,6 +4,5 @@
     ./system
     ./user
     ./common.nix
-    ./headed.nix
   ];
 }

@@ -15,5 +15,6 @@
         tailscale.enable = true;
       };
     };
+    profiles.desktop.enable = true;
   };
 }

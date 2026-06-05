@@ -69,6 +69,8 @@ in
 
   config = mkMerge [
     {
+      programs.fish.enable = true;
+      programs.command-not-found.enable = true;
       users.groups = {
         uinput = { };
       };
