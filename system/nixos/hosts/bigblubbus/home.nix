@@ -14,23 +14,22 @@
   ];
   neer = {
     modules = {
-      desktop = {
-        hyprland.enable = true;
-      };
       ai.ollama.enable = false;
-      gaming.enable = true;
 
       app = {
         browsers.enable = true; # enable ALL browsers
+        discord.enable = true;
         entertainment.enable = true;
-        syncthing.enable = true;
+        jetbrains.enable = true;
         kdeconnect.enable = true;
         kitty.enable = true;
-        discord.enable = true;
-
+        syncthing.enable = true;
         vscode.enable = true;
         zed.enable = true;
-        jetbrains.enable = true;
+      };
+
+      desktop = {
+        hyprland.enable = true;
       };
 
       dev = {
@@ -38,12 +37,14 @@
         rust.enable = true;
       };
 
+      gaming.enable = true;
+
       shell = {
         bash.enable = true;
         fish.enable = true;
-        starship.enable = true;
         git.enable = true;
         neovim.enable = true;
+        starship.enable = true;
       };
     };
   };

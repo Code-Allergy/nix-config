@@ -10,16 +10,14 @@
   neer = {
     modules = {
       ai.ollama.enable = false;
-      gaming.enable = true;
 
       app = {
         browsers.enable = true; # enable ALL browsers
-        syncthing.enable = true;
         discord.enable = true;
-
+        jetbrains.enable = true;
+        syncthing.enable = true;
         vscode.enable = true;
         zed.enable = true;
-        jetbrains.enable = true;
       };
 
       dev = {
@@ -27,12 +25,14 @@
         rust.enable = true;
       };
 
+      gaming.enable = true;
+
       shell = {
         bash.enable = true;
-        git.enable = true;
         fish.enable = true;
-        starship.enable = true;
+        git.enable = true;
         neovim.enable = true;
+        starship.enable = true;
       };
     };
   };
