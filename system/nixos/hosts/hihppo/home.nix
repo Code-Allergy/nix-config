@@ -34,7 +34,7 @@
       shell = {
         bash.enable = true;
         git.enable = true;
-        # fish.enable = true;
+        fish.enable = true;
         neovim.enable = true;
         starship.enable = false;
       };

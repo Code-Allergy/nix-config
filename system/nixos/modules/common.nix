@@ -3,7 +3,7 @@
 }:
 {
   programs.fish.enable = true;
-  programs.command-not-found.enable = true;
+  # programs.command-not-found.enable = true;
 
   services.openssh = {
     enable = true;

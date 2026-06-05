@@ -105,15 +105,5 @@ in
 
       nix.settings.trusted-users = [ cfg.name ];
     }
-
-    # (mkIf true {
-    #   home-manager.users.${cfg.name} = mkUserHome {
-    #     userConf = userConf;
-    #     username = cfg.name;
-    #     configName = cfg.name;
-    #     system = pkgs.stdenv.hostPlatform.system;
-    #     extraModules = optional (cfg.home != null) (import cfg.home);
-    #   };
-    # })
   ];
 }

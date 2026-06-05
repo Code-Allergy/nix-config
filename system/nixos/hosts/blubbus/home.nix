@@ -29,7 +29,8 @@
       shell = {
         bash.enable = true;
         git.enable = true;
-        # fish.enable = true;
+        fish.enable = true;
+        starship.enable = true;
         neovim.enable = true;
       };
     };
