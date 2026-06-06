@@ -58,7 +58,7 @@
     # USER AVATAR
     image {
       monitor =
-      path = $HOME/.face
+      path = $HOME/.face.icon
       size = 100
       border_color = $accent
       position = 0, 75

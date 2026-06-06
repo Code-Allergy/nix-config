@@ -248,7 +248,7 @@ in
     programs.hyprlock = {
       enable = true;
       settings = {
-        source = lib.mkForce (self + "/home/ryan/hypr/themes/mocha.conf");
+        source = lib.mkForce (self + "/home/shared/modules/desktop/hypr/themes/mocha.conf");
       };
       extraConfig = hyprlock_config;
     };

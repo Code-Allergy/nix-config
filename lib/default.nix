@@ -218,6 +218,7 @@ rec {
           (inputs.lanzaboote.nixosModules.lanzaboote)
           (inputs.catppuccin.nixosModules.catppuccin)
           (inputs.agenix.nixosModules.default)
+          (nix-flatpak.nixosModules.nix-flatpak)
           # (disko.nixosModules.disko)
           (import ../system/nixos/modules)
           (import ../system/shared)
@@ -270,6 +271,13 @@ rec {
                   flake = inputs.nixpkgs;
                 };
               };
+            }
+          )
+          (
+            { pkgs, ... }:
+            {
+              services.flatpak.enable = true;
+
             }
           )
           (import ../system/shared/secrets)
