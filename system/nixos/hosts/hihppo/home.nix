@@ -34,6 +34,7 @@
         fish.enable = true;
         neovim.enable = true;
         starship.enable = false;
+        yazi.enable = true;
       };
     };
   };

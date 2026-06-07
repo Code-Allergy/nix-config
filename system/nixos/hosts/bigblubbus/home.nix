@@ -43,6 +43,7 @@
         git.enable = true;
         neovim.enable = true;
         starship.enable = true;
+        yazi.enable = true;
       };
     };
   };

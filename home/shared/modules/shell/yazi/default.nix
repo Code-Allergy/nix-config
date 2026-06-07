@@ -1,4 +1,3 @@
-# TODO: move to shell applications
 {
   pkgs,
   lib,
@@ -7,10 +6,11 @@
 }:
 with lib;
 let
-  cfg = config.neer.modules.app.yazi;
+  cfg = config.neer.modules.shell.yazi;
+  starshipCfg = config.neer.modules.shell.starship;
 in
 {
-  options.neer.modules.app.yazi = {
+  options.neer.modules.shell.yazi = {
     enable = mkEnableOption "Enable yazi";
   };
 
@@ -34,17 +34,13 @@ in
     #   chmod = "${yazi-plugins}/chmod.yazi";
     #   full-border = "${yazi-plugins}/full-border.yazi";
     #   max-preview = "${yazi-plugins}/max-preview.yazi";
-    #   # starship = pkgs.fetchFromGitHub {
-    #   #   owner = "Rolv-Apneseth";
-    #   #   repo = "starship.yazi";
-    #   #   rev = "...";
-    #   #   sha256 = "sha256-...";
-    #   # };
     # };
 
     # initLua = ''
     #   require("full-border"):setup()
-    #   require("starship"):setup()
+    #   ${mkIf starshipCfg.enable ''
+    #     require("starship"):setup()
+    #   ''}
     # '';
   };
 }
