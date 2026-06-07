@@ -9,7 +9,6 @@ with lib;
 
 let
   devCfg = config.neer.modules.dev;
-  headed = true; # TEMP: removal of headed
   cfg = devCfg.distrobox;
 in
 {
@@ -18,7 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = mkIf headed [
+    home.packages = [
       pkgs.boxbuddy
     ];
 

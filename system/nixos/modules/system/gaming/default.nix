@@ -8,38 +8,36 @@
 with lib;
 let
   cfg = config.neer.modules.system.gaming;
-  headed = true;
-  # headed = config.neer.profiles.headless.enable == false;
 in
 {
   options.neer.modules.system.gaming = {
     enable = mkEnableOption "Enable gaming configuration";
     steam = {
       enable = mkEnableOption "Enable Steam" // {
-        default = cfg.enable && headed;
+        default = cfg.enable;
       };
       gamescopeSession = {
         enable = mkEnableOption "Enable GameScope session" // {
-          default = cfg.enable && headed;
+          default = cfg.enable;
         };
       };
     };
 
     lutris = {
       enable = mkEnableOption "Enable Lutris" // {
-        default = cfg.enable && headed;
+        default = cfg.enable;
       };
     };
 
     gamemode = {
       enable = mkEnableOption "Enable Gamemode" // {
-        default = cfg.enable && headed;
+        default = cfg.enable;
       };
     };
 
     sunshine = {
       enable = mkEnableOption "Enable Sunshine" // {
-        default = cfg.enable && headed;
+        default = cfg.enable;
       };
       startup = mkEnableOption "Enable Sunshine to start on boot" // {
         default = false;
