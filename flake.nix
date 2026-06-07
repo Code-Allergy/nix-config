@@ -60,6 +60,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # NUR (nix user repository)
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Hyprland WM
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # disko.url = "github:nix-community/disko";
@@ -78,13 +84,12 @@
         "aarch64-linux"
       ];
       forEachSystem = genAttrs systems;
-      # overlayList = builtins.attrValues (import ./nix/overlays self);
       pkgsBySystem = forEachSystem (
         system:
         import inputs.nixpkgs {
           inherit system;
           config = import ./nix/config.nix;
-          # overlays = overlayList;
+          overlays = self.overlays."${system}";
         }
       );
 
@@ -97,37 +102,23 @@
       devShells = forEachSystem (system: {
         default = import ./shell.nix { pkgs = pkgsBySystem.${system}; };
       });
-      # overlay = forEachSystem (
-      #   system: _final: _prev:
-      #   self.packages."${system}"
-      # );
-      # overlays = forEachSystem (
-      #   system:
-      #   with inputs;
-      #   let
-      #     # ovs = attrValues (import ./nix/overlays self);
-      #   in
-      #   [
-      #     # (self.overlay."${system}")
-      #     # (nur.overlays.default)
-      #     # (_:_: { inherit (eww.packages."${system}") eww; })
-      #   ]
-      #   # ++ ovs
-      # );
-
-      # Reusable nixos modules you might want to export
-      # These are usually stuff you would upstream into nixpkgs
-      # nixosModules.default = import ./system/shared;
-      # nixosConfigurations = mapAttrs' (
-      #   name: cfg: nameValuePair name (mkNixosSystem ({ inherit self; } // cfg))
-      # ) nixosConfigurationSpecs;
-      #
-      #
-      # nixOnDroidConfigurations = mapAttrs' mkNixOnDroidConfiguration {
-      #   default = {
-      #     user = "droid";
-      #   };
-      # };
+      overlay = forEachSystem (
+        system: _final: _prev:
+        self.packages."${system}"
+      );
+      overlays = forEachSystem (
+        system:
+        with inputs;
+        let
+          ovs = attrValues (import ./nix/overlays self);
+        in
+        [
+          (self.overlay."${system}")
+          (rust-overlay.overlays.default)
+          (nur.overlays.default)
+        ]
+        ++ ovs
+      );
 
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {
@@ -143,7 +134,7 @@
         hihppo = {
           user = "ryan";
           hostname = "hihppo";
-          buildTarget = "wsl";
+          buildTarget = "nixos-wsl";
         };
         # pixel9-android-avf = {
         #   user = "ryan";

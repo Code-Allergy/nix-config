@@ -311,7 +311,7 @@ rec {
                 ;
             };
         }
-      else if buildTarget == "wsl" then
+      else if buildTarget == "nixos-wsl" then
         nixosSystem {
           inherit system;
           modules = commonModules ++ nixosModules;
