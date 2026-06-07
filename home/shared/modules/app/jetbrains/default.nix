@@ -1,45 +1,28 @@
-# TODO: Split these modules out based on applications.
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, ... }:
 
 with lib;
-let
-  cfg = config.neer.modules.app.jetbrains;
-in
 {
+  imports = [
+    ./idea.nix
+    ./pycharm.nix
+    ./webstorm.nix
+    ./clion.nix
+    ./rust-rover.nix
+    ./rider.nix
+    ./android-studio.nix
+  ];
+
   options.neer.modules.app.jetbrains = {
-    enable = mkEnableOption "Enable All Jetbrains IDEs";
-    remote = {
-      enable = mkEnableOption "Enable Jetbrains Remote";
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Master switch for JetBrains IDEs. Individual product modules inherit this when their own enable option is unset.";
     };
-  };
 
-  config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      # JetBrains IDEs
-      android-studio
-      jetbrains.pycharm
-      jetbrains.webstorm
-      jetbrains.idea
-      jetbrains.clion
-      jetbrains.rust-rover
-      jetbrains.rider
-    ];
-
-    programs.jetbrains-remote = mkIf cfg.remote.enable {
-      enable = true;
-      ides = with pkgs.jetbrains; [
-        pycharm
-        webstorm
-        idea
-        clion
-        rust-rover
-        rider
-      ];
+    remote.enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable JetBrains Remote support.";
     };
   };
 }

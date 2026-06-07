@@ -17,7 +17,8 @@
         browsers.enable = true; # enable ALL browsers
         discord.enable = true;
         entertainment.enable = true;
-        jetbrains.enable = true;
+        jetbrains.rustRover.enable = true;
+        jetbrains.pycharm.enable = true;
         kdeconnect.enable = true;
         kitty.enable = true;
         office.enable = true;

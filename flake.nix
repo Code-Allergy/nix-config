@@ -113,7 +113,7 @@
           ovs = attrValues (import ./nix/overlays self);
         in
         [
-          (self.overlay."${system}")
+          # (self.overlay."${system}")
           (rust-overlay.overlays.default)
           (nur.overlays.default)
         ]
