@@ -50,7 +50,7 @@ in
   config = mkIf cfg.enable {
     programs.steam = {
       enable = cfg.steam.enable;
-      # gamescopeSession.enable = cfg.steam.gamescopeSession.enable;
+      gamescopeSession.enable = cfg.steam.gamescopeSession.enable;
 
       remotePlay.openFirewall = cfg.steam.enable; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = cfg.steam.enable; # Open ports in the firewall for Source Dedicated Server

@@ -59,9 +59,9 @@
     image {
       monitor =
       path = $HOME/.face.icon
-      size = 100
+      size = 125
       border_color = $accent
-      position = 0, 75
+      position = 0, 0
       halign = center
       valign = center
     }
