@@ -75,7 +75,7 @@ in {
         pcsx2
 
         # Retroarch for other emus
-        retroarch # TODO mbedtls 2 insecure
+        retroarch
 
         # Game save backup tool
         ludusavi

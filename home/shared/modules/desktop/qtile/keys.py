@@ -37,7 +37,7 @@ display_locker = "slock"
 audio_increase_cmd = "pamixer -i 5"
 audio_decrease_cmd = "pamixer -d 5"
 audio_mute_cmd = "pamixer -t"
-audio_play_cmd = "playerctl play-pause" ## TODO missing
+audio_play_cmd = "playerctl play-pause"
 
 light_increase_cmd = "light -A 5"
 light_decrease_cmd = "light -U 5"

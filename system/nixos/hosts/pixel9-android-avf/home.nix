@@ -1,11 +1,5 @@
 {...}: {
-  # Host-specific home-manager module manifest for `blubbus`.
-  #
-  # This is the first step in moving program selection out of the user-wide
-  # home config and into per-host module manifests.
-  #
-  # TODO: split the remaining items into dedicated modules under
-  # `home/shared/modules/*` and keep this file as the host toggle layer.
+  # Host-specific home-manager module manifest for `pixel9-android-avf`.
   neer = {
     # modules = {
     #   ai.ollama.enable = false;

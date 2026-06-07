@@ -19,10 +19,6 @@
     };
   };
   security.pam.services.sddm.enableGnomeKeyring = true;
-
-  # TODO: Re-enable rust-overlay once Rust toolchain support returns.
-  nixpkgs.overlays = [];
-
   hardware.enableRedistributableFirmware = true;
 
   # use zram via zram-generator (preferred for AVF devices)

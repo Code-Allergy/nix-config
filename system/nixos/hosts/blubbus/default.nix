@@ -1,4 +1,5 @@
 {...}: {
+  # Host-local home-manager overrides for `blubbus`.
   imports = [./system.nix];
 
   neer = {

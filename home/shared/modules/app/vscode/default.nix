@@ -42,8 +42,6 @@ in {
           # catppuccin.catppuccin-vsc
 
           github.copilot
-
-          # TODO git good
           # vscodevim.vim
         ];
 

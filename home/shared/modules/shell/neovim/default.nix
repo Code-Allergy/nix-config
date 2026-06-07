@@ -7,6 +7,7 @@
 with lib; let
   cfg = config.neer.modules.shell.neovim;
 in {
+  # TODO: Revisit this and build a real Neovim configuration
   options.neer.modules.shell.neovim.enable = mkEnableOption "Enable Neovim";
   config = mkIf cfg.enable {
     programs.neovim = {
@@ -31,7 +32,6 @@ in {
         # nodePackages.yaml-language-server
         # python310Packages.python-lsp-server
 
-        # TODO changed in 24.11
         # coc-python
         # coc-spell-checker
         # coc-sh
