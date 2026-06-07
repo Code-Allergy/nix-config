@@ -42,17 +42,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # WSL support
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # AVF (android virtualization framework) support
     nixos-avf = {
       url = "github:nix-community/nixos-avf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # agenix for secrets (used by some droid helpers)
+    # agenix for secrets
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
