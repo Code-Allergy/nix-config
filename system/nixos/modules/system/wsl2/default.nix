@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   userConf,
   inputs,
   hostname,
@@ -40,6 +41,15 @@ in
       "/share/applications"
       "/share/xdg-desktop-portal"
     ];
+
+    # Enable XDG portal implementation so flatpak works
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+      config.common.default = "*";
+    };
     # Turn on flag for proprietary software
     nix = {
       nixPath = [
