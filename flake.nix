@@ -84,12 +84,16 @@
         "aarch64-linux"
       ];
       forEachSystem = genAttrs systems;
+      overlayFns = attrValues (import ./nix/overlays self);
       pkgsBySystem = forEachSystem (
         system:
         import inputs.nixpkgs {
           inherit system;
           config = import ./nix/config.nix;
-          overlays = self.overlays."${system}";
+          overlays = overlayFns ++ [
+            inputs.rust-overlay.overlays.default
+            inputs.nur.overlays.default
+          ];
         }
       );
 
@@ -102,23 +106,15 @@
       devShells = forEachSystem (system: {
         default = import ./shell.nix { pkgs = pkgsBySystem.${system}; };
       });
-      overlay = forEachSystem (
-        system: _final: _prev:
-        self.packages."${system}"
-      );
-      overlays = forEachSystem (
-        system:
-        with inputs;
-        let
-          ovs = attrValues (import ./nix/overlays self);
-        in
-        [
-          # (self.overlay."${system}")
-          (rust-overlay.overlays.default)
-          (nur.overlays.default)
-        ]
-        ++ ovs
-      );
+      overlays = (import ./nix/overlays self) // {
+        default = inputs.nixpkgs.lib.composeManyExtensions (
+          overlayFns
+          ++ [
+            inputs.rust-overlay.overlays.default
+            inputs.nur.overlays.default
+          ]
+        );
+      };
 
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {

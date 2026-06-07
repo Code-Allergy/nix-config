@@ -38,4 +38,9 @@
       };
     };
   };
+
+  # xdg.portal = {
+  #   enable = true;
+
+  # };
 }

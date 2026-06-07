@@ -72,7 +72,10 @@ let
 
       nixpkgs = {
         config = import ../nix/config.nix;
-        overlays = inputs.self.overlays."${system}";
+        overlays = (builtins.attrValues (builtins.removeAttrs inputs.self.overlays [ "default" ])) ++ [
+          inputs.rust-overlay.overlays.default
+          inputs.nur.overlays.default
+        ];
       };
     };
 
