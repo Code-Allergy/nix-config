@@ -3,11 +3,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.system.nvidia;
-in
-{
+in {
   options.neer.modules.system.nvidia = {
     enable = mkEnableOption "nvidia gpu hardware";
   };
@@ -20,7 +18,7 @@ in
     };
 
     # Nvidia
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = ["nvidia"];
 
     hardware.nvidia = {
       modesetting.enable = true;

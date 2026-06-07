@@ -1,7 +1,5 @@
-{ lib, ... }:
-
-with lib;
-{
+{lib, ...}:
+with lib; {
   imports = [
     ./idea.nix
     ./pycharm.nix

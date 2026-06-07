@@ -1,6 +1,5 @@
-{ ... }:
-{
-  imports = [ ./system.nix ];
+{...}: {
+  imports = [./system.nix];
 
   neer = {
     modules = {

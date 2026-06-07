@@ -3,20 +3,20 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.ai.ollama;
-in
-{
+in {
   options.neer.modules.ai.ollama = {
-    enable = mkEnableOption "Enable Ollama" // {
-      default = config.neer.modules.dev.enable; # Inherit enable state from dev module for now
-    };
-    amdOverride = mkEnableOption "Enable AMD GPU override" // {
-      default = config.neer.modules.dev.enable; # By default use AMD rocm for this module
-    };
+    enable =
+      mkEnableOption "Enable Ollama"
+      // {
+        default = config.neer.modules.dev.enable; # Inherit enable state from dev module for now
+      };
+    amdOverride =
+      mkEnableOption "Enable AMD GPU override"
+      // {
+        default = config.neer.modules.dev.enable; # By default use AMD rocm for this module
+      };
   };
 
   config = mkIf cfg.enable {

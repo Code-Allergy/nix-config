@@ -4,12 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.zed;
-in
-{
+in {
   options.neer.modules.app.zed = {
     enable = mkEnableOption "Enable Zed";
   };
@@ -139,7 +136,7 @@ in
           edit_prediction_provider = "zed";
         };
         edit_predictions = {
-          disabled_globs = [ ];
+          disabled_globs = [];
         };
         agent = {
           default_profile = "write";
@@ -197,7 +194,7 @@ in
         # FILE HANDLING
         # ============================================
         file_types = {
-          Dockerfile = [ "Dockerfile*" ];
+          Dockerfile = ["Dockerfile*"];
           JSON = [
             "json"
             "jsonc"
@@ -237,7 +234,7 @@ in
           nil = {
             initialization_options = {
               formatting = {
-                command = [ "nixfmt" ];
+                command = ["nixfmt"];
               };
             };
           };

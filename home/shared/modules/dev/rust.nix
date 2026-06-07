@@ -4,17 +4,15 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   devCfg = config.neer.modules.dev;
   cfg = devCfg.rust;
-in
-{
-  options.neer.modules.dev.rust.enable = mkEnableOption "Enable Rust" // {
-    default = devCfg.enable; # Inherit enable state from main module
-  };
+in {
+  options.neer.modules.dev.rust.enable =
+    mkEnableOption "Enable Rust"
+    // {
+      default = devCfg.enable; # Inherit enable state from main module
+    };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

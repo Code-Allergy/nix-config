@@ -1,12 +1,20 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.neer.modules.app.jetbrains;
-  enabled = if cfg.androidStudio.enable == null then cfg.enable else cfg.androidStudio.enable;
-  package = if cfg.androidStudio.package != null then cfg.androidStudio.package else pkgs.android-studio;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.neer.modules.app.jetbrains;
+  enabled =
+    if cfg.androidStudio.enable == null
+    then cfg.enable
+    else cfg.androidStudio.enable;
+  package =
+    if cfg.androidStudio.package != null
+    then cfg.androidStudio.package
+    else pkgs.android-studio;
+in {
   options.neer.modules.app.jetbrains.androidStudio = {
     enable = mkOption {
       type = types.nullOr types.bool;
@@ -22,11 +30,11 @@ in
   };
 
   config = mkIf enabled {
-    home.packages = [ package ];
+    home.packages = [package];
 
     programs.jetbrains-remote = mkIf cfg.remote.enable {
       enable = true;
-      ides = [ package ];
+      ides = [package];
     };
   };
 }

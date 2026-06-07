@@ -1,5 +1,4 @@
-{ self }:
-{
+{self}: {
   hyprlock_config = ''
     $accent = $mauve
     $accentAlpha = $mauveAlpha

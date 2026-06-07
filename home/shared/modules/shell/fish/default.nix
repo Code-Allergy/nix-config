@@ -4,13 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.shell.fish;
-in
-{
+in {
   options.neer.modules.shell.fish.enable = mkEnableOption "Enable fish shell";
 
   config = mkIf cfg.enable {

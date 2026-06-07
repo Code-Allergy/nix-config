@@ -1,7 +1,4 @@
-{
-  ...
-}:
-{
+{...}: {
   services.openssh = {
     enable = true;
     settings = {
@@ -24,7 +21,7 @@
   security.pam.services.sddm.enableGnomeKeyring = true;
 
   # TODO: Re-enable rust-overlay once Rust toolchain support returns.
-  nixpkgs.overlays = [ ];
+  nixpkgs.overlays = [];
 
   hardware.enableRedistributableFirmware = true;
 

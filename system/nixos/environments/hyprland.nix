@@ -2,8 +2,7 @@
   pkgs,
   lib,
   ...
-}:
-{
+}: {
   programs.hyprland.enable = true;
   programs.hyprland.withUWSM = true;
   environment.systemPackages = with pkgs; [
@@ -27,7 +26,6 @@
     qt6Packages.qtwayland # Essential for Qt6 apps on Wayland
 
     kdePackages.kservice
-
   ];
 
   services.displayManager.sddm = {
@@ -37,6 +35,6 @@
   };
   services.displayManager.defaultSession = "hyprland-uwsm";
 
-  security.pam.services.hyprlock = { };
+  security.pam.services.hyprlock = {};
   qt.platformTheme = "kde";
 }

@@ -3,8 +3,7 @@
   lib,
   modulesPath,
   ...
-}:
-{
+}: {
   imports = [
     # Hardware config
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -52,9 +51,9 @@
       "sr_mod"
       "virtio_blk"
     ];
-    initrd.kernelModules = [ ];
-    kernelModules = [ "kvm-amd" ];
-    extraModulePackages = [ ];
+    initrd.kernelModules = [];
+    kernelModules = ["kvm-amd"];
+    extraModulePackages = [];
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
@@ -70,7 +69,7 @@
       fsType = "vfat";
     };
   };
-  swapDevices = [ ];
+  swapDevices = [];
 
   networking.useDHCP = lib.mkDefault true;
 
@@ -83,7 +82,7 @@
 
   # Laptop TLP battery saving config
   services.tlp.enable = true;
-  services.tlp.settings = { };
+  services.tlp.settings = {};
 
   # Enable acpi daemon so laptop close/open is responded to
   services.acpid.enable = true;
@@ -100,8 +99,8 @@
     };
 
     firewall = {
-      allowedTCPPorts = [ ];
-      allowedUDPPorts = [ ];
+      allowedTCPPorts = [];
+      allowedUDPPorts = [];
       enable = true;
     };
   };

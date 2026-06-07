@@ -3,16 +3,15 @@
   lib,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.utility;
-in
-{
+in {
   options.neer.modules.app.utility = {
-    enable = mkEnableOption "Enable utility apps" // {
-      default = true;
-    };
+    enable =
+      mkEnableOption "Enable utility apps"
+      // {
+        default = true;
+      };
   };
 
   config = mkIf cfg.enable {

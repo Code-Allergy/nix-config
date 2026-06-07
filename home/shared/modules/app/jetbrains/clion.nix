@@ -1,12 +1,20 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-let
-  cfg = config.neer.modules.app.jetbrains;
-  enabled = if cfg.clion.enable == null then cfg.enable else cfg.clion.enable;
-  package = if cfg.clion.package != null then cfg.clion.package else pkgs.jetbrains.clion;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.neer.modules.app.jetbrains;
+  enabled =
+    if cfg.clion.enable == null
+    then cfg.enable
+    else cfg.clion.enable;
+  package =
+    if cfg.clion.package != null
+    then cfg.clion.package
+    else pkgs.jetbrains.clion;
+in {
   options.neer.modules.app.jetbrains.clion = {
     enable = mkOption {
       type = types.nullOr types.bool;
@@ -22,11 +30,11 @@ in
   };
 
   config = mkIf enabled {
-    home.packages = [ package ];
+    home.packages = [package];
 
     programs.jetbrains-remote = mkIf cfg.remote.enable {
       enable = true;
-      ides = [ package ];
+      ides = [package];
     };
   };
 }

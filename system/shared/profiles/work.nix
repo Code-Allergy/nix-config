@@ -3,12 +3,9 @@
   lib,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.profiles.work;
-in
-{
+in {
   options.neer.profiles.work = {
     enable = mkEnableOption "work profile";
   };

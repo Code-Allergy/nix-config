@@ -5,12 +5,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.entertainment.base;
-in
-{
+in {
   options.neer.modules.app.entertainment.base = {
     enable = mkEnableOption "Enable entertainment base module";
   };

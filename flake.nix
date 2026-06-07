@@ -72,13 +72,8 @@
     # ags.url = "github:Aylur/ags"; # TODO switch to AGS over waybar.
   };
 
-  outputs =
-    {
-      self,
-      ...
-    }@inputs:
-    with self.lib;
-    let
+  outputs = {self, ...} @ inputs:
+    with self.lib; let
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -87,34 +82,36 @@
       overlayFns = attrValues (import ./nix/overlays self);
       pkgsBySystem = forEachSystem (
         system:
-        import inputs.nixpkgs {
-          inherit system;
-          config = import ./nix/config.nix;
-          overlays = overlayFns ++ [
-            inputs.rust-overlay.overlays.default
-            inputs.nur.overlays.default
-          ];
-        }
+          import inputs.nixpkgs {
+            inherit system;
+            config = import ./nix/config.nix;
+            overlays =
+              overlayFns
+              ++ [
+                inputs.rust-overlay.overlays.default
+                inputs.nur.overlays.default
+              ];
+          }
       );
-
-    in
-    {
-      lib = import ./lib { inherit self inputs config; } // inputs.nixpkgs.lib;
+    in {
+      lib = import ./lib {inherit self inputs config;} // inputs.nixpkgs.lib;
       legacyPackages = pkgsBySystem;
-      packages = forEachSystem (_system: { });
+      packages = forEachSystem (_system: {});
       formatter = forEachSystem (system: pkgsBySystem.${system}.alejandra);
       devShells = forEachSystem (system: {
-        default = import ./shell.nix { pkgs = pkgsBySystem.${system}; };
+        default = import ./shell.nix {pkgs = pkgsBySystem.${system};};
       });
-      overlays = (import ./nix/overlays self) // {
-        default = inputs.nixpkgs.lib.composeManyExtensions (
-          overlayFns
-          ++ [
-            inputs.rust-overlay.overlays.default
-            inputs.nur.overlays.default
-          ]
-        );
-      };
+      overlays =
+        (import ./nix/overlays self)
+        // {
+          default = inputs.nixpkgs.lib.composeManyExtensions (
+            overlayFns
+            ++ [
+              inputs.rust-overlay.overlays.default
+              inputs.nur.overlays.default
+            ]
+          );
+        };
 
       nixosConfigurations = mapAttrs' mkNixSystemConfiguration {
         bigblubbus = {
@@ -140,15 +137,14 @@
         # };
       };
 
-      top =
-        let
-          nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
-            attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
-          );
-          vmtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
-            attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
-          );
-        in
+      top = let
+        nixtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
+          attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
+        );
+        vmtop = genAttrs (builtins.attrNames self.nixosConfigurations) (
+          attr: self.nixosConfigurations.${attr}.config.system.build.toplevel
+        );
+      in
         nixtop // vmtop;
     };
 }

@@ -4,11 +4,9 @@
   config,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.browsers.chromium;
-in
-{
+in {
   options.neer.modules.app.browsers.chromium = {
     enable = mkEnableOption "Enable Chromium";
   };
@@ -18,25 +16,25 @@ in
       package = pkgs.chromium;
       extensions = [
         # UBlock Origin
-        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
+        {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";}
 
         # Bitwarden
-        { id = "nngceckbapebfimnlniiiahkandclblb"; }
+        {id = "nngceckbapebfimnlniiiahkandclblb";}
 
         # Dark Reader
-        { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
+        {id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";}
 
         # I still don't care about cookies
-        { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; }
+        {id = "edibdbjcniadpccecjdfdjjppcpchdlm";}
 
         # Better Canvas
-        { id = "cndibmoanboadcifjkjbdpjgfedanolh"; }
+        {id = "cndibmoanboadcifjkjbdpjgfedanolh";}
 
         # Google Keep
-        { id = "lpcaedmchfhocbbapmcbpinfpgnhiddi"; }
+        {id = "lpcaedmchfhocbbapmcbpinfpgnhiddi";}
 
         # Catppuccin theme
-        { id = "bkkmolkhemgaeaeggcmfbghljjjoofoh"; }
+        {id = "bkkmolkhemgaeaeggcmfbghljjjoofoh";}
       ];
     };
   };

@@ -4,13 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.app.kitty;
-in
-{
+in {
   options.neer.modules.app.kitty = {
     enable = mkOption {
       type = types.bool;

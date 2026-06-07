@@ -4,16 +4,15 @@
   pkgs,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.office;
-in
-{
+in {
   options.neer.modules.app.office = {
-    enable = mkEnableOption "Enable office packages" // {
-      default = true;
-    };
+    enable =
+      mkEnableOption "Enable office packages"
+      // {
+        default = true;
+      };
   };
 
   config = mkIf cfg.enable {

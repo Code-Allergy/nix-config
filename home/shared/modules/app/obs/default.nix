@@ -4,12 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.seer.modules.app.obs;
-in
-{
-
+in {
   options.seer.modules.app.obs = {
     enable = mkEnableOption "Open Broadcast Software";
     package = mkOption {

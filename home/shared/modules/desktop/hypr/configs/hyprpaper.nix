@@ -1,5 +1,4 @@
-{ self }:
-{
+{self}: {
   hyprpaper_config = {
     wallpaper = {
       monitor = "";

@@ -4,12 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.vscode;
-in
-{
+in {
   options.neer.modules.app.vscode = {
     enable = mkEnableOption "Enable VSCode";
   };

@@ -4,11 +4,9 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.kdeconnect;
-in
-{
+in {
   options.neer.modules.app.kdeconnect = {
     enable = mkEnableOption "Enable KDE Connect";
   };

@@ -4,16 +4,14 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.shell.git;
-in
-{
-  options.neer.modules.shell.git.enable = mkEnableOption "Enable Git" // {
-    default = true;
-  };
+in {
+  options.neer.modules.shell.git.enable =
+    mkEnableOption "Enable Git"
+    // {
+      default = true;
+    };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

@@ -3,11 +3,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.system.footpedal;
-in
-{
+in {
   options.neer.modules.system.footpedal = {
     enable = mkEnableOption "Enable footpetal udev";
   };

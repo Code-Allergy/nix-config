@@ -4,12 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.system.virtualization;
-in
-{
-
+in {
   options.neer.modules.system.virtualization = {
     enable = mkEnableOption "Virtualization Settings";
   };

@@ -1,9 +1,11 @@
-{ config, lib, ... }:
-with lib;
-let
-  cfg = config.neer.modules.system.tailscale;
-in
 {
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.neer.modules.system.tailscale;
+in {
   options.neer.modules.system.tailscale = {
     enable = mkEnableOption "Enable tailscale on the system";
   };

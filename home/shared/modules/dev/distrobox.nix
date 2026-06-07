@@ -4,17 +4,15 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   devCfg = config.neer.modules.dev;
   cfg = devCfg.distrobox;
-in
-{
-  options.neer.modules.dev.distrobox.enable = mkEnableOption "Enable Distrobox" // {
-    default = devCfg.enable; # Inherit enable state from main module
-  };
+in {
+  options.neer.modules.dev.distrobox.enable =
+    mkEnableOption "Enable Distrobox"
+    // {
+      default = devCfg.enable; # Inherit enable state from main module
+    };
 
   config = mkIf cfg.enable {
     home.packages = [

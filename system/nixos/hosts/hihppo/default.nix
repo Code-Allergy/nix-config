@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   neer = {
     modules = {
       user.home = ./home.nix;

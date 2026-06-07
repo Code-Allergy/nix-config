@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.browsers.firefox;
-in
-{
+in {
   options.neer.modules.app.browsers.firefox = {
     enable = mkEnableOption "Enable Firefox";
   };
@@ -126,5 +124,4 @@ in
       };
     };
   };
-
 }

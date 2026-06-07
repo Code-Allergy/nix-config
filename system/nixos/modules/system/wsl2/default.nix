@@ -8,11 +8,9 @@
   ...
 }:
 with userConf;
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.system.wsl2;
-in
-{
+in {
   options.neer.modules.system.wsl2 = {
     enable = mkEnableOption "WSL2 System Config";
   };
@@ -59,7 +57,7 @@ in
       ];
 
       settings = {
-        trusted-users = [ "${userName}" ];
+        trusted-users = ["${userName}"];
         accept-flake-config = true;
         #auto-optimize-store = true;
       };

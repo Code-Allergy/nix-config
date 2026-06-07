@@ -4,15 +4,15 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.system.audio;
-in
-{
+in {
   options.neer.modules.system.audio = {
-    enable = mkEnableOption "Enable audio hardware/tools" // {
-      default = true;
-    };
+    enable =
+      mkEnableOption "Enable audio hardware/tools"
+      // {
+        default = true;
+      };
   };
 
   config = mkIf cfg.enable {

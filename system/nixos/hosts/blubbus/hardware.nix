@@ -1,5 +1,8 @@
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./fs.nix
   ];
@@ -85,5 +88,4 @@
 
   # Update firmware
   services.fwupd.enable = true;
-
 }

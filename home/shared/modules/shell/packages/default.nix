@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   config = {
     # default shell tools I expect everywhere
     home.packages = with pkgs; [
@@ -27,5 +26,4 @@
     # enable FUCK
     programs.pay-respects.enable = true;
   };
-
 }

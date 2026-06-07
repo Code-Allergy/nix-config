@@ -4,12 +4,10 @@
   config,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.shell.yazi;
   starshipCfg = config.neer.modules.shell.starship;
-in
-{
+in {
   options.neer.modules.shell.yazi = {
     enable = mkEnableOption "Enable yazi";
   };

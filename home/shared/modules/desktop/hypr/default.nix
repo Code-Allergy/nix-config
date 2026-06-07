@@ -5,23 +5,20 @@
   self,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.desktop.hyprland;
-  inherit (import ./variables.nix { inherit hostname; }) hyprland_variables;
+  inherit (import ./variables.nix {inherit hostname;}) hyprland_variables;
   inherit (import ./configs/hypridle.nix) hypridle_config;
-  inherit (import ./configs/hyprlock.nix { inherit self; }) hyprlock_config;
-  inherit (import ./configs/hyprpaper.nix { inherit self; }) hyprpaper_config;
+  inherit (import ./configs/hyprlock.nix {inherit self;}) hyprlock_config;
+  inherit (import ./configs/hyprpaper.nix {inherit self;}) hyprpaper_config;
   hostname = "bigblubbus";
-in
-{
-  imports = [ ./waybar.nix ]; # todo: fix this :)
+in {
+  imports = [./waybar.nix]; # todo: fix this :)
   options.neer.modules.desktop.hyprland = {
     enable = mkEnableOption "Enable Hyprland desktop environment";
   };
 
   config = mkIf cfg.enable {
-
     # Keep the import inside the config if possible, or we may need to make waybar.nix aware of cfg.enable
     # For now, we will just wrap the whole home-manager config
 
@@ -140,21 +137,21 @@ in
           no_update_news = true;
           no_donation_nag = true;
         };
-        exec-once = [
-          # "uwsm app -- hyprsunset"
-        ]
-        ++ (
-          if hostname == "bigblubbus" then
-            [
+        exec-once =
+          [
+            # "uwsm app -- hyprsunset"
+          ]
+          ++ (
+            if hostname == "bigblubbus"
+            then [
               "uwsm app -- steam -silent"
               "uwsm app -- vesktop --start-minimized"
               "uwsm app -- corectrl --minimize-systray"
             ]
-          else
-            [
+            else [
               # No hostname-specific startup apps for this configuration
             ]
-        );
+          );
       };
 
       extraConfig = ''

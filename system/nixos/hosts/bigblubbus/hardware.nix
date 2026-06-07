@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   imports = [
     ./fs.nix
   ];
@@ -36,7 +35,7 @@
       "kvm-amd"
       "it87"
     ];
-    extraModulePackages = [ ];
+    extraModulePackages = [];
 
     extraModprobeConfig = ''
       options kvm ignore_msrs=1

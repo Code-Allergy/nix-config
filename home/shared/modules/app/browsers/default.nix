@@ -3,12 +3,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.browsers;
-in
-
-{
+in {
   imports = [
     ./firefox.nix
     ./chromium.nix

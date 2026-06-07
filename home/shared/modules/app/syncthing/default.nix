@@ -4,11 +4,9 @@
   lib,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.syncthing;
-in
-{
+in {
   options.neer.modules.app.syncthing = {
     enable = mkEnableOption "Enable Syncthing";
   };

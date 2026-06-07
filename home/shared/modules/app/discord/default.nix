@@ -4,11 +4,9 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.app.discord;
-in
-{
+in {
   options.neer.modules.app.discord = {
     enable = mkEnableOption "Enable Discord";
   };
@@ -21,5 +19,4 @@ in
     # Discord arRPC
     services.arrpc.enable = true;
   };
-
 }

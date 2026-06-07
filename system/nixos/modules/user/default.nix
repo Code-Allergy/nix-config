@@ -5,8 +5,7 @@
   userConf,
   ...
 }:
-with self.lib;
-let
+with self.lib; let
   cfg = config.neer.modules.user;
 
   defaultExtraGroups = existsOrDefault "extraGroups" userConf [
@@ -31,8 +30,7 @@ let
 
   defaultHashedPassword = existsOrDefault "hashedPassword" userConf null;
   defaultInitialPassword = existsOrDefault "initialPassword" userConf "CHANGEME123!";
-in
-{
+in {
   options.neer.modules.user = {
     name = mkOption {
       type = types.str;
@@ -72,7 +70,7 @@ in
       programs.fish.enable = true;
       programs.command-not-found.enable = true;
       users.groups = {
-        uinput = { };
+        uinput = {};
       };
 
       home-manager.users."${userConf.userName}" = mkUserHome {
@@ -81,8 +79,7 @@ in
       };
 
       users = {
-        users.${cfg.name} =
-          with cfg;
+        users.${cfg.name} = with cfg;
           {
             inherit extraGroups;
             isNormalUser = true;
@@ -105,7 +102,7 @@ in
         mutableUsers = true;
       };
 
-      nix.settings.trusted-users = [ cfg.name ];
+      nix.settings.trusted-users = [cfg.name];
     }
   ];
 }

@@ -4,44 +4,53 @@
   pkgs,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.system.gaming;
-in
-{
+in {
   options.neer.modules.system.gaming = {
     enable = mkEnableOption "Enable gaming configuration";
     steam = {
-      enable = mkEnableOption "Enable Steam" // {
-        default = cfg.enable;
-      };
-      gamescopeSession = {
-        enable = mkEnableOption "Enable GameScope session" // {
+      enable =
+        mkEnableOption "Enable Steam"
+        // {
           default = cfg.enable;
         };
+      gamescopeSession = {
+        enable =
+          mkEnableOption "Enable GameScope session"
+          // {
+            default = cfg.enable;
+          };
       };
     };
 
     lutris = {
-      enable = mkEnableOption "Enable Lutris" // {
-        default = cfg.enable;
-      };
+      enable =
+        mkEnableOption "Enable Lutris"
+        // {
+          default = cfg.enable;
+        };
     };
 
     gamemode = {
-      enable = mkEnableOption "Enable Gamemode" // {
-        default = cfg.enable;
-      };
+      enable =
+        mkEnableOption "Enable Gamemode"
+        // {
+          default = cfg.enable;
+        };
     };
 
     sunshine = {
-      enable = mkEnableOption "Enable Sunshine" // {
-        default = cfg.enable;
-      };
-      startup = mkEnableOption "Enable Sunshine to start on boot" // {
-        default = false;
-      };
+      enable =
+        mkEnableOption "Enable Sunshine"
+        // {
+          default = cfg.enable;
+        };
+      startup =
+        mkEnableOption "Enable Sunshine to start on boot"
+        // {
+          default = false;
+        };
     };
   };
 
@@ -94,6 +103,5 @@ in
     #   XRT_COMPOSITOR_COMPUTE = "1";
     #   WMR_HANDTRACKING = "0";
     # };
-
   };
 }

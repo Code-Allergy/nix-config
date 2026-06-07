@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   # Host-specific home-manager module manifest for `bigblubbus`.
   #
   # This is the first step in moving program selection out of the user-wide

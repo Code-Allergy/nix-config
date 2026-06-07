@@ -4,13 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.shell.neovim;
-in
-{
+in {
   options.neer.modules.shell.neovim.enable = mkEnableOption "Enable Neovim";
   config = mkIf cfg.enable {
     programs.neovim = {
@@ -23,7 +19,7 @@ in
       vimdiffAlias = true;
       coc.enable = true;
       coc.pluginConfig = "";
-      coc.settings = { };
+      coc.settings = {};
 
       plugins = with pkgs.vimPlugins; [
         vim-fugitive

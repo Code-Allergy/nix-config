@@ -3,14 +3,9 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.shell.bash;
-in
-
-{
+in {
   options.neer.modules.shell.bash.enable = mkEnableOption "Enable Bash";
 
   config = mkIf cfg.enable {

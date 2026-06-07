@@ -4,12 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-let
+with lib; let
   cfg = config.neer.profiles.desktop;
-in
-{
+in {
   options.neer.profiles.desktop = {
     enable = mkEnableOption "desktop profile";
   };
@@ -50,8 +47,8 @@ in
         enable = true;
         defaultFonts = {
           # serif
-          sansSerif = [ "Montserrat" ];
-          monospace = [ "BlexMono Nerd Font Mono" ];
+          sansSerif = ["Montserrat"];
+          monospace = ["BlexMono Nerd Font Mono"];
         };
       };
     };

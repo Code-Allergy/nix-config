@@ -1,11 +1,12 @@
-{ config, lib, ... }:
-
-with lib;
-let
-  cfg = config.neer.modules.app.entertainment;
-in
 {
-  imports = [ ./base.nix ];
+  config,
+  lib,
+  ...
+}:
+with lib; let
+  cfg = config.neer.modules.app.entertainment;
+in {
+  imports = [./base.nix];
 
   options.neer.modules.app.entertainment = {
     enable = mkEnableOption "Enable entertainment apps";

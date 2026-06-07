@@ -3,11 +3,9 @@
   config,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.neer.modules.shell.tealdeer;
-in
-{
+in {
   options.neer.modules.shell.tealdeer.enable = mkEnableOption "Enable tealdeer";
 
   config = mkIf cfg.enable {

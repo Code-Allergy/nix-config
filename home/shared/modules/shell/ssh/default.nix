@@ -3,14 +3,9 @@
   lib,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.neer.modules.shell.ssh;
-in
-
-{
+in {
   options.neer.modules.shell.ssh.enable = mkEnableOption "Enable SSH config";
 
   config = mkIf cfg.enable {

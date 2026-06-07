@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   # just a test :)
   avf.defaultUser = "ryan";
   avf.enableGraphics = true;
