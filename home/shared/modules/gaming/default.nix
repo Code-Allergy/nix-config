@@ -4,26 +4,22 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.neer.modules.gaming;
-in {
+in
+{
   options.neer.modules.gaming = {
     enable = mkEnableOption "Enable gaming home-manager configuration";
-    lutris.enable =
-      mkEnableOption "Enable Lutris"
-      // {
-        default = cfg.enable;
-      };
-    bottles.enable =
-      mkEnableOption "Enable Bottles"
-      // {
-        default = cfg.enable;
-      };
-    vinegar.enable =
-      mkEnableOption "Enable Vinegar"
-      // {
-        default = cfg.enable;
-      };
+    lutris.enable = mkEnableOption "Enable Lutris" // {
+      default = cfg.enable;
+    };
+    bottles.enable = mkEnableOption "Enable Bottles" // {
+      default = cfg.enable;
+    };
+    vinegar.enable = mkEnableOption "Enable Vinegar" // {
+      default = cfg.enable;
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -69,7 +65,7 @@ in {
         ryubing
 
         # PS3 Emulator
-        rpcs3
+        # rpcs3
 
         # PS2 Emulator
         pcsx2
@@ -106,15 +102,15 @@ in {
     }
 
     {
-      services.flatpak.packages = mkIf cfg.lutris.enable ["net.lutris.Lutris"];
+      services.flatpak.packages = mkIf cfg.lutris.enable [ "net.lutris.Lutris" ];
     }
 
     {
-      services.flatpak.packages = mkIf cfg.bottles.enable ["com.usebottles.bottles"];
+      services.flatpak.packages = mkIf cfg.bottles.enable [ "com.usebottles.bottles" ];
     }
 
     {
-      services.flatpak.packages = mkIf cfg.vinegar.enable ["org.vinegarhq.Sober"];
+      services.flatpak.packages = mkIf cfg.vinegar.enable [ "org.vinegarhq.Sober" ];
     }
   ]);
 }
