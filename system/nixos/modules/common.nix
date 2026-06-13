@@ -1,0 +1,50 @@
+{...}: {
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+  };
+
+  # Keyring
+  services.gnome.gnome-keyring.enable = true;
+  programs.seahorse.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    settings = {
+      default-cache-ttl = 2592000;
+      max-cache-ttl = 2592000;
+    };
+  };
+  security.pam.services.sddm.enableGnomeKeyring = true;
+  hardware.enableRedistributableFirmware = true;
+
+  # use zram via zram-generator (preferred for AVF devices)
+  services.zram-generator = {
+    enable = true;
+    settings = {
+      "zram0" = {
+        "zram-size" = "ram / 4";
+      };
+      "" = {
+        "compression-algorithm" = "zstd";
+      };
+    };
+  };
+
+  # earlyoom
+  services.earlyoom.enable = true;
+  services.earlyoom.freeMemThreshold = 10;
+
+  # system config
+  nix = {
+    gc = {
+      automatic = true;
+      persistent = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
+}
