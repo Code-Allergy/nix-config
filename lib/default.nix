@@ -173,7 +173,6 @@ in rec {
         unstable = import inputs.nixpkgs {inherit system;};
         #nixos = Dedicated Build on Metal
         nixosModules = [
-          # (hyprland.nixosModules.default)
           (inputs.home-manager.nixosModules.home-manager)
           {
             home-manager = {
@@ -207,10 +206,10 @@ in rec {
               system.stateVersion = "24.05";
             }
           )
-          (inputs.nixos-wsl.nixosModules.wsl)
-          (inputs.lanzaboote.nixosModules.lanzaboote)
-          (inputs.catppuccin.nixosModules.catppuccin)
-          (inputs.agenix.nixosModules.default)
+          (nixos-wsl.nixosModules.wsl)
+          (lanzaboote.nixosModules.lanzaboote)
+          (catppuccin.nixosModules.catppuccin)
+          (agenix.nixosModules.default)
           (nix-flatpak.nixosModules.nix-flatpak)
           # (disko.nixosModules.disko)
           (import ../system/nixos/modules)
@@ -275,11 +274,7 @@ in rec {
             inherit system;
             modules =
               commonModules
-              ++ nixosModules
-              ++ [
-                #(import "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix") Default nix lib
-                (inputs.nixos-generators.nixosModules.all-formats) # Community Nix Generators
-              ];
+              ++ nixosModules;
             specialArgs = let
               self = inputs.self;
               user = userConf;
@@ -367,10 +362,7 @@ in rec {
             inherit system;
             modules =
               commonModules
-              ++ nixosModules
-              ++ [
-                (inputs.nixos-generators.nixosModules.all-formats)
-              ];
+              ++ nixosModules;
             specialArgs = let
               self = inputs.self;
               user = userConf;
