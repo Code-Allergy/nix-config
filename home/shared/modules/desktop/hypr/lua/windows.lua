@@ -28,3 +28,17 @@ hl.window_rule({
     match = { class = "firefox", title = "Picture-in-Picture" },
     opaque = true,
 })
+
+
+local tearing_window_classes = {
+    "cs2"
+}
+
+
+for _, class in ipairs(tearing_window_classes) do
+    hl.window_rule({
+        name = "tear-" .. class,
+        match = { class = class },
+        immediate = true,
+    })
+end
