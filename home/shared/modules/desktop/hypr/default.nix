@@ -103,7 +103,7 @@ in {
     programs.wlogout.enable = true;
 
     wayland.windowManager.hyprland = {
-      enable = true;
+      enable = false; # for now, while testing out hyprland lua configs
       systemd.enable = false;
       package = null;
       portalPackage = null;
