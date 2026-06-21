@@ -28,18 +28,18 @@ in {
     hardware.amdgpu.opencl.enable = true;
 
     # support for ROCm on Nix
-    systemd.tmpfiles.rules = let
-      rocmEnv = pkgs.symlinkJoin {
-        name = "rocm-combined";
-        paths = with pkgs.rocmPackages; [
-          rocblas
-          hipblas
-          clr
-        ];
-      };
-    in [
-      "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
-    ];
+    # systemd.tmpfiles.rules = let
+    #   rocmEnv = pkgs.symlinkJoin {
+    #     name = "rocm-combined";
+    #     paths = with pkgs.rocmPackages; [
+    #       rocblas
+    #       hipblas
+    #       clr
+    #     ];
+    #   };
+    # in [
+    #   "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+    # ];
 
     systemd.packages = with pkgs; [lact];
     systemd.services.lactd.wantedBy = ["multi-user.target"];
