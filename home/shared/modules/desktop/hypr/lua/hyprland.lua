@@ -82,7 +82,17 @@ hl.config({
 
     dwindle = {
         preserve_split = true
-    }
+    },
+
+    render = {
+        direct_scanout = 2,
+    },
+
+    ecosystem = {
+        no_update_news = true,
+        no_donation_nag = true,
+        enforce_permissions = true
+    },
 })
 
 -- https://wiki.hypr.land/Configuring/Advanced-and-Cool/Devices/
@@ -108,3 +118,41 @@ hl.animation({ leaf = "border", enabled = true, speed = 10, bezier = "default" }
 hl.animation({ leaf = "borderangle", enabled = true, speed = 8, bezier = "default" })
 hl.animation({ leaf = "fade", enabled = true, speed = 7, bezier = "default" })
 hl.animation({ leaf = "workspaces", enabled = true, speed = 6, bezier = "default" })
+
+
+-- workspace rules
+hl.workspace_rule({ workspace = "1", monitor = "DP-1", default = true })
+hl.workspace_rule({ workspace = "1", monitor = "eDP-1", default = true })
+hl.workspace_rule({ workspace = "10", monitor = "HDMI-A-1", default = true })
+
+
+-- window rules
+
+hl.window_rule({
+    -- Ignore maximize requests from all apps. You'll probably like this.
+    name           = "suppress-maximize-events",
+    match          = { class = ".*" },
+    suppress_event = "maximize",
+})
+
+local floating_window_classes = {
+    "ark",
+    "org.freedesktop.impl.portal.desktop.kde",
+    "spotube",
+    "pavucontrol",
+}
+
+for _, class in ipairs(floating_window_classes) do
+    hl.window_rule({
+        name = "float-" .. class,
+        match = { class = class },
+        float = true,
+    })
+end
+
+
+hl.window_rule({
+    name = "opaque-firefox-pip",
+    match = { class = "firefox", title = "Picture-in-Picture" },
+    opaque = true,
+})
