@@ -19,8 +19,6 @@ hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("togglefloating"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())         -- dwindle
 hl.bind(mainMod .. " + TAB", hl.dsp.layout("togglesplit")) -- dwindle only
 
-
-
 for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))

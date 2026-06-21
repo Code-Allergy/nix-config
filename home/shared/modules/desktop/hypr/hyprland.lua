@@ -1,3 +1,8 @@
+require("lua.startup")
 require("lua.hyprland")
 require("lua.keybinds")
 require("lua.monitors")
+require("lua.animations")
+require("lua.devices")
+require("lua.workspaces")
+require("lua.windows")
