@@ -4,7 +4,7 @@ local mainMod = "SUPER"
 
 hl.bind("CTRL + ALT + T", hl.dsp.exec_cmd("uwsm app -- kitty"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("fuzzel"))
--- # hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("killactive"))
+hl.bind(mainMod .. " + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("exit"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("uwsm app -- $fileManager"))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("togglefloating"))

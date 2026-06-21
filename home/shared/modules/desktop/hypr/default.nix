@@ -11,6 +11,7 @@ with lib; let
   inherit (import ./configs/hypridle.nix) hypridle_config;
   inherit (import ./configs/hyprlock.nix {inherit self;}) hyprlock_config;
   inherit (import ./configs/hyprpaper.nix {inherit self;}) hyprpaper_config;
+  dotfiles = "${config.home.homeDirectory}/nix-config";
   hostname = "bigblubbus";
 in {
   imports = [./waybar.nix]; # todo: fix this :)
@@ -101,6 +102,13 @@ in {
     };
 
     programs.wlogout.enable = true;
+
+    # link in hyprland lua configs while WIP
+    xdg.configFile."hypr/hyprland.lua".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/shared/modules/desktop/hypr/hyprland.lua";
+
+    xdg.configFile."hypr/lua".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfiles}/home/shared/modules/desktop/hypr/lua";
 
     wayland.windowManager.hyprland = {
       enable = false; # for now, while testing out hyprland lua configs
