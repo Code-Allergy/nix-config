@@ -17,5 +17,11 @@ hl.monitor({
     cm = "auto"
 })
 
+-- monitor = HEADLESS-2, disable
+hl.monitor({
+    output = "HEADLESS-1",
+    disabled = true,
+})
+
 
 -- monitor = eDP-1, preferred, 3640x0, 1, vrr, 1
