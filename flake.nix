@@ -124,6 +124,11 @@
           hostname = "blubbus";
           buildTarget = "nixos";
         };
+        optimus = {
+          user = "ryan";
+          hostname = "optimus";
+          buildTarget = "nixos";
+        };
         hihppo = {
           user = "ryan";
           hostname = "hihppo";
