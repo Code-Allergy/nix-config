@@ -30,37 +30,76 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f50fe969-6d2d-4d67-87b7-749c5e4d7a46";
     fsType = "btrfs";
-    options = [ "subvol=@" ];
+    options = [
+      "subvol=@"
+      "compress=zstd:3"
+      "noatime"
+      "ssd"
+      "discard=async"
+    ];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/f50fe969-6d2d-4d67-87b7-749c5e4d7a46";
     fsType = "btrfs";
-    options = [ "subvol=@home" ];
+    options = [
+      "subvol=@home"
+      "compress=zstd:3"
+      "noatime"
+      "ssd"
+      "discard=async"
+      "autodefrag"
+    ];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/f50fe969-6d2d-4d67-87b7-749c5e4d7a46";
     fsType = "btrfs";
-    options = [ "subvol=@nix" ];
+    options = [
+      "subvol=@nix"
+      "compress=zstd:8"
+      "noatime"
+      "ssd"
+      "discard=async"
+    ];
   };
 
   fileSystems."/var" = {
     device = "/dev/disk/by-uuid/f50fe969-6d2d-4d67-87b7-749c5e4d7a46";
     fsType = "btrfs";
-    options = [ "subvol=@var" ];
+    options = [
+      "subvol=@var"
+      "compress=zstd:3"
+      "noatime"
+      "ssd"
+      "discard=async"
+      "autodefrag"
+    ];
   };
 
   fileSystems."/var/log" = {
     device = "/dev/disk/by-uuid/f50fe969-6d2d-4d67-87b7-749c5e4d7a46";
     fsType = "btrfs";
-    options = [ "subvol=@log" ];
+    options = [
+      "subvol=@log"
+      "compress=zstd:3"
+      "noatime"
+      "ssd"
+      "discard=async"
+      "autodefrag"
+    ];
   };
 
   fileSystems."/.snapshots" = {
     device = "/dev/disk/by-uuid/f50fe969-6d2d-4d67-87b7-749c5e4d7a46";
     fsType = "btrfs";
-    options = [ "subvol=@snapshots" ];
+    options = [
+      "subvol=@snapshots"
+      "compress=zstd:3"
+      "noatime"
+      "ssd"
+      "discard=async"
+    ];
   };
 
   fileSystems."/boot" = {
@@ -72,12 +111,37 @@
     ];
   };
 
+  fileSystems."/media/ssd0" = {
+    device = "/dev/disk/by-uuid/b3cb05da-a6e5-4c73-9251-0e42daf1285e";
+    fsType = "ext4";
+    options = [
+      "defaults"
+      "relatime"
+      "discard"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/media/hdd0" = {
+    device = "/dev/disk/by-uuid/C69EDCA79EDC90F3";
+    fsType = "ntfs";
+    options = [
+      "noatime"
+      "lazytime"
+      "prealloc"
+      "nofail"
+    ];
+  };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  environment.systemPackages = [ pkgs.sbctl ];
+  environment.systemPackages = [
+    pkgs.sbctl
+    pkgs.e2fsprogs
+  ];
 
   boot = {
     loader.systemd-boot.enable = lib.mkForce false;
