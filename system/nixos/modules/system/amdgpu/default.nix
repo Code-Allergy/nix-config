@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.neer.modules.system.amdgpu;
-in {
+in
+{
   options.neer.modules.system.amdgpu = {
     enable = mkEnableOption "amdgpu hardware";
   };
@@ -28,21 +30,23 @@ in {
     hardware.amdgpu.opencl.enable = true;
 
     # support for ROCm on Nix
-    # systemd.tmpfiles.rules = let
-    #   rocmEnv = pkgs.symlinkJoin {
-    #     name = "rocm-combined";
-    #     paths = with pkgs.rocmPackages; [
-    #       rocblas
-    #       hipblas
-    #       clr
-    #     ];
-    #   };
-    # in [
-    #   "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
-    # ];
+    systemd.tmpfiles.rules =
+      let
+        rocmEnv = pkgs.symlinkJoin {
+          name = "rocm-combined";
+          paths = with pkgs.rocmPackages; [
+            rocblas
+            hipblas
+            clr
+          ];
+        };
+      in
+      [
+        "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+      ];
 
-    systemd.packages = with pkgs; [lact];
-    systemd.services.lactd.wantedBy = ["multi-user.target"];
+    systemd.packages = with pkgs; [ lact ];
+    systemd.services.lactd.wantedBy = [ "multi-user.target" ];
     hardware.amdgpu.initrd.enable = true;
     hardware.amdgpu.overdrive.enable = true;
 
