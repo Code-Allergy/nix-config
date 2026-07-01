@@ -1,7 +1,8 @@
-{inputs, ...}:
+{ inputs, ... }:
 with inputs;
 with inputs.nixpkgs;
-with inputs.nixpkgs.lib; let
+with inputs.nixpkgs.lib;
+let
   # Shared home-manager config used by both mkUserHome (system-level) and mkArchConfiguration (standalone).
   mkCommonHomeConfig = {
     home.stateVersion = "24.05";
@@ -21,38 +22,40 @@ with inputs.nixpkgs.lib; let
     # Re-expose self and nixpkgs as flakes.
     xdg.configFile."nix/registry.json".text = builtins.toJSON {
       version = 2;
-      flakes = let
-        toInput = input:
-          {
-            type = "path";
-            path = input.outPath;
-          }
-          // (filterAttrs (
+      flakes =
+        let
+          toInput =
+            input:
+            {
+              type = "path";
+              path = input.outPath;
+            }
+            // (filterAttrs (
               n: _: n == "lastModified" || n == "rev" || n == "revCount" || n == "narHash"
-            )
-            input);
-      in [
-        {
-          from = {
-            id = "neer";
-            type = "indirect";
-          };
-          to = toInput inputs.self;
-        }
-        {
-          from = {
-            id = "nixpkgs";
-            type = "indirect";
-          };
-          to = toInput inputs.nixpkgs;
-        }
-      ];
+            ) input);
+        in
+        [
+          {
+            from = {
+              id = "neer";
+              type = "indirect";
+            };
+            to = toInput inputs.self;
+          }
+          {
+            from = {
+              id = "nixpkgs";
+              type = "indirect";
+            };
+            to = toInput inputs.nixpkgs;
+          }
+        ];
     };
   };
 
   # Extra config only for standalone homeConfigurations (not used inside system-level home-manager
   # where useGlobalPkgs=true disables nixpkgs options and nix.package is set by common.nix).
-  mkStandaloneHomeConfig = {system}: {
+  mkStandaloneHomeConfig = { system }: {
     xdg.configFile."nix/nix.conf".text = ''
       experimental-features = nix-command flakes
     '';
@@ -64,71 +67,67 @@ with inputs.nixpkgs.lib; let
 
     nixpkgs = {
       config = import ../nix/config.nix;
-      overlays =
-        (builtins.attrValues (builtins.removeAttrs inputs.self.overlays ["default"]))
-        ++ [
-          inputs.rust-overlay.overlays.default
-          inputs.nur.overlays.default
-        ];
+      overlays = (builtins.attrValues (builtins.removeAttrs inputs.self.overlays [ "default" ])) ++ [
+        inputs.rust-overlay.overlays.default
+        inputs.nur.overlays.default
+      ];
     };
   };
-in rec {
-  firstOrDefault = first: default:
-    if first != null
-    then first
-    else default;
-  existsOrDefault = name: set: default:
-    if builtins.hasAttr name set
-    then builtins.getAttr name set
-    else default;
-  mkUserHome = {
-    config,
-    userConf,
-    system ? "aarch64-darwin",
-  }: {...}: {
-    imports = [
-      # (hyprland.homeManagerModules.default)
-      (agenix.homeManagerModules.default)
-      # (import ../home/darwin/modules)
-      (catppuccin.homeModules.catppuccin)
-      (nix-flatpak.homeManagerModules.nix-flatpak)
-      (import ../home/nixos/modules)
-      (import config)
-      mkCommonHomeConfig
-    ];
-  };
+in
+rec {
+  firstOrDefault = first: default: if first != null then first else default;
+  existsOrDefault =
+    name: set: default:
+    if builtins.hasAttr name set then builtins.getAttr name set else default;
+  mkUserHome =
+    {
+      config,
+      userConf,
+      system ? "aarch64-darwin",
+    }:
+    { ... }: {
+      imports = [
+        # (hyprland.homeManagerModules.default)
+        (agenix.homeManagerModules.default)
+        # (import ../home/darwin/modules)
+        (catppuccin.homeModules.catppuccin)
+        (nix-flatpak.homeManagerModules.nix-flatpak)
+        (import ../home/nixos/modules)
+        (import config)
+        mkCommonHomeConfig
+      ];
+    };
 
-  strToPath = x: path:
-    if builtins.typeOf x == "string"
-    then builtins.toPath "${toString path}/${x}"
-    else x;
+  strToPath =
+    x: path: if builtins.typeOf x == "string" then builtins.toPath "${toString path}/${x}" else x;
 
-  strToFile = x: path:
-    if builtins.typeOf x == "string"
-    then builtins.toPath "${toString path}/${x}.nix"
-    else x;
+  strToFile =
+    x: path: if builtins.typeOf x == "string" then builtins.toPath "${toString path}/${x}.nix" else x;
 
   isPasswdCompatible = str: !(hasInfix ":" str || hasInfix "\n" str);
 
-  passwdEntry = type:
+  passwdEntry =
+    type:
     types.addCheck type isPasswdCompatible
     // {
       name = "passwdEntry ${type.name}";
       description = "${type.description}, not containing newlines or colons";
     };
 
-  mkHomeConfiguration = {
-    self,
-    system,
-    username,
-    configName ? username,
-    hostname ? configName,
-    homeDirectory ? null,
-    extraModules ? [],
-    ...
-  }: let
-    userConf = import ../users/${configName}.nix;
-  in
+  mkHomeConfiguration =
+    {
+      self,
+      system,
+      username,
+      configName ? username,
+      hostname ? configName,
+      homeDirectory ? null,
+      extraModules ? [ ],
+      ...
+    }:
+    let
+      userConf = import ../users/${configName}.nix;
+    in
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         inherit system;
@@ -158,19 +157,21 @@ in rec {
       ];
     };
 
-  mkNixSystemConfiguration = name: {
-    config ? name,
-    user ? "nixos",
-    system ? "x86_64-linux",
-    hostname ? "nixos",
-    buildTarget,
-    args ? {},
-  }:
+  mkNixSystemConfiguration =
+    name:
+    {
+      config ? name,
+      user ? "nixos",
+      system ? "x86_64-linux",
+      hostname ? "nixos",
+      buildTarget,
+      args ? { },
+    }:
     nameValuePair name (
       let
         pkgs = inputs.self.legacyPackages."${system}";
         userConf = import (strToFile user ../users);
-        unstable = import inputs.nixpkgs {inherit system;};
+        unstable = import inputs.nixpkgs { inherit system; };
         #nixos = Dedicated Build on Metal
         nixosModules = [
           (inputs.home-manager.nixosModules.home-manager)
@@ -183,10 +184,11 @@ in rec {
               sharedModules = [
                 # inputs.nixvim.homeModules.nixvim
               ];
-              extraSpecialArgs = let
-                self = inputs.self;
-                user = userConf;
-              in
+              extraSpecialArgs =
+                let
+                  self = inputs.self;
+                  user = userConf;
+                in
                 # NOTE: Cannot pass name to home-manager as it passes `name` in to set the `hmModule`
                 {
                   inherit
@@ -201,11 +203,9 @@ in rec {
                 };
             };
           }
-          (
-            {...}: {
-              system.stateVersion = "24.05";
-            }
-          )
+          ({ ... }: {
+            system.stateVersion = "24.05";
+          })
           (nixos-wsl.nixosModules.wsl)
           (lanzaboote.nixosModules.lanzaboote)
           (catppuccin.nixosModules.catppuccin)
@@ -218,67 +218,56 @@ in rec {
         ];
         commonModules = [
           {
-            environment.systemPackages = [agenix.packages.${system}.default];
-            age.identityPaths = ["/home/${userConf.userName}/.ssh/id_rsa"];
+            environment.systemPackages = [ agenix.packages.${system}.default ];
+            age.identityPaths = [ "/home/${userConf.userName}/.ssh/id_rsa" ];
           }
-          (
-            {name, ...}: {
-              networking.hostName = name;
-            }
-          )
-          (
-            {inputs, ...}: {
-              # Use the nixpkgs from the flake.
-              nixpkgs = {inherit pkgs;};
+          ({ name, ... }: {
+            networking.hostName = name;
+          })
+          ({ inputs, ... }: {
+            # Use the nixpkgs from the flake.
+            nixpkgs = { inherit pkgs; };
 
-              # For compatibility with nix-shell, nix-build, etc.
-              environment.etc.nixpkgs.source = inputs.nixpkgs;
-              nix.nixPath = ["nixpkgs=/etc/nixpkgs"];
-            }
-          )
-          (
-            {pkgs, ...}: {
-              # Don't rely on the configuration to enable a flake-compatible version of Nix.
-              nix = {
-                package = pkgs.nixVersions.stable;
-                extraOptions = "experimental-features = nix-command flakes";
-              };
-            }
-          )
-          (
-            {inputs, ...}: {
-              # Re-expose self and nixpkgs as flakes.
-              nix.registry = {
-                self.flake = inputs.self;
-                nixpkgs = {
-                  from = {
-                    id = "nixpkgs";
-                    type = "indirect";
-                  };
-                  flake = inputs.nixpkgs;
+            # For compatibility with nix-shell, nix-build, etc.
+            environment.etc.nixpkgs.source = inputs.nixpkgs;
+            nix.nixPath = [ "nixpkgs=/etc/nixpkgs" ];
+          })
+          ({ pkgs, ... }: {
+            # Don't rely on the configuration to enable a flake-compatible version of Nix.
+            nix = {
+              package = pkgs.nixVersions.stable;
+              extraOptions = "experimental-features = nix-command flakes";
+            };
+          })
+          ({ inputs, ... }: {
+            # Re-expose self and nixpkgs as flakes.
+            nix.registry = {
+              self.flake = inputs.self;
+              nixpkgs = {
+                from = {
+                  id = "nixpkgs";
+                  type = "indirect";
                 };
+                flake = inputs.nixpkgs;
               };
-            }
-          )
-          (
-            {pkgs, ...}: {
-              services.flatpak.enable = true;
-            }
-          )
+            };
+          })
+          ({ pkgs, ... }: {
+            services.flatpak.enable = true;
+          })
           (import ../system/shared/secrets)
         ];
       in
-        if buildTarget == "iso"
-        then
-          nixosSystem {
-            inherit system;
-            modules =
-              commonModules
-              ++ nixosModules;
-            specialArgs = let
+      if buildTarget == "iso" then
+        nixosSystem {
+          inherit system;
+          modules = commonModules ++ nixosModules;
+          specialArgs =
+            let
               self = inputs.self;
               user = userConf;
-            in {
+            in
+            {
               inherit
                 inputs
                 name
@@ -290,16 +279,17 @@ in rec {
                 secret
                 ;
             };
-          }
-        else if buildTarget == "nixos-wsl"
-        then
-          nixosSystem {
-            inherit system;
-            modules = commonModules ++ nixosModules;
-            specialArgs = let
+        }
+      else if buildTarget == "nixos-wsl" then
+        nixosSystem {
+          inherit system;
+          modules = commonModules ++ nixosModules;
+          specialArgs =
+            let
               self = inputs.self;
               user = userConf;
-            in {
+            in
+            {
               inherit
                 inputs
                 name
@@ -311,17 +301,18 @@ in rec {
                 secrets
                 ;
             };
-          }
-        ## handles nixos host builds
-        else if buildTarget == "nixos"
-        then
-          nixosSystem {
-            inherit system;
-            modules = commonModules ++ nixosModules;
-            specialArgs = let
+        }
+      ## handles nixos host builds
+      else if buildTarget == "nixos" then
+        nixosSystem {
+          inherit system;
+          modules = commonModules ++ nixosModules;
+          specialArgs =
+            let
               self = inputs.self;
               user = userConf;
-            in {
+            in
+            {
               inherit
                 inputs
                 name
@@ -333,16 +324,17 @@ in rec {
                 secrets
                 ;
             };
-          }
-        else if buildTarget == "nixos-avf"
-        then
-          nixosSystem {
-            inherit system;
-            modules = commonModules ++ nixosModules ++ [inputs.nixos-avf.nixosModules.avf];
-            specialArgs = let
+        }
+      else if buildTarget == "nixos-avf" then
+        nixosSystem {
+          inherit system;
+          modules = commonModules ++ nixosModules ++ [ inputs.nixos-avf.nixosModules.avf ];
+          specialArgs =
+            let
               self = inputs.self;
               user = userConf;
-            in {
+            in
+            {
               inherit
                 inputs
                 name
@@ -354,19 +346,18 @@ in rec {
                 secrets
                 ;
             };
-          }
-        #handles VM builds. Default will not cross compile.
-        else if buildTarget == "vm"
-        then
-          nixosSystem {
-            inherit system;
-            modules =
-              commonModules
-              ++ nixosModules;
-            specialArgs = let
+        }
+      #handles VM builds. Default will not cross compile.
+      else if buildTarget == "vm" then
+        nixosSystem {
+          inherit system;
+          modules = commonModules ++ nixosModules;
+          specialArgs =
+            let
               self = inputs.self;
               user = userConf;
-            in {
+            in
+            {
               inherit
                 inputs
                 name
@@ -378,16 +369,17 @@ in rec {
                 secrets
                 ;
             };
-          }
-        else if buildTarget == "darwin"
-        then
-          inputs.darwin.lib.darwinSystem {
-            inherit system;
-            modules = commonModules ++ darwinModules;
-            specialArgs = let
+        }
+      else if buildTarget == "darwin" then
+        inputs.darwin.lib.darwinSystem {
+          inherit system;
+          modules = commonModules ++ darwinModules;
+          specialArgs =
+            let
               self = inputs.self;
               user = userConf;
-            in {
+            in
+            {
               inherit
                 inputs
                 name
@@ -399,8 +391,9 @@ in rec {
                 pkgs
                 ;
             };
-          }
-        else throw "${systemType} is not supported."
+        }
+      else
+        throw "${systemType} is not supported."
     );
 
   ################################## DROID ##################################

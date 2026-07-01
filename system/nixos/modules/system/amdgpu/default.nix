@@ -20,6 +20,8 @@ in
       radeontop
       libva-utils
       vulkan-tools
+      rocmPackages.rocminfo
+      rocmPackages.rocm-smi
     ];
 
     hardware.graphics = {

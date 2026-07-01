@@ -1,8 +1,8 @@
-{...}: {
-  # Host-specific home-manager module manifest for `bigblubbus`.
+{ ... }: {
+  # Host-specific home-manager module manifest for `optimus`.
   neer = {
     modules = {
-      ai.ollama.enable = false;
+      ai.ollama.enable = true;
 
       app = {
         browsers.enable = true; # enable ALL browsers

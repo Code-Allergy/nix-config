@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.neer.modules.app.vscode;
-in {
+in
+{
   options.neer.modules.app.vscode = {
     enable = mkEnableOption "Enable VSCode";
   };
@@ -17,10 +19,11 @@ in {
       package = pkgs.vscode-fhs;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
-          ms-vscode.cpptools
+          ms-vscode.cpptools-extension-pack
+          ms-vscode.cmake-tools
+          llvm-vs-code-extensions.vscode-clangd
           ms-vscode.hexeditor
           ms-vscode.makefile-tools
-          ms-vscode.cmake-tools
           ms-vscode.hexeditor
           ms-vscode-remote.remote-ssh
           # ms-python.python
