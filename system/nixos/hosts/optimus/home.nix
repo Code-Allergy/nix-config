@@ -2,7 +2,10 @@
   # Host-specific home-manager module manifest for `optimus`.
   neer = {
     modules = {
-      ai.ollama.enable = true;
+      ai = {
+        ollama.enable = true;
+        llamacpp.enable = true;
+      };
 
       app = {
         browsers.enable = true; # enable ALL browsers
