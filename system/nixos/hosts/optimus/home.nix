@@ -27,7 +27,7 @@
 
       dev = {
         distrobox.enable = true;
-        rust.enable = true;
+        rust.enable = false;
       };
 
       gaming.enable = true;

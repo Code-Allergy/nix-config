@@ -1,5 +1,6 @@
-{lib, ...}:
-with lib; {
+{ lib, ... }:
+with lib;
+{
   options.neer = {
     modules.dev.enable = mkEnableOption "Enable development configuration";
   };
