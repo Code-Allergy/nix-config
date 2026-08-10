@@ -17,6 +17,7 @@
         kitty.enable = true;
         office.enable = true;
         syncthing.enable = true;
+        trilium.enable = true;
         vscode.enable = true;
         zed.enable = true;
       };
@@ -27,7 +28,7 @@
 
       dev = {
         distrobox.enable = true;
-        rust.enable = false;
+        rust.enable = true;
       };
 
       gaming.enable = true;

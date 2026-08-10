@@ -66,6 +66,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    trilium-notes = {
+      url = "github:TriliumNext/Trilium";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Hyprland WM
     hyprland.url = "github:hyprwm/Hyprland";
     # disko.url = "github:nix-community/disko";
