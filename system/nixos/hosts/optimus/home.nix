@@ -5,6 +5,8 @@
       ai = {
         ollama.enable = true;
         llamacpp.enable = true;
+        claude.enable = true;
+        opencode.enable = true;
       };
 
       app = {

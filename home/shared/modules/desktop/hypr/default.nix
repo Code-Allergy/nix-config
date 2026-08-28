@@ -24,6 +24,7 @@ in {
     # For now, we will just wrap the whole home-manager config
 
     home.pointerCursor = {
+      enable = true;
       name = "catppuccin-mocha-blue-cursors";
       package = pkgs.catppuccin-cursors.mochaBlue;
       size = 30;
