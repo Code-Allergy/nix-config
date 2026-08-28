@@ -128,7 +128,6 @@
     options = [
       "noatime"
       "lazytime"
-      "prealloc"
       "nofail"
     ];
   };
