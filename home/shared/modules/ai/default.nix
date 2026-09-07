@@ -5,5 +5,7 @@
     ./codex.nix
     ./claude.nix
     ./opencode.nix
+    ./cursor.nix
+    ./antigravity.nix
   ];
 }

@@ -11,6 +11,7 @@
       eza
       killall
       file
+      wakatime-cli
 
       # network tools
       wget

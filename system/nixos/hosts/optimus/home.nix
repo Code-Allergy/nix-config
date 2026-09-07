@@ -7,6 +7,8 @@
         llamacpp.enable = true;
         claude.enable = true;
         opencode.enable = true;
+        cursor.enable = true;
+        antigravity.enable = true;
       };
 
       app = {

@@ -71,6 +71,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Google Antigravity editor/agent
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Hyprland WM
     hyprland.url = "github:hyprwm/Hyprland";
     # disko.url = "github:nix-community/disko";
