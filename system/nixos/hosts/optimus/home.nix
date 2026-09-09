@@ -9,6 +9,7 @@
         opencode.enable = true;
         cursor.enable = true;
         antigravity.enable = true;
+        omp.enable = true;
       };
 
       app = {

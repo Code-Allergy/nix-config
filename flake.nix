@@ -77,6 +77,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Oh My Pi (OMP) coding agent
+    omp = {
+      url = "github:can1357/oh-my-pi";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
+
     # Hyprland WM
     hyprland.url = "github:hyprwm/Hyprland";
     # disko.url = "github:nix-community/disko";
@@ -102,6 +109,7 @@
           overlays = overlayFns ++ [
             inputs.rust-overlay.overlays.default
             inputs.nur.overlays.default
+            inputs.omp.overlays.default
           ];
         }
       );
@@ -120,6 +128,7 @@
           ++ [
             inputs.rust-overlay.overlays.default
             inputs.nur.overlays.default
+            inputs.omp.overlays.default
           ]
         );
       };

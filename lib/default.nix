@@ -92,6 +92,7 @@ in rec {
       # (import ../home/darwin/modules)
       (catppuccin.homeModules.catppuccin)
       (nix-flatpak.homeManagerModules.nix-flatpak)
+      (omp.homeManagerModules.default)
       (import ../home/nixos/modules)
       (import config)
       mkCommonHomeConfig
@@ -209,6 +210,7 @@ in rec {
           (catppuccin.nixosModules.catppuccin)
           (agenix.nixosModules.default)
           (nix-flatpak.nixosModules.nix-flatpak)
+          (omp.nixosModules.default)
           # (disko.nixosModules.disko)
           (import ../system/nixos/modules)
           (import ../system/shared)

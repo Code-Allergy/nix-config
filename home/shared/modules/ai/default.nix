@@ -7,5 +7,6 @@
     ./opencode.nix
     ./cursor.nix
     ./antigravity.nix
+    ./omp.nix
   ];
 }
