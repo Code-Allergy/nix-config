@@ -36,7 +36,7 @@
 
     # Add the OPNsense-generated public key here in step 4.
     openssh.authorizedKeys.keys = [
-      # "restrict,from=\"10.x.x.x\" ssh-ed25519 AAAA..."
+      "restrict,command=\"internal-sftp\" from=\"10.10.0.1\" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN+5TwqdSKk9szm4YC6tYYovLy6vumlUhYKCNYidgF8Q root@router.lan"
     ];
   };
 
