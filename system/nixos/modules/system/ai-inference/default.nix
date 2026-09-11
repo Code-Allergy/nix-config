@@ -145,8 +145,9 @@ let
             -fa on \
             -ctk q4_0 \
             -ctv q4_0 \
-            -ub 128 \
-            -c 327424 \
+            -b 512 \
+            -ub 64 \
+            -c 327680 \
             -np 1
 
       qwen-3.5-9b-smart:
@@ -295,7 +296,6 @@ in
   config = lib.mkIf cfg.enable {
 
     systemd.tmpfiles.rules = [
-      "d /var/lib/ollama 0750 root root -"
       "d /var/lib/open-webui 0750 root root -"
       "d /var/lib/llama.cpp 0750 root root -"
       "d /var/lib/llama.cpp/models 0750 root root -"
@@ -309,8 +309,9 @@ in
 
       wantedBy = [ "multi-user.target" ];
       before = [
-        "podman-ollama.service"
+        "podman-llama-swap.service"
         "podman-open-webui.service"
+        "podman-caddy.service"
       ];
 
       serviceConfig = {
@@ -329,10 +330,11 @@ in
       containers = {
         llama-swap = {
           image = "ghcr.io/mostlygeek/llama-swap:unified-cuda";
+          autoStart = true;
 
-          ports = [
-            "9292:8080"
-          ];
+          # ports = [
+          #   "9292:8080"
+          # ];
 
           volumes = [
             "/var/lib/llama.cpp/models:/models:ro"
@@ -348,10 +350,6 @@ in
         open-webui = {
           image = "ghcr.io/open-webui/open-webui:main";
           autoStart = true;
-
-          ports = [
-            "3000:8080"
-          ];
 
           volumes = [
             "/var/lib/open-webui:/app/backend/data"
