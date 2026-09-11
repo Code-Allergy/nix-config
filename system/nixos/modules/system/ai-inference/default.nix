@@ -114,77 +114,6 @@ in
     virtualisation.oci-containers = {
       backend = "podman";
       containers = {
-        # llama-cpp = {
-        #   image = "ghcr.io/ggml-org/llama.cpp:server-cuda";
-        #   autoStart = true;
-
-        #   volumes = [
-        #     "/var/lib/llama.cpp/models:/models"
-        #   ];
-
-        #   extraOptions = [
-        #     "--network=ai"
-        #     "--device=nvidia.com/gpu=all"
-        #     "--security-opt=no-new-privileges"
-        #   ];
-
-        #   cmd = [
-        #     "-m"
-        #     #"/models/LFM2.5-8B-A1B-Q4_K_M.gguf"
-        #     "/models/Ling-3.0-tiny-Q4_K_M.gguf"
-
-        #     "--n-gpu-layers"
-        #     "all"
-
-        #     "-fa"
-        #     "on"
-
-        #     "--host"
-        #     "0.0.0.0"
-
-        #     "--ctx-size"
-        #     "32768"
-
-        #     "-np"
-        #     "1"
-
-        #     "--parallel"
-        #     "1"
-
-        #     "--jinja"
-
-        #     "--cache-type-k"
-        #     "f16"
-
-        #     "--cache-type-v"
-        #     "f16"
-
-        #     "--batch-size"
-        #     "2048"
-        #     "--ubatch-size"
-        #     "512"
-
-        #     "--flash-attn"
-        #     "on"
-
-        #     "--temp"
-        #     "1.0"
-
-        #     "--top-p"
-        #     "0.95"
-
-        #     "--top-k"
-        #     "20"
-
-        #     "--port"
-        #     "8080"
-
-        #     #"--alias"
-        #     #"minicpm5-2b"
-
-        #   ];
-        # };
-
         llama-swap = {
           image = "ghcr.io/mostlygeek/llama-swap:unified-cuda";
 
@@ -249,23 +178,15 @@ in
       };
     };
 
-    systemd.services.podman-ollama = {
-      requires = [ "podman-network-ai.service" ];
-      after = [
-        "podman-network-ai.service"
-        "nvidia-container-toolkit-cdi-generator.service"
-      ];
-    };
-
     systemd.services.podman-open-webui = {
       requires = [ "podman-network-ai.service" ];
       after = [
         "podman-network-ai.service"
-        "podman-ollama.service"
+        "podman-llama-swap.service"
       ];
     };
 
-    systemd.services.podman-llama-cpp = {
+    systemd.services.podman-llama-swap = {
       requires = [ "podman-network-ai.service" ];
       after = [
         "podman-network-ai.service"
