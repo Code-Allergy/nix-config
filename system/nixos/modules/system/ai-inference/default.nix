@@ -149,6 +149,24 @@ let
             -c 327424 \
             -np 1
 
+      qwen-3.5-9b-smart:
+        name: "Qwen 3.5 9B Smart"
+        description: "Qwen 3.5 9B Q5_K_M - maximum intelligence, 40K context"
+        ttl: 600
+        cmd: |
+          llama-server \
+            --host 127.0.0.1 \
+            --port ''${PORT} \
+            -m /models/Qwen3.5-9B-Q5_K_M.gguf \
+            -ngl 999 \
+            -fa on \
+            -ctk f16 \
+            -ctv f16 \
+            -ub 128 \
+            -c 40960 \
+            -np 1 \
+            --jinja
+
     profiles:
       # Ling profiles
       ling-normal:
