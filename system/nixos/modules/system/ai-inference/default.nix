@@ -479,6 +479,38 @@ in
             IMAGES_OPENAI_API_KEY = "none";
             IMAGE_GENERATION_MODEL = "flux2-klein-4b";
 
+            # ---------------------------------------------------------------------------
+            # RAG / Embeddings
+            # ---------------------------------------------------------------------------
+
+            RAG_EMBEDDING_ENGINE = "openai";
+            RAG_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+            RAG_OPENAI_API_KEY = "none";
+            RAG_EMBEDDING_MODEL = "qwen3-embedding-0.6b";
+
+            # ---------------------------------------------------------------------------
+            # RAG / Reranking
+            # ---------------------------------------------------------------------------
+
+            RAG_RERANKING_ENGINE = "external";
+
+            RAG_EXTERNAL_RERANKER_URL =
+              "http://llama-swap:8080/v1/rerank";
+
+            RAG_EXTERNAL_RERANKER_API_KEY = "none";
+
+            RAG_RERANKING_MODEL = "qwen3-reranker-0.6b";
+
+            RAG_TOP_K_RERANKER = "5";
+
+            ENABLE_RAG_HYBRID_SEARCH = "true";
+
+            # Retrieve more than we ultimately feed the model, because the reranker will
+            # reduce this candidate set.
+            RAG_TOP_K = "15";
+
+            ENABLE_PERSISTENT_CONFIG = "false";
+
             WEBUI_URL = "https://${cfg.webuiHost}";
             CORS_ALLOW_ORIGIN = "https://${cfg.webuiHost}";
             WEBUI_SESSION_COOKIE_SECURE = "true";
