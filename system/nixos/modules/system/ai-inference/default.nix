@@ -268,6 +268,7 @@ let
             -m /models/ggml-large-v3-turbo-q8_0.bin \
             --language auto \
             --convert \
+            --tmp-dir /tmp \
             --inference-path /v1/audio/transcriptions
 
       flux2-klein-4b:
