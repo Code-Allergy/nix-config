@@ -200,6 +200,11 @@ let
         pins:
           chat: spark-2.5-xl
 
+      qwen-smart:
+        description: "Qwen 3.5 9B - highest intelligence local profile"
+        pins:
+          chat: qwen-3.5-9b-smart
+
     hooks:
       on_startup:
         profile: spark-normal
