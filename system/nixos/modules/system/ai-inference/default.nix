@@ -42,6 +42,16 @@ let
         models:
           - kokoro
 
+      embeddings:
+        proxy: http://qwen-embedding:8080
+        models:
+          - qwen3-embedding-0.6b
+
+      reranker:
+        proxy: http://qwen-reranker:8080
+        models:
+          - qwen3-reranker-0.6b
+
     models:
       # -------------------------------------------------------------------------
       # Ling 3.0 Tiny
@@ -483,6 +493,91 @@ in
         kokoro-tts = {
           image = "ghcr.io/remsky/kokoro-fastapi-cpu:v0.8.0";
           autoStart = true;
+
+          extraOptions = [
+            "--network=ai"
+            "--security-opt=no-new-privileges"
+          ];
+        };
+
+        qwen-embedding = {
+          image = "ghcr.io/ggml-org/llama.cpp:server";
+          autoStart = true;
+
+          volumes = [
+            "/var/lib/llama.cpp/models:/models:ro"
+          ];
+
+          cmd = [
+            "-m"
+            "/models/retrieval/Qwen3-Embedding-0.6B-Q8_0.gguf"
+
+            "--host"
+            "0.0.0.0"
+
+            "--port"
+            "8080"
+
+            "--alias"
+            "qwen3-embedding-0.6b"
+
+            "--embedding"
+
+            "--pooling"
+            "last"
+
+            "-c"
+            "32768"
+
+            "-np"
+            "1"
+
+            "-ngl"
+            "0"
+          ];
+
+          extraOptions = [
+            "--network=ai"
+            "--security-opt=no-new-privileges"
+          ];
+        };
+
+        qwen-reranker = {
+          image = "ghcr.io/ggml-org/llama.cpp:server";
+          autoStart = true;
+
+          volumes = [
+            "/var/lib/llama.cpp/models:/models:ro"
+          ];
+
+          cmd = [
+            "-m"
+            "/models/retrieval/qwen3-reranker-0.6b-q8_0.gguf"
+
+            "--host"
+            "0.0.0.0"
+
+            "--port"
+            "8080"
+
+            "--alias"
+            "qwen3-reranker-0.6b"
+
+            "--embedding"
+            "--reranking"
+
+            "--pooling"
+            "rank"
+
+            "-c"
+            "32768"
+
+            "-np"
+            "1"
+
+            "-ngl"
+            "0"
+          ];
 
           extraOptions = [
             "--network=ai"
