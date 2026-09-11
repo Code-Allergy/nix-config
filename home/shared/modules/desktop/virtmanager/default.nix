@@ -10,7 +10,7 @@ in {
     enable =
       mkEnableOption "Enable virt-manager dconf settings"
       // {
-        default = true;
+        default = false;
       };
   };
 

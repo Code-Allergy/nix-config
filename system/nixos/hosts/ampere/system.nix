@@ -16,4 +16,7 @@
   xdg.portal.enable = true;
 
   services.qemuGuest.enable = true;
+
+  # this will be in compute module
+  hardware.nvidia-container-toolkit.enable = true;
 }

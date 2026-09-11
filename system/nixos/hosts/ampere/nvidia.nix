@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-}
-  nixpkgs.config.allowUnfree = true;
-
+{ pkgs, config, ... }:
+{
   # This selects the NVIDIA driver; it does not enable a desktop.
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -24,4 +22,5 @@
   environment.systemPackages = [
     pkgs.pciutils
   ];
+
 }

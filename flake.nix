@@ -149,6 +149,11 @@
           hostname = "optimus";
           buildTarget = "nixos";
         };
+        ampere = {
+          user = "ryan";
+          hostname = "ampere";
+          buildTarget = "nixos";
+        };
         hihppo = {
           user = "ryan";
           hostname = "hihppo";

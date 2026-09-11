@@ -6,13 +6,12 @@
     modules = {
       user.home = ./home.nix;
       system = {
-        gaming.enable = false;
-        virtualization.enable = true;
-        bluetooth.enable = false;
-        amdgpu.enable = false;
-	# nvidia.enable = true;
-        tailscale.enable = false;
-        footpedal.enable = false;
+        oci.enable = true;
+      };
+
+      services.ai-inference = {
+        enable = true;
+        listenAddress = "127.0.0.1";
       };
     };
     #profiles.desktop.enable = true;
