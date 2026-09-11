@@ -127,6 +127,7 @@ in
           ];
 
           extraOptions = [
+            "--network=ai"
             "--device=nvidia.com/gpu=all"
           ];
         };
@@ -144,8 +145,11 @@ in
           ];
 
           environment = {
-            OLLAMA_BASE_URL = "http://ollama:11434";
-            ENABLE_OLLAMA_API = "true";
+            ENABLE_OLLAMA_API = "false";
+
+            ENABLE_OPENAI_API = "true";
+            OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+            OPENAI_API_KEY = "none";
           };
 
           extraOptions = [
