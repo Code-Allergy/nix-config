@@ -7,6 +7,24 @@
 
 let
   cfg = config.neer.modules.services.ai-inference;
+  caddyConfig = pkgs.writeText "Caddyfile" ''
+    {
+      # Disable Caddy's admin API since we manage config declaratively.
+      admin off
+    }
+
+    ${cfg.webuiHost} {
+      encode zstd gzip
+
+      reverse_proxy open-webui:8080
+    }
+
+    ${cfg.apiHost} {
+      encode zstd gzip
+
+      reverse_proxy llama-swap:8080
+    }
+  '';
   llamaSwapConfig = pkgs.writeText "llama-swap.yaml" ''
     healthCheckTimeout: 300
     startPort: 10001
@@ -287,9 +305,16 @@ in
   options.neer.modules.services.ai-inference = {
     enable = lib.mkEnableOption "AI inference services";
 
-    listenAddress = lib.mkOption {
+    webuiHost = lib.mkOption {
       type = lib.types.str;
-      default = "127.0.0.1";
+      description = "Public hostname for Open WebUI";
+      example = "ai.example.com";
+    };
+
+    apiHost = lib.mkOption {
+      type = lib.types.str;
+      description = "Public hostname for the llama-swap OpenAI API";
+      example = "llm.example.com";
     };
   };
 
@@ -332,10 +357,6 @@ in
           image = "ghcr.io/mostlygeek/llama-swap:unified-cuda";
           autoStart = true;
 
-          # ports = [
-          #   "9292:8080"
-          # ];
-
           volumes = [
             "/var/lib/llama.cpp/models:/models:ro"
             "${llamaSwapConfig}:/etc/llama-swap/config/config.yaml:ro"
@@ -361,6 +382,10 @@ in
             ENABLE_OPENAI_API = "true";
             OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
             OPENAI_API_KEY = "none";
+
+            WEBUI_URL = "https://${cfg.webuiHost}";
+            CORS_ALLOW_ORIGIN = "https://${cfg.webuiHost}";
+            WEBUI_SESSION_COOKIE_SECURE = "true";
           };
 
           extraOptions = [

@@ -11,7 +11,9 @@
 
       services.ai-inference = {
         enable = true;
-        listenAddress = "127.0.0.1";
+
+        webuiHost = "chat.ampere.duckduck112.duckdns.org";
+        apiHost = "api.ampere.duckduck112.duckdns.org";
       };
     };
     #profiles.desktop.enable = true;
