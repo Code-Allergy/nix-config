@@ -31,6 +31,8 @@ let
   '';
 
   llamaSwapConfig = pkgs.writeText "llama-swap.yaml" ''
+    logLevel: debug
+    logToStdout: both
     healthCheckTimeout: 300
     startPort: 10001
 
