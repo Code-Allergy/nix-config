@@ -248,6 +248,20 @@ let
             -np 1 \
             --jinja
 
+      whisper-large-v3-turbo:
+        name: "Whisper Large V3 Turbo"
+        description: "GPU accelerated speech-to-text"
+        ttl: 300
+        checkEndpoint: /
+        cmd: |
+          whisper-server \
+            --host 127.0.0.1 \
+            --port ''${PORT} \
+            -m /models/ggml-large-v3-turbo-q8_0.bin \
+            --language auto \
+            --convert \
+            --inference-path /v1/audio/transcriptions
+
     profiles:
       # Ling profiles
       ling-normal:
