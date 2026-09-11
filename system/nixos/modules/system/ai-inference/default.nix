@@ -329,11 +329,16 @@ in
       "d /var/lib/open-webui 0750 root root -"
       "d /var/lib/llama.cpp 0750 root root -"
       "d /var/lib/llama.cpp/models 0750 root root -"
-      "d /var/lib/caddy 0750 root root -"
+
+      # certsync needs execute/traverse permission through this parent,
+      # but not write permission to the parent itself.
+      "d /var/lib/caddy 0750 root cert-deploy -"
+
       "d /var/lib/caddy/data 0750 root root -"
       "d /var/lib/caddy/config 0750 root root -"
-      # Hosting certs from router
-      "d /var/lib/caddy/certs 0750 root root -"
+
+      # OPNsense writes here.
+      "d /var/lib/caddy/certs 0750 certsync cert-deploy -"
     ];
 
     systemd.services.podman-network-ai = {
