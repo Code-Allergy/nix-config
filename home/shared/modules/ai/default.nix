@@ -8,5 +8,6 @@
     ./cursor.nix
     ./antigravity.nix
     ./omp.nix
+    ./mcp.nix
   ];
 }

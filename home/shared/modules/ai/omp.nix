@@ -23,5 +23,21 @@ in
 
   config = mkIf (cfg.enable || config.neer.modules.ai.oh-my-pi.enable) {
     programs.omp.enable = true;
+    programs.omp.settings = {
+      modelRoles.default = "openai-codex/gpt-6-astra:high";
+      symbolPreset = "nerd";
+      composer.shape = "box";
+      theme = {
+        dark = "titanium";
+        light = "light";
+      };
+      setupVersion = 2;
+      lsp = {
+        enabled = true;
+        formatOnWrite = true;
+      };
+      # MCP definitions are owned by Home Manager, not imported from OpenCode.
+      enabledProviders = [ ];
+    };
   };
 }

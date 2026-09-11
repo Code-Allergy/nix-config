@@ -10,6 +10,7 @@
         cursor.enable = true;
         antigravity.enable = true;
         omp.enable = true;
+        mcp.enable = true;
       };
 
       app = {
