@@ -34,6 +34,12 @@ let
     healthCheckTimeout: 300
     startPort: 10001
 
+    peers:
+      kokoro:
+        proxy: http://kokoro-tts:8880
+        models:
+          - kokoro
+
     models:
       # -------------------------------------------------------------------------
       # Ling 3.0 Tiny
@@ -262,6 +268,23 @@ let
             --convert \
             --inference-path /v1/audio/transcriptions
 
+      flux2-klein-4b:
+        name: "FLUX.2 Klein 4B"
+        description: "FLUX.2 Klein 4B with uncensored Qwen text encoder"
+        ttl: 300
+        checkEndpoint: /v1/models
+        cmd: |
+          sd-server \
+            --listen-ip 127.0.0.1 \
+            --listen-port ''${PORT} \
+            --diffusion-model /models/image/flux-2-klein-4b-Q4_K_M.gguf \
+            --llm /models/image/flux2-klein-4b-uncensored-q4_k_m.gguf \
+            --vae /models/image/ae.safetensors \
+            --cfg-scale 1.0 \
+            --steps 4 \
+            --diffusion-fa \
+            --offload-to-cpu
+
     profiles:
       # Ling profiles
       ling-normal:
@@ -403,16 +426,60 @@ in
           ];
 
           environment = {
+            # ---------------------------------------------------------------------------
+            # Chat
+            # ---------------------------------------------------------------------------
+
             ENABLE_OLLAMA_API = "false";
 
             ENABLE_OPENAI_API = "true";
             OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
             OPENAI_API_KEY = "none";
 
+
+            # ---------------------------------------------------------------------------
+            # Speech-to-text
+            # ---------------------------------------------------------------------------
+
+            AUDIO_STT_ENGINE = "openai";
+            AUDIO_STT_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+            AUDIO_STT_OPENAI_API_KEY = "none";
+            AUDIO_STT_MODEL = "whisper-large-v3-turbo";
+
+            # ---------------------------------------------------------------------------
+            # Text-to-speech
+            # ---------------------------------------------------------------------------
+
+            AUDIO_TTS_ENGINE = "openai";
+            AUDIO_TTS_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+            AUDIO_TTS_OPENAI_API_KEY = "none";
+            AUDIO_TTS_MODEL = "kokoro";
+            AUDIO_TTS_VOICE = "af_bella";
+
+            # ---------------------------------------------------------------------------
+            # Images
+            # ---------------------------------------------------------------------------
+
+            ENABLE_IMAGE_GENERATION = "true";
+            IMAGE_GENERATION_ENGINE = "openai";
+            IMAGES_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+            IMAGES_OPENAI_API_KEY = "none";
+            IMAGE_GENERATION_MODEL = "flux2-klein-4b";
+
             WEBUI_URL = "https://${cfg.webuiHost}";
             CORS_ALLOW_ORIGIN = "https://${cfg.webuiHost}";
             WEBUI_SESSION_COOKIE_SECURE = "true";
           };
+
+          extraOptions = [
+            "--network=ai"
+            "--security-opt=no-new-privileges"
+          ];
+        };
+
+        kokoro-tts = {
+          image = "ghcr.io/remsky/kokoro-fastapi-cpu:v0.8.0";
+          autoStart = true;
 
           extraOptions = [
             "--network=ai"
