@@ -14,17 +14,22 @@ let
     }
 
     ${cfg.webuiHost} {
+      tls /certs/fullchain.pem /certs/privkey.pem
+
       encode zstd gzip
 
       reverse_proxy open-webui:8080
     }
 
     ${cfg.apiHost} {
+      tls /certs/fullchain.pem /certs/privkey.pem
+
       encode zstd gzip
 
       reverse_proxy llama-swap:8080
     }
   '';
+
   llamaSwapConfig = pkgs.writeText "llama-swap.yaml" ''
     healthCheckTimeout: 300
     startPort: 10001
@@ -327,6 +332,8 @@ in
       "d /var/lib/caddy 0750 root root -"
       "d /var/lib/caddy/data 0750 root root -"
       "d /var/lib/caddy/config 0750 root root -"
+      # Hosting certs from router
+      "d /var/lib/caddy/certs 0750 root root -"
     ];
 
     systemd.services.podman-network-ai = {
@@ -405,13 +412,19 @@ in
           ];
 
           volumes = [
-            "/var/lib/caddy/Caddyfile:/etc/caddy/Caddyfile:ro"
+            "${caddyConfig}:/etc/caddy/Caddyfile:ro"
+
+
+            "/var/lib/caddy/certs/fullchain.pem:/certs/fullchain.pem:ro"
+            "/var/lib/caddy/certs/privkey.pem:/certs/privkey.pem:ro"
+
             "/var/lib/caddy/data:/data"
             "/var/lib/caddy/config:/config"
           ];
 
           extraOptions = [
             "--network=ai"
+            "--security-opt=no-new-privileges"
           ];
         };
 
