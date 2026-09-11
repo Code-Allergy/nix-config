@@ -36,8 +36,8 @@ let
 
 
       ling-3.0-tiny-128k:
-        name: "Ling 3.0 Tiny XL"
-        description: "Ling 3.0 Tiny XL - 128k context"
+        name: "Ling 3.0 Tiny"
+        description: "Ling 3.0 Tiny - 128k context"
         ttl: 600
         cmd: |
           llama-server \
