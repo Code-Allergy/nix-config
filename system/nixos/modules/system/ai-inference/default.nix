@@ -380,6 +380,8 @@ in
       "d /var/lib/llama.cpp 0750 root root -"
       "d /var/lib/llama.cpp/models 0750 root root -"
 
+      "d /var/lib/qdrant 0750 root root -"
+
       # certsync needs execute/traverse permission through this parent,
       # but not write permission to the parent itself.
       "d /var/lib/caddy 0750 root cert-deploy -"
@@ -480,6 +482,20 @@ in
             IMAGE_GENERATION_MODEL = "flux2-klein-4b";
 
             # ---------------------------------------------------------------------------
+            # Vector DB
+            # ---------------------------------------------------------------------------
+            VECTOR_DB = "qdrant";
+            QDRANT_URI = "http://qdrant:6333";
+
+            ENABLE_QDRANT_MULTITENANCY_MODE = "true";
+            QDRANT_COLLECTION_PREFIX = "open-webui";
+
+            # Optional initially, REST enabled for now for simplicity
+            QDRANT_PREFER_GRPC = "false";
+            QDRANT_TIMEOUT = "10";
+
+
+            # ---------------------------------------------------------------------------
             # RAG / Embeddings
             # ---------------------------------------------------------------------------
 
@@ -493,14 +509,9 @@ in
             # ---------------------------------------------------------------------------
 
             RAG_RERANKING_ENGINE = "external";
-
-            RAG_EXTERNAL_RERANKER_URL =
-              "http://llama-swap:8080/v1/rerank";
-
+            RAG_EXTERNAL_RERANKER_URL = "http://llama-swap:8080/v1/rerank";
             RAG_EXTERNAL_RERANKER_API_KEY = "none";
-
             RAG_RERANKING_MODEL = "qwen3-reranker-0.6b";
-
             RAG_TOP_K_RERANKER = "5";
 
             ENABLE_RAG_HYBRID_SEARCH = "true";
@@ -609,6 +620,20 @@ in
 
             "-ngl"
             "0"
+          ];
+
+          extraOptions = [
+            "--network=ai"
+            "--security-opt=no-new-privileges"
+          ];
+        };
+
+        qdrant = {
+          image = "docker.io/qdrant/qdrant:latest";
+          autoStart = true;
+
+          volumes = [
+            "/var/lib/qdrant:/qdrant/storage"
           ];
 
           extraOptions = [
