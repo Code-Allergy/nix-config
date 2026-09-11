@@ -132,10 +132,9 @@ let
       # Maximum-context Spark profile.
       #
       # Q4 KV is intentionally used here for capacity rather than speed.
-      # This is experimental until 512K is validated on the 8 GB 3070.
       spark-2.5-xl:
         name: "Spark X2.5 4B XL"
-        description: "Spark X2.5 4B Q4_K_M - 512K context"
+        description: "Spark X2.5 4B Q4_K_M - 320K context"
         ttl: 600
         cmd: |
           llama-server \
@@ -147,7 +146,7 @@ let
             -ctk q4_0 \
             -ctv q4_0 \
             -ub 128 \
-            -c 524288 \
+            -c 327424 \
             -np 1
 
     profiles:
@@ -179,7 +178,7 @@ let
           chat: spark-2.5-quality
 
       spark-xl:
-        description: "Spark - maximum-context 512K profile"
+        description: "Spark - maximum-context 320K profile"
         pins:
           chat: spark-2.5-xl
 
