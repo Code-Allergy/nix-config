@@ -7,6 +7,29 @@
 
 let
   cfg = config.neer.modules.services.ai-inference;
+  searxngConfig = pkgs.writeText "searxng-settings.yml" ''
+    use_default_settings: true
+
+    general:
+      debug: false
+      instance_name: "Ampere Search"
+
+    search:
+      safe_search: 0
+      autocomplete: ""
+      formats:
+        - html
+        - json
+
+    server:
+      # Overridden by SEARXNG_SECRET from the container environment.
+      secret_key: "overridden-by-environment"
+
+      # This is an internal instance, so bot rate limiting is unnecessary.
+      limiter: false
+      public_instance: false
+      image_proxy: false
+  '';
   caddyConfig = pkgs.writeText "Caddyfile" ''
     {
       # Disable Caddy's admin API since we manage config declaratively.
@@ -382,6 +405,9 @@ in
 
       "d /var/lib/qdrant 0750 root root -"
 
+      "d /var/lib/searxng 0750 root root -"
+      "d /var/lib/searxng/cache 0750 977 977 -"
+
       # certsync needs execute/traverse permission through this parent,
       # but not write permission to the parent itself.
       "d /var/lib/caddy 0750 root cert-deploy -"
@@ -400,6 +426,7 @@ in
       before = [
         "podman-llama-swap.service"
         "podman-open-webui.service"
+        "podman-searxng.service"
         "podman-caddy.service"
       ];
 
@@ -451,7 +478,6 @@ in
             OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
             OPENAI_API_KEY = "none";
 
-
             # ---------------------------------------------------------------------------
             # Speech-to-text
             # ---------------------------------------------------------------------------
@@ -482,6 +508,18 @@ in
             IMAGE_GENERATION_MODEL = "flux2-klein-4b";
 
             # ---------------------------------------------------------------------------
+            # Web Search
+            # ---------------------------------------------------------------------------
+
+            ENABLE_WEB_SEARCH = "true";
+            WEB_SEARCH_ENGINE = "searxng";
+
+            SEARXNG_QUERY_URL = "http://searxng:8080/search?q=<query>";
+
+            WEB_SEARCH_RESULT_COUNT = "5";
+            WEB_SEARCH_CONCURRENT_REQUESTS = "5";
+
+            # ---------------------------------------------------------------------------
             # Vector DB
             # ---------------------------------------------------------------------------
             VECTOR_DB = "qdrant";
@@ -493,7 +531,6 @@ in
             # Optional initially, REST enabled for now for simplicity
             QDRANT_PREFER_GRPC = "false";
             QDRANT_TIMEOUT = "10";
-
 
             # ---------------------------------------------------------------------------
             # RAG / Embeddings
@@ -642,6 +679,38 @@ in
           ];
         };
 
+        searxng = {
+          image = "docker.io/searxng/searxng:latest";
+          autoStart = true;
+
+          volumes = [
+            "${searxngConfig}:/etc/searxng/settings.yml:ro"
+            "/var/lib/searxng/cache:/var/cache/searxng"
+          ];
+
+          environmentFiles = [
+            "/var/lib/searxng/searxng.env"
+          ];
+
+          environment = {
+            SEARXNG_BIND_ADDRESS = "0.0.0.0";
+            SEARXNG_PORT = "8080";
+            SEARXNG_BASE_URL = "http://searxng:8080/";
+
+            SEARXNG_LIMITER = "false";
+            SEARXNG_PUBLIC_INSTANCE = "false";
+            SEARXNG_IMAGE_PROXY = "false";
+
+            # Do not let the container attempt to chown the read-only Nix config.
+            FORCE_OWNERSHIP = "false";
+          };
+
+          extraOptions = [
+            "--network=ai"
+            "--security-opt=no-new-privileges"
+          ];
+        };
+
         caddy = {
           image = "docker.io/library/caddy:2";
           autoStart = true;
@@ -654,7 +723,6 @@ in
 
           volumes = [
             "${caddyConfig}:/etc/caddy/Caddyfile:ro"
-
 
             "/var/lib/caddy/certs/fullchain.pem:/certs/fullchain.pem:ro"
             "/var/lib/caddy/certs/privkey.pem:/certs/privkey.pem:ro"
@@ -690,6 +758,14 @@ in
 
     systemd.services.podman-caddy = {
       requires = [ "podman-network-ai.service" ];
+      after = [
+        "podman-network-ai.service"
+      ];
+    };
+
+    systemd.services.podman-searxng = {
+      requires = [ "podman-network-ai.service" ];
+
       after = [
         "podman-network-ai.service"
       ];
