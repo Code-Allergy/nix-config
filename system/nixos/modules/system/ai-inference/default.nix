@@ -185,6 +185,45 @@ let
             -np 1 \
             --jinja
 
+      qwen-3.5-9b-vision:
+        name: "Qwen 3.5 9B Vision"
+        description: "Qwen 3.5 9B Q4_K_M + Q8 vision projector - 8K context"
+        ttl: 600
+        cmd: |
+          llama-server \
+            --host 127.0.0.1 \
+            --port ''${PORT} \
+            -m /models/Qwen3.5-9B-Q4_K_M.gguf \
+            --mmproj /models/Qwen3.5-9B-mmproj-F16.gguf \
+            -ngl 999 \
+            -fa on \
+            -ctk f16 \
+            -ctv f16 \
+            -ub 128 \
+            -c 8192 \
+            -np 1 \
+            --jinja
+
+
+      qwen-3.5-9b-vision-uncensored:
+        name: "Qwen 3.5 9B Vision (uncensored)"
+        description: "Qwen 3.5 9B Q4_K_M + Q8 vision projector - 8K context (uncensored)"
+        ttl: 600
+        cmd: |
+          llama-server \
+            --host 127.0.0.1 \
+            --port ''${PORT} \
+            -m /models/Qwen3.5-9B-Uncensored-Q4_K_M.gguf \
+            --mmproj /models/Qwen3.5-9B-mmproj-F16.gguf \
+            -ngl 999 \
+            -fa on \
+            -ctk f16 \
+            -ctv f16 \
+            -ub 128 \
+            -c 8192 \
+            -np 1 \
+            --jinja
+
     profiles:
       # Ling profiles
       ling-normal:
@@ -227,6 +266,16 @@ let
         description: "Qwen 3.5 9B - highest intelligence local profile (uncensored)"
         pins:
           chat: qwen-3.5-9b-smart-uncensored
+
+      qwen-vision:
+        description: "Qwen 3.5 9B - multimodal image and text reasoning"
+        pins:
+          chat: qwen-3.5-9b-vision
+
+      qwen-vision-uncensored:
+        description: "Qwen 3.5 9B - multimodal image and text reasoning (uncensored)"
+        pins:
+          chat: qwen-3.5-9b-vision-uncensored
 
     hooks:
       on_startup:
