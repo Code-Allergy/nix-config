@@ -159,14 +159,10 @@ in
       // Alloy's own metrics
       // -------------------------------------------------------------------------
 
-      prometheus.scrape "alloy" {
-        targets = [
-          {
-            __address__ = "127.0.0.1:12345",
-            service     = "alloy",
-          },
-        ]
+      prometheus.exporter.self "alloy" {}
 
+      prometheus.scrape "alloy_self" {
+        targets         = prometheus.exporter.self.alloy.targets
         scrape_interval = "15s"
 
         forward_to = [
