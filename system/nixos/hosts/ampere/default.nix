@@ -51,6 +51,7 @@ in {
 
         reverseProxy = {
           enable = true;
+          host = "api.${config.networking.hostName}.${config.neer.network.baseDomain}";
 
           allowedRemoteRanges = ["10.10.10.10/32"];
           certificateDeployment = {
