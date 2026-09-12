@@ -22,10 +22,10 @@
 
     prometheus.remote_write "central" {
       external_labels = {
-        hostname        = "ampere"
-        platform        = "nixos"
-        role            = "ai"
-        environment     = "homelab"
+        hostname        = "ampere",
+        platform        = "nixos",
+        role            = "ai",
+        environment     = "homelab",
       }
 
       endpoint {
@@ -35,10 +35,10 @@
 
     loki.write "central" {
       external_labels = {
-        hostname        = "ampere"
-        platform        = "nixos"
-        role            = "ai"
-        environment     = "homelab"
+        hostname        = "ampere",
+        platform        = "nixos",
+        role            = "ai",
+        environment     = "homelab",
       }
 
       endpoint {
@@ -116,7 +116,7 @@
       max_age = "24h"
 
       labels = {
-        source = "journal"
+        source = "journal",
       }
 
       relabel_rules = loki.relabel.journal.rules
@@ -133,8 +133,8 @@
     prometheus.scrape "alloy" {
       targets = [
         {
-          __address__ = "127.0.0.1:12345"
-          service     = "alloy"
+          __address__ = "127.0.0.1:12345",
+          service     = "alloy",
         },
       ]
 
