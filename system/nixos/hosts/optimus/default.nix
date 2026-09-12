@@ -1,6 +1,6 @@
-{...}: {
+{ ... }: {
   # Host-local home-manager overrides for `bigblubbus`.
-  imports = [./system.nix];
+  imports = [ ./system.nix ];
 
   neer = {
     modules = {
@@ -12,6 +12,12 @@
         amdgpu.enable = true;
         tailscale.enable = true;
         footpedal.enable = true;
+        home-net-syslogging = {
+          enable = true;
+          extraLabels = {
+            role = "desktop";
+          };
+        };
       };
     };
     profiles.desktop.enable = true;

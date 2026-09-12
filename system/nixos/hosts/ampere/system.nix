@@ -3,9 +3,6 @@
     ./hardware-configuration.nix
     # temp nvidia module because other nvidia module is too coupled with blubbus
     ./nvidia.nix
-
-    # temp logging module, will make this modular to add to optimus and other VMs we create.
-    ./logging.nix
   ];
 
   time.timeZone = "America/Regina";

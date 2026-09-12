@@ -1,12 +1,20 @@
-{...}: {
+{ ... }: {
   # Host-local home-manager overrides for `bigblubbus`.
-  imports = [./system.nix];
+  imports = [ ./system.nix ];
 
   neer = {
     modules = {
       user.home = ./home.nix;
       system = {
         oci.enable = true;
+        home-net-syslogging = {
+          enable = true;
+          extraLabels = {
+            hypervisor = "bigblubbus";
+            vm_id = "100";
+            role = "ai";
+          };
+        };
       };
 
       services.ai-inference = {
