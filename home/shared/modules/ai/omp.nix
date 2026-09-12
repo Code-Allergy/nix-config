@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib;
@@ -23,6 +24,20 @@ in
 
   config = mkIf (cfg.enable || config.neer.modules.ai.oh-my-pi.enable) {
     programs.omp.enable = true;
+    # nix-bun/package.nix still uses deprecated stdenv.isLinux in these
+    # two attributes. Override them until the upstream dependency is fixed.
+    programs.omp.package = pkgs.omp.override (args: {
+      bun = args.bun.overrideAttrs {
+        nativeBuildInputs = [
+          pkgs.unzip
+        ]
+        ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.autoPatchelfHook ];
+        buildInputs = lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+          pkgs.stdenv.cc.cc.lib
+          pkgs.zlib
+        ];
+      };
+    });
     programs.omp.settings = {
       modelRoles.default = "openai-codex/gpt-6-astra:high";
       symbolPreset = "nerd";

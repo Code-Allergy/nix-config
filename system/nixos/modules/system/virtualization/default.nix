@@ -28,10 +28,10 @@ in
       # };
       docker = {
         enable = true;
+        storageDriver = "btrfs";
         daemon.settings = {
           log-driver = "journald";
           registry-mirrors = [ "https://mirror.gcr.io" ];
-          storageDriver = "btrfs";
         };
         autoPrune = {
           enable = true;
