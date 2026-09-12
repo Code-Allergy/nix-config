@@ -53,7 +53,10 @@ in {
         reverseProxy = {
           enable = true;
 
-          allowedRemoteRanges = ["10.10.10.10/32"];
+          allowedRemoteRanges = [
+            "10.10.0.20/32"
+            "10.10.10.10/32"
+          ];
           certificateDeployment = {
             enable = true;
             authorizedKeys = [
