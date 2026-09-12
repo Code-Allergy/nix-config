@@ -22,10 +22,10 @@
 
     prometheus.remote_write "central" {
       external_labels = {
-        host        = "ampere"
-        platform    = "nixos"
-        role        = "ai"
-        environment = "homelab"
+        hostname        = "ampere"
+        platform        = "nixos"
+        role            = "ai"
+        environment     = "homelab"
       }
 
       endpoint {
@@ -35,10 +35,10 @@
 
     loki.write "central" {
       external_labels = {
-        host        = "ampere"
-        platform    = "nixos"
-        role        = "ai"
-        environment = "homelab"
+        hostname        = "ampere"
+        platform        = "nixos"
+        role            = "ai"
+        environment     = "homelab"
       }
 
       endpoint {
