@@ -9,7 +9,6 @@ in {
   imports = [
     ./model-cache.nix
     ./llama-swap.nix
-    ./open-webui.nix
     ./support-services.nix
     ./reverse-proxy.nix
   ];
@@ -89,7 +88,6 @@ in {
       wantedBy = ["multi-user.target"];
       before = [
         "podman-llama-swap.service"
-        "podman-open-webui.service"
         "podman-kokoro-tts.service"
         "podman-qwen-embedding.service"
         "podman-qwen-reranker.service"

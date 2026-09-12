@@ -1,10 +1,16 @@
-{lib, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   catalog = import ./ai-model-catalog.nix {inherit lib;};
 in {
   # Host-local home-manager overrides for `ampere`.
   imports = [./system.nix];
 
   neer = {
+    network.baseDomain = "bigblubbus.${config.neer.network.rootDomain}";
+
     modules = {
       user.home = ./home.nix;
       system = {
@@ -45,10 +51,14 @@ in {
 
         reverseProxy = {
           enable = true;
-          webuiHost = "chat.ampere.duckduck112.duckdns.org";
-          apiHost = "api.ampere.duckduck112.duckdns.org";
-          certificateOwner = "certsync";
-          certificateGroup = "cert-deploy";
+
+          allowedRemoteRanges = ["10.10.10.10/32"];
+          certificateDeployment = {
+            enable = true;
+            authorizedKeys = [
+              ''restrict,from="10.10.0.1" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN+5TwqdSKk9szm4YC6tYYovLy6vumlUhYKCNYidgF8Q root@router.lan''
+            ];
+          };
         };
       };
     };

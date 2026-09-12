@@ -1,5 +1,8 @@
-{ config, lib, ... }:
-let
+{
+  config,
+  lib,
+  ...
+}: let
   cfg = config.neer.modules.system.home-net-syslogging;
   labels = lib.concatStringsSep "\n" (
     lib.mapAttrsToList (name: value: "${builtins.toJSON name} = ${builtins.toJSON value},") (
@@ -11,26 +14,25 @@ let
       }
     )
   );
-in
-{
+in {
   options.neer.modules.system.home-net-syslogging = {
     enable = lib.mkEnableOption "home-network journal logging and host metrics via Grafana Alloy";
 
     extraLabels = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
-      default = { };
+      default = {};
       description = "Additional host labels attached to logs and metrics.";
     };
 
     prometheusUrl = lib.mkOption {
       type = lib.types.str;
-      default = "https://prometheus.duckduck112.duckdns.org/api/v1/write";
+      default = "https://prometheus.${config.neer.network.rootDomain}/api/v1/write";
       description = "Home-network Prometheus remote-write endpoint.";
     };
 
     lokiUrl = lib.mkOption {
       type = lib.types.str;
-      default = "https://loki.duckduck112.duckdns.org/loki/api/v1/push";
+      default = "https://loki.${config.neer.network.rootDomain}/loki/api/v1/push";
       description = "Home-network Loki push endpoint.";
     };
   };

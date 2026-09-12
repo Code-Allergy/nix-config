@@ -50,7 +50,17 @@ in {
           port = 8080;
         };
 
-        openWebui.port = 3000;
+        reverseProxy = {
+          enable = true;
+
+          allowedRemoteRanges = ["10.10.10.10/32"];
+          certificateDeployment = {
+            enable = true;
+            authorizedKeys = [
+              ''restrict,from="10.10.0.1" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN+5TwqdSKk9szm4YC6tYYovLy6vumlUhYKCNYidgF8Q root@router.lan''
+            ];
+          };
+        };
       };
     };
     profiles.desktop.enable = true;
