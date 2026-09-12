@@ -8,6 +8,14 @@
   proxy = cfg.reverseProxy;
   certificateDeployment = proxy.certificateDeployment;
   allowedRemoteRanges = lib.concatStringsSep " " proxy.allowedRemoteRanges;
+  webuiSite = lib.optionals (cfg.openWebui.enable && proxy.webuiHost != null) [
+    ""
+    "${proxy.webuiHost} {"
+    "\ttls /certs/fullchain.pem /certs/privkey.pem"
+    "\tencode zstd gzip"
+    "\treverse_proxy open-webui:8080"
+    "}"
+  ];
   accessDirectives =
     if proxy.allowedRemoteRanges == []
     then ["\treverse_proxy llama-swap:8080"]
@@ -18,11 +26,14 @@
       "\t\trespond 403"
       "\t}"
     ];
-  caddyConfig = pkgs.writeText "ai-inference-api-Caddyfile" (lib.concatLines (
+  caddyConfig = pkgs.writeText "ai-inference-Caddyfile" (lib.concatLines (
     [
       "{"
       "\tadmin off"
       "}"
+    ]
+    ++ webuiSite
+    ++ [
       ""
       "${proxy.host} {"
       "\ttls /certs/fullchain.pem /certs/privkey.pem"
@@ -48,6 +59,13 @@ in {
       default = [];
       example = ["10.10.10.10/32"];
       description = "Client IP ranges allowed to use the API; an empty list allows all clients.";
+    };
+
+    webuiHost = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      example = "chat.example.com";
+      description = "Optional public hostname for Open WebUI.";
     };
 
     image = lib.mkOption {
@@ -101,6 +119,10 @@ in {
       {
         assertion = !certificateDeployment.enable || certificateDeployment.authorizedKeys != [];
         message = "ai-inference.reverseProxy.certificateDeployment requires at least one authorized key";
+      }
+      {
+        assertion = proxy.webuiHost == null || cfg.openWebui.enable;
+        message = "ai-inference.reverseProxy.webuiHost requires Open WebUI to be enabled";
       }
     ];
 

@@ -43,6 +43,8 @@ in {
 
         supportServices.searxngInstanceName = "Ampere Search";
 
+        openWebui.enable = true;
+
         llamaSwap = {
           image = "ghcr.io/mostlygeek/llama-swap:unified-cuda";
           extraOptions = ["--device=nvidia.com/gpu=all"];
@@ -52,6 +54,7 @@ in {
         reverseProxy = {
           enable = true;
           host = "api.${config.networking.hostName}.${config.neer.network.baseDomain}";
+          webuiHost = "chat.${config.networking.hostName}.${config.neer.network.baseDomain}";
 
           allowedRemoteRanges = [
             "10.10.0.20/32"
