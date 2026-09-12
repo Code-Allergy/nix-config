@@ -1,16 +1,31 @@
 {lib}: let
   builders = import ../../modules/system/ai-inference/model-builders.nix {inherit lib;};
   inherit (builders) command llamaModel port;
+
+  vulkanEnv = ["GGML_VK_VISIBLE_DEVICES=0"];
+  longContextVulkanEnv = vulkanEnv ++ ["GGML_VK_SUBALLOCATION_BLOCK_SIZE=4294967296"];
+  vulkanModel = args:
+    llamaModel ({
+        env = vulkanEnv;
+        ubatch = 512;
+      }
+      // args);
+  longContextVulkanModel = args:
+    llamaModel ({
+        env = longContextVulkanEnv;
+        ubatch = 512;
+      }
+      // args);
 in {
   models = {
-    "ling-3.0-tiny-128k" = llamaModel {
+    "ling-3.0-tiny-128k" = longContextVulkanModel {
       name = "Ling 3.0 Tiny";
       description = "Ling 3.0 Tiny - native 128K context";
       file = "Ling-3.0-tiny-Q4_0.gguf";
       context = 131072;
     };
 
-    "ling-3.0-tiny-256k" = llamaModel {
+    "ling-3.0-tiny-256k" = longContextVulkanModel {
       name = "Ling 3.0 Tiny XL";
       description = "Ling 3.0 Tiny - 256K YaRN context";
       file = "Ling-3.0-tiny-Q4_0.gguf";
@@ -23,28 +38,28 @@ in {
       ];
     };
 
-    "spark-2.5-light" = llamaModel {
+    "spark-2.5-light" = vulkanModel {
       name = "Spark X2.5 4B Light";
       description = "Spark X2.5 4B Q4_K_M - fast 16K context";
       file = "Spark-X2.5-4B-Q4_K_M.gguf";
       context = 16384;
     };
 
-    "spark-2.5-normal" = llamaModel {
+    "spark-2.5-normal" = vulkanModel {
       name = "Spark X2.5 4B";
       description = "Spark X2.5 4B Q4_K_M - balanced 64K context";
       file = "Spark-X2.5-4B-Q4_K_M.gguf";
       context = 65536;
     };
 
-    "spark-2.5-quality" = llamaModel {
+    "spark-2.5-quality" = vulkanModel {
       name = "Spark X2.5 4B Quality";
       description = "Spark X2.5 4B Q8_0 - quality-first 64K context";
       file = "Spark-X2.5-4B-Q8_0.gguf";
       context = 65536;
     };
 
-    "spark-2.5-xl" = llamaModel {
+    "spark-2.5-xl" = longContextVulkanModel {
       name = "Spark X2.5 4B XL";
       description = "Spark X2.5 4B Q4_K_M - 320K context";
       file = "Spark-X2.5-4B-Q4_K_M.gguf";
@@ -54,7 +69,7 @@ in {
       ubatch = 64;
     };
 
-    "qwen-3.5-9b-smart" = llamaModel {
+    "qwen-3.5-9b-smart" = vulkanModel {
       name = "Qwen 3.5 9B Smart";
       description = "Qwen 3.5 9B Q5_K_M - maximum intelligence, 40K context";
       file = "Qwen3.5-9B-Q5_K_M.gguf";
@@ -63,7 +78,7 @@ in {
       extraArgs = ["--jinja"];
     };
 
-    "qwen-3.5-9b-smart-uncensored" = llamaModel {
+    "qwen-3.5-9b-smart-uncensored" = vulkanModel {
       name = "Qwen 3.5 9B Smart (uncensored)";
       description = "Qwen 3.5 9B Q4_K_M - maximum intelligence, 40K context, uncensored";
       file = "Qwen3.5-9B-Uncensored-Q4_K_M.gguf";
@@ -72,7 +87,7 @@ in {
       extraArgs = ["--jinja"];
     };
 
-    "qwen-3.5-9b-vision" = llamaModel {
+    "qwen-3.5-9b-vision" = vulkanModel {
       name = "Qwen 3.5 9B Vision";
       description = "Qwen 3.5 9B Q4_K_M + Q8 vision projector - 8K context";
       file = "Qwen3.5-9B-Q4_K_M.gguf";
@@ -85,7 +100,7 @@ in {
       ];
     };
 
-    "qwen-3.5-9b-vision-uncensored" = llamaModel {
+    "qwen-3.5-9b-vision-uncensored" = vulkanModel {
       name = "Qwen 3.5 9B Vision (uncensored)";
       description = "Qwen 3.5 9B Q4_K_M + Q8 vision projector - 8K context (uncensored)";
       file = "Qwen3.5-9B-Uncensored-Q4_K_M.gguf";
