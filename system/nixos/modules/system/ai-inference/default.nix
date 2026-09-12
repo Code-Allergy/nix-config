@@ -52,7 +52,6 @@ let
       reverse_proxy llama-swap:8080
     }
   '';
-
   llamaSwapConfig = pkgs.writeText "llama-swap.yaml" ''
     logLevel: debug
     logToStdout: both

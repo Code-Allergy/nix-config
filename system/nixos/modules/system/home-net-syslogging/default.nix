@@ -24,13 +24,13 @@ in
 
     prometheusUrl = lib.mkOption {
       type = lib.types.str;
-      default = "http://10.10.10.10:9090/api/v1/write";
+      default = "https://prometheus.duckduck112.duckdns.org/api/v1/write";
       description = "Home-network Prometheus remote-write endpoint.";
     };
 
     lokiUrl = lib.mkOption {
       type = lib.types.str;
-      default = "http://10.10.10.10:3100/loki/api/v1/push";
+      default = "https://loki.duckduck112.duckdns.org/loki/api/v1/push";
       description = "Home-network Loki push endpoint.";
     };
   };
