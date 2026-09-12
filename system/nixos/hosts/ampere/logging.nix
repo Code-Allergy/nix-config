@@ -23,6 +23,8 @@
     prometheus.remote_write "central" {
       external_labels = {
         hostname        = "ampere",
+        hypervisor      = "bigblubbus",
+        vm_id           = "100",
         platform        = "nixos",
         role            = "ai",
         environment     = "homelab",
@@ -36,6 +38,8 @@
     loki.write "central" {
       external_labels = {
         hostname        = "ampere",
+        hypervisor      = "bigblubbus",
+        vm_id           = "100",
         platform        = "nixos",
         role            = "ai",
         environment     = "homelab",
