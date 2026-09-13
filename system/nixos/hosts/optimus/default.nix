@@ -1,8 +1,21 @@
-{lib, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   catalog = import ./ai-model-catalog.nix {inherit lib;};
 in {
   # Host-local home-manager overrides for `optimus`.
   imports = [./system.nix];
+
+  age = {
+    identityPaths = lib.mkForce ["/etc/ssh/ssh_host_ed25519_key"];
+    secrets.ai-optimus-worker-env = {
+      file = ../../../shared/secrets/ai-optimus-worker.env.age;
+      owner = "root";
+      mode = "0400";
+    };
+  };
 
   neer = {
     modules = {
@@ -48,6 +61,8 @@ in {
             "/dev/dri/renderD128:/dev/dri/renderD128"
           ];
           port = 8080;
+          environmentFiles = [config.age.secrets.ai-optimus-worker-env.path];
+          apiKeyEnvironmentVariable = "LLAMA_SWAP_API_KEY";
         };
 
         reverseProxy = {
@@ -55,6 +70,7 @@ in {
 
           allowedRemoteRanges = [
             "10.10.0.20/32"
+            "10.10.0.37/32"
             "10.10.10.10/32"
           ];
           certificateDeployment = {

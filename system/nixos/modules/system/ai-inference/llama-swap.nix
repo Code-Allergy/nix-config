@@ -33,6 +33,7 @@
       logToStdout = "both";
       healthCheckTimeout = cfg.llamaSwap.healthCheckTimeout;
       startPort = cfg.llamaSwap.startPort;
+      apiKeys = lib.optional (cfg.llamaSwap.apiKeyEnvironmentVariable != null) "${"$"}{env.${cfg.llamaSwap.apiKeyEnvironmentVariable}}";
       models = renderedModels;
       inherit (cfg) peers profiles;
     }
@@ -64,6 +65,18 @@ in {
       type = lib.types.listOf lib.types.str;
       default = [];
       description = "Additional systemd units that must start before llama-swap.";
+    };
+
+    environmentFiles = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "Runtime environment files containing llama-swap secrets.";
+    };
+
+    apiKeyEnvironmentVariable = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Environment variable containing the inbound llama-swap API key.";
     };
 
     bindAddress = lib.mkOption {
@@ -107,6 +120,7 @@ in {
       volumes = modelVolumes ++ ["${llamaSwapConfig}:/etc/llama-swap/config/config.yaml:ro"];
 
       devices = cfg.llamaSwap.devices;
+      environmentFiles = cfg.llamaSwap.environmentFiles;
       ports = lib.optional (cfg.llamaSwap.port != null) "${cfg.llamaSwap.bindAddress}:${toString cfg.llamaSwap.port}:8080";
 
       extraOptions =
@@ -116,6 +130,13 @@ in {
         ]
         ++ cfg.llamaSwap.extraOptions;
     };
+
+    assertions = [
+      {
+        assertion = cfg.llamaSwap.apiKeyEnvironmentVariable == null || cfg.llamaSwap.environmentFiles != [];
+        message = "ai-inference.llamaSwap.apiKeyEnvironmentVariable requires a secret environment file";
+      }
+    ];
 
     systemd.services.podman-llama-swap = {
       requires = ["podman-network-ai.service"];

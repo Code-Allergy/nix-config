@@ -4,9 +4,38 @@
   ...
 }: let
   catalog = import ./ai-model-catalog.nix {inherit lib;};
+  optimusCatalog = import ../optimus/ai-model-catalog.nix {inherit lib;};
+  ampereModels = ["chat"] ++ builtins.attrNames catalog.models;
+  optimusModels = ["chat"] ++ builtins.attrNames optimusCatalog.models;
 in {
   # Host-local home-manager overrides for `ampere`.
   imports = [./system.nix];
+
+  age = {
+    identityPaths = lib.mkForce ["/etc/ssh/ssh_host_ed25519_key"];
+    secrets = {
+      ai-ampere-worker-env = {
+        file = ../../../shared/secrets/ai-ampere-worker.env.age;
+        owner = "root";
+        mode = "0400";
+      };
+      ai-open-webui-env = {
+        file = ../../../shared/secrets/ai-open-webui.env.age;
+        owner = "root";
+        mode = "0400";
+      };
+      ai-litellm-env = {
+        file = ../../../shared/secrets/ai-litellm.env.age;
+        owner = "root";
+        mode = "0400";
+      };
+      ai-litellm-postgres-env = {
+        file = ../../../shared/secrets/ai-litellm-postgres.env.age;
+        owner = "root";
+        mode = "0400";
+      };
+    };
+  };
 
   neer = {
     network.baseDomain = "bigblubbus.${config.neer.network.rootDomain}";
@@ -43,23 +72,45 @@ in {
 
         supportServices.searxngInstanceName = "Ampere Search";
 
-        openWebui.enable = true;
+        openWebui = {
+          enable = true;
+          environmentFiles = [config.age.secrets.ai-open-webui-env.path];
+        };
 
         llamaSwap = {
           image = "ghcr.io/mostlygeek/llama-swap:unified-cuda";
           extraOptions = ["--device=nvidia.com/gpu=all"];
           serviceAfter = ["nvidia-container-toolkit-cdi-generator.service"];
+          environmentFiles = [config.age.secrets.ai-ampere-worker-env.path];
+          apiKeyEnvironmentVariable = "LLAMA_SWAP_API_KEY";
+        };
+
+        litellm = {
+          enable = true;
+          environmentFiles = [config.age.secrets.ai-litellm-env.path];
+          database.environmentFiles = [config.age.secrets.ai-litellm-postgres-env.path];
+          backends = {
+            ampere = {
+              apiBase = "http://llama-swap:8080/v1";
+              apiKeyEnvironmentVariable = "AMPERE_API_KEY";
+              models = ampereModels;
+              order = 1;
+            };
+            optimus = {
+              apiBase = "https://optimus.${config.neer.network.rootDomain}/v1";
+              apiKeyEnvironmentVariable = "OPTIMUS_API_KEY";
+              models = optimusModels;
+              order = 2;
+            };
+          };
         };
 
         reverseProxy = {
           enable = true;
           host = "api.${config.networking.hostName}.${config.neer.network.baseDomain}";
           webuiHost = "chat.${config.networking.hostName}.${config.neer.network.baseDomain}";
-
-          allowedRemoteRanges = [
-            "10.10.0.20/32"
-            "10.10.10.10/32"
-          ];
+          upstream = "litellm:4000";
+          allowedRemoteRanges = [];
           certificateDeployment = {
             enable = true;
             authorizedKeys = [

@@ -18,11 +18,11 @@
   ];
   accessDirectives =
     if proxy.allowedRemoteRanges == []
-    then ["\treverse_proxy llama-swap:8080"]
+    then ["\treverse_proxy ${proxy.upstream}"]
     else [
       "\troute {"
       "\t\t@allowed remote_ip ${allowedRemoteRanges}"
-      "\t\treverse_proxy @allowed llama-swap:8080"
+      "\t\treverse_proxy @allowed ${proxy.upstream}"
       "\t\trespond 403"
       "\t}"
     ];
@@ -51,7 +51,13 @@ in {
       type = lib.types.str;
       default = "${config.networking.hostName}.${config.neer.network.baseDomain}";
       example = "llm.example.com";
-      description = "Fully qualified domain name for the llama-swap API.";
+      description = "Fully qualified domain name for the public API.";
+    };
+
+    upstream = lib.mkOption {
+      type = lib.types.str;
+      default = "llama-swap:8080";
+      description = "Container-network upstream for the public API.";
     };
 
     allowedRemoteRanges = lib.mkOption {
