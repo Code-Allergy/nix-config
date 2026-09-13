@@ -94,12 +94,28 @@ in {
               apiBase = "http://llama-swap:8080/v1";
               apiKeyEnvironmentVariable = "AMPERE_API_KEY";
               models = ampereModels;
+              modelModes = {
+                flux2-klein-4b = "image_generation";
+                whisper-large-v3-turbo = "audio_transcription";
+              };
+              tags = [
+                "cuda"
+                "rtx-3070"
+              ];
               order = 1;
             };
             optimus = {
               apiBase = "https://optimus.${config.neer.network.rootDomain}/v1";
               apiKeyEnvironmentVariable = "OPTIMUS_API_KEY";
               models = optimusModels;
+              modelModes = {
+                flux2-klein-4b = "image_generation";
+                whisper-large-v3-turbo = "audio_transcription";
+              };
+              tags = [
+                "vulkan"
+                "rx-7900-xt"
+              ];
               order = 2;
             };
           };

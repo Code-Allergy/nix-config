@@ -4,24 +4,30 @@
   ...
 }: let
   cfg = config.neer.modules.services.ai-inference;
+  inferenceApiBaseUrl =
+    if cfg.openWebui.apiBaseUrl != null
+    then cfg.openWebui.apiBaseUrl
+    else if cfg.litellm.enable
+    then "http://litellm:4000/v1"
+    else "http://llama-swap:8080/v1";
   defaultEnvironment = {
     ENABLE_OLLAMA_API = "false";
 
     ENABLE_OPENAI_API = "true";
-    OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+    OPENAI_API_BASE_URL = inferenceApiBaseUrl;
 
     AUDIO_STT_ENGINE = "openai";
-    AUDIO_STT_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+    AUDIO_STT_OPENAI_API_BASE_URL = inferenceApiBaseUrl;
     AUDIO_STT_MODEL = "whisper-large-v3-turbo";
 
     AUDIO_TTS_ENGINE = "openai";
-    AUDIO_TTS_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+    AUDIO_TTS_OPENAI_API_BASE_URL = "http://kokoro-tts:8880/v1";
     AUDIO_TTS_MODEL = "kokoro";
     AUDIO_TTS_VOICE = "af_bella";
 
     ENABLE_IMAGE_GENERATION = "true";
     IMAGE_GENERATION_ENGINE = "openai";
-    IMAGES_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+    IMAGES_OPENAI_API_BASE_URL = inferenceApiBaseUrl;
     IMAGE_GENERATION_MODEL = "flux2-klein-4b";
 
     ENABLE_WEB_SEARCH = "true";
@@ -38,11 +44,11 @@
     QDRANT_TIMEOUT = "10";
 
     RAG_EMBEDDING_ENGINE = "openai";
-    RAG_OPENAI_API_BASE_URL = "http://llama-swap:8080/v1";
+    RAG_OPENAI_API_BASE_URL = "http://qwen-embedding:8080/v1";
     RAG_EMBEDDING_MODEL = "qwen3-embedding-0.6b";
 
     RAG_RERANKING_ENGINE = "external";
-    RAG_EXTERNAL_RERANKER_URL = "http://llama-swap:8080/v1/rerank";
+    RAG_EXTERNAL_RERANKER_URL = "http://qwen-reranker:8080/v1/rerank";
     RAG_RERANKING_MODEL = "qwen3-reranker-0.6b";
     RAG_TOP_K_RERANKER = "5";
     ENABLE_RAG_HYBRID_SEARCH = "true";
@@ -67,6 +73,12 @@ in {
     dataDirectory = lib.mkOption {
       type = lib.types.str;
       default = "/var/lib/open-webui";
+    };
+
+    apiBaseUrl = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "OpenAI-compatible inference API URL. Null selects the internal LiteLLM endpoint when enabled, otherwise llama-swap.";
     };
 
     bindAddress = lib.mkOption {
@@ -113,10 +125,13 @@ in {
 
     systemd.services.podman-open-webui = {
       requires = ["podman-network-ai.service"];
-      after = [
-        "podman-network-ai.service"
-        "podman-llama-swap.service"
-      ];
+      wants = lib.optional cfg.litellm.enable "podman-litellm.service";
+      after =
+        [
+          "podman-network-ai.service"
+          "podman-llama-swap.service"
+        ]
+        ++ lib.optional cfg.litellm.enable "podman-litellm.service";
     };
   };
 }

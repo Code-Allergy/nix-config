@@ -20,10 +20,16 @@
           api_base = backend.apiBase;
           api_key = "os.environ/${backend.apiKeyEnvironmentVariable}";
         }
+        // {
+          tags = lib.unique ([backendName] ++ backend.tags);
+        }
         // lib.optionalAttrs (backend.order != null) {
           inherit (backend) order;
         };
-      model_info.id = "${backendName}-${modelName}";
+      model_info = {
+        id = "${backendName}-${modelName}";
+        mode = backend.modelModes.${modelName} or "chat";
+      };
     })
     backend.models;
   modelList = lib.concatLists (lib.mapAttrsToList renderBackend gateway.backends);
@@ -35,6 +41,7 @@
     };
     router_settings = {
       routing_strategy = "simple-shuffle";
+      enable_tag_filtering = true;
       num_retries = 1;
       timeout = 600;
       allowed_fails = 2;
@@ -52,6 +59,8 @@
       database_socket_timeout = 300;
       database_statement_timeout = 120;
       database_lock_timeout = 15;
+      use_x_forwarded_for = true;
+      mcp_trusted_proxy_ranges = ["10.89.0.0/24"];
     };
   };
 in {
@@ -87,6 +96,22 @@ in {
             type = lib.types.listOf lib.types.str;
             default = [];
             description = "Models routed to this backend.";
+          };
+
+          modelModes = lib.mkOption {
+            type = lib.types.attrsOf (lib.types.enum [
+              "chat"
+              "image_generation"
+              "audio_transcription"
+            ]);
+            default = {};
+            description = "LiteLLM operation mode overrides keyed by model name; unspecified models use chat.";
+          };
+
+          tags = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [];
+            description = "Tags applied to each deployment on this backend. The backend attribute name is always included.";
           };
 
           order = lib.mkOption {
@@ -128,6 +153,12 @@ in {
       {
         assertion = lib.all (backend: backend.models != []) (lib.attrValues gateway.backends);
         message = "Every ai-inference.litellm backend requires at least one model";
+      }
+      {
+        assertion = lib.all (
+          backend: lib.all (modelName: lib.elem modelName backend.models) (lib.attrNames backend.modelModes)
+        ) (lib.attrValues gateway.backends);
+        message = "Every ai-inference.litellm modelModes key must also be listed in that backend's models";
       }
       {
         assertion = gateway.environmentFiles != [];
