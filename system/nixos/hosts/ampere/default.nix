@@ -121,6 +121,11 @@ in {
           };
         };
 
+        grafanaMcp = {
+          enable = true;
+          environmentFiles = [config.age.secrets.ai-litellm-env.path];
+        };
+
         reverseProxy = {
           enable = true;
           host = "api.${config.networking.hostName}.${config.neer.network.baseDomain}";

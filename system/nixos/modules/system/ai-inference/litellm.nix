@@ -62,6 +62,7 @@
       use_x_forwarded_for = true;
       mcp_trusted_proxy_ranges = ["10.89.0.0/24"];
     };
+    mcp_servers = gateway.mcpServers;
   };
 in {
   options.neer.modules.services.ai-inference.litellm = {
@@ -80,49 +81,59 @@ in {
     };
 
     backends = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule {
-        options = {
-          apiBase = lib.mkOption {
-            type = lib.types.str;
-            description = "OpenAI-compatible backend base URL.";
-          };
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            apiBase = lib.mkOption {
+              type = lib.types.str;
+              description = "OpenAI-compatible backend base URL.";
+            };
 
-          apiKeyEnvironmentVariable = lib.mkOption {
-            type = lib.types.str;
-            description = "Environment variable containing this backend's API key.";
-          };
+            apiKeyEnvironmentVariable = lib.mkOption {
+              type = lib.types.str;
+              description = "Environment variable containing this backend's API key.";
+            };
 
-          models = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [];
-            description = "Models routed to this backend.";
-          };
+            models = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [];
+              description = "Models routed to this backend.";
+            };
 
-          modelModes = lib.mkOption {
-            type = lib.types.attrsOf (lib.types.enum [
-              "chat"
-              "image_generation"
-              "audio_transcription"
-            ]);
-            default = {};
-            description = "LiteLLM operation mode overrides keyed by model name; unspecified models use chat.";
-          };
+            modelModes = lib.mkOption {
+              type = lib.types.attrsOf (
+                lib.types.enum [
+                  "chat"
+                  "image_generation"
+                  "audio_transcription"
+                ]
+              );
+              default = {};
+              description = "LiteLLM operation mode overrides keyed by model name; unspecified models use chat.";
+            };
 
-          tags = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [];
-            description = "Tags applied to each deployment on this backend. The backend attribute name is always included.";
-          };
+            tags = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [];
+              description = "Tags applied to each deployment on this backend. The backend attribute name is always included.";
+            };
 
-          order = lib.mkOption {
-            type = lib.types.nullOr lib.types.ints.positive;
-            default = null;
-            description = "Optional deployment priority; lower values are preferred.";
+            order = lib.mkOption {
+              type = lib.types.nullOr lib.types.ints.positive;
+              default = null;
+              description = "Optional deployment priority; lower values are preferred.";
+            };
           };
-        };
-      });
+        }
+      );
       default = {};
       description = "Authenticated OpenAI-compatible inference backends.";
+    };
+
+    mcpServers = lib.mkOption {
+      type = lib.types.attrsOf lib.types.attrs;
+      default = {};
+      description = "MCP servers exposed through the LiteLLM gateway.";
     };
 
     database = {

@@ -4,12 +4,19 @@
   ...
 }: let
   cfg = config.neer.modules.services.ai-inference;
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit
+    (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 in {
   imports = [
     ./model-cache.nix
     ./llama-swap.nix
     ./litellm.nix
+    ./grafana-mcp.nix
     ./open-webui.nix
     ./support-services.nix
     ./reverse-proxy.nix
@@ -92,6 +99,7 @@ in {
         "podman-llama-swap.service"
         "podman-litellm-postgres.service"
         "podman-litellm.service"
+        "podman-grafana-mcp.service"
         "podman-open-webui.service"
         "podman-kokoro-tts.service"
         "podman-qwen-embedding.service"
