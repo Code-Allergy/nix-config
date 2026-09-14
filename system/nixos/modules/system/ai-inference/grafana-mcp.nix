@@ -2,10 +2,12 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.services.ai-inference;
   grafanaMcp = cfg.grafanaMcp;
-in {
+in
+{
   options.neer.modules.services.ai-inference.grafanaMcp = {
     enable = lib.mkEnableOption "Grafana MCP server";
 
@@ -23,7 +25,7 @@ in {
 
     environmentFiles = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "Environment files containing Grafana and MCP caller credentials.";
     };
 
@@ -41,7 +43,7 @@ in {
 
     extraArgs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = ["--disable-write"];
+      default = [ "--disable-write" ];
       description = "Additional mcp-grafana arguments; write operations are disabled by default.";
     };
   };
@@ -53,7 +55,7 @@ in {
         message = "ai-inference.grafanaMcp requires ai-inference.litellm to be enabled";
       }
       {
-        assertion = grafanaMcp.environmentFiles != [];
+        assertion = grafanaMcp.environmentFiles != [ ];
         message = "ai-inference.grafanaMcp requires an environment file containing Grafana credentials";
       }
     ];
@@ -71,14 +73,15 @@ in {
     virtualisation.oci-containers.containers.grafana-mcp = {
       image = grafanaMcp.image;
       autoStart = true;
-      cmd =
-        [
-          "-t"
-          "streamable-http"
-          "--address"
-          "0.0.0.0:8000"
-        ]
-        ++ grafanaMcp.extraArgs;
+      cmd = [
+        "-t"
+        "streamable-http"
+        "--address"
+        "0.0.0.0:8000"
+        "--allowed-hosts"
+        "grafana-mcp:8000"
+      ]
+      ++ grafanaMcp.extraArgs;
       environment = {
         GRAFANA_URL = grafanaMcp.grafanaUrl;
       };
@@ -90,13 +93,13 @@ in {
     };
 
     systemd.services.podman-grafana-mcp = {
-      requires = ["podman-network-ai.service"];
-      after = ["podman-network-ai.service"];
+      requires = [ "podman-network-ai.service" ];
+      after = [ "podman-network-ai.service" ];
     };
 
     systemd.services.podman-litellm = {
-      wants = ["podman-grafana-mcp.service"];
-      after = ["podman-grafana-mcp.service"];
+      wants = [ "podman-grafana-mcp.service" ];
+      after = [ "podman-grafana-mcp.service" ];
     };
   };
 }
