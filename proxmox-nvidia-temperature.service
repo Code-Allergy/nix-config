@@ -1,0 +1,13 @@
+[Unit]
+Description=Read Ampere NVIDIA temperature
+After=pve-guests.service
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c 'printf "40000\\n" > /dev/nvidia-temp; while :; do socat -u UNIX-CONNECT:/run/qemu-server/100-nvidia-temperature.sock - | while IFS= read -r temperature; do case "$temperature" in ""|*[!0-9]*) continue ;; esac; printf "%%s000\\n" "$temperature" > /dev/nvidia-temp; done; printf "40000\\n" > /dev/nvidia-temp; sleep 2; done'
+ExecStopPost=/bin/sh -c 'printf "40000\\n" > /dev/nvidia-temp'
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

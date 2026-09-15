@@ -16,6 +16,9 @@
 
   services.qemuGuest.enable = true;
 
+  # Required for the custom NVIDIA telemetry virtio-serial channel.
+  boot.kernelModules = ["virtio_console"];
+
   # this will be in compute module
   hardware.nvidia-container-toolkit.enable = true;
 }
