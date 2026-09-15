@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.system.home-net-syslogging;
   labels = lib.concatStringsSep "\n" (
     lib.mapAttrsToList (name: value: "${builtins.toJSON name} = ${builtins.toJSON value},") (
@@ -14,13 +15,14 @@
       }
     )
   );
-in {
+in
+{
   options.neer.modules.system.home-net-syslogging = {
     enable = lib.mkEnableOption "home-network journal logging and host metrics via Grafana Alloy";
 
     extraLabels = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
-      default = {};
+      default = { };
       description = "Additional host labels attached to logs and metrics.";
     };
 
@@ -115,6 +117,33 @@ in {
       // NixOS / systemd journal
       // -------------------------------------------------------------------------
 
+      loki.process "journal_severity" {
+        forward_to = [
+          loki.write.central.receiver,
+        ]
+
+        // Container runtimes can write warnings to stderr, causing journald to
+        // label them as errors even when the application emits WARNING.
+        stage.match {
+          selector = "{syslog_identifier=\"litellm\"} |~ \"(?i)^([0-9:.-]+ - [^:]+:)?(trace|debug|info|notice|warning|warn|error|crit|alert|emergency)\\b\""
+
+          stage.regex {
+            expression = "(?i)^(?P<prefix>[0-9:.-]+ - [^:]+:)?(?P<parsed_level>trace|debug|info|notice|warning|warn|error|crit|alert|emergency)\\b"
+          }
+
+          stage.template {
+            source   = "parsed_level"
+            template = "{{ ToLower .Value }}"
+          }
+
+          stage.labels {
+            values = {
+              severity = "parsed_level",
+            }
+          }
+        }
+      }
+
       loki.relabel "journal" {
         forward_to = [
           loki.write.central.receiver,
@@ -153,7 +182,7 @@ in {
         relabel_rules = loki.relabel.journal.rules
 
         forward_to = [
-          loki.write.central.receiver,
+          loki.process.journal_severity.receiver,
         ]
       }
 
