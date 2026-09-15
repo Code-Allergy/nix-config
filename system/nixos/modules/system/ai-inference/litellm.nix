@@ -3,41 +3,47 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.services.ai-inference;
   gateway = cfg.litellm;
-  yaml = pkgs.formats.yaml {};
+  yaml = pkgs.formats.yaml { };
   networkOptions = [
     "--network=${cfg.networkName}"
     "--security-opt=no-new-privileges"
   ];
-  renderBackend = backendName: backend:
+  renderBackend =
+    backendName: backend:
     map (modelName: {
       model_name = modelName;
-      litellm_params =
-        {
-          model = "openai/${modelName}";
-          api_base = backend.apiBase;
-          api_key = "os.environ/${backend.apiKeyEnvironmentVariable}";
-        }
-        // {
-          tags = lib.unique ([backendName] ++ backend.tags);
-        }
-        // lib.optionalAttrs (backend.order != null) {
-          inherit (backend) order;
-        };
+      litellm_params = {
+        model = "openai/${modelName}";
+        api_base = backend.apiBase;
+        api_key = "os.environ/${backend.apiKeyEnvironmentVariable}";
+      }
+      // {
+        tags = lib.unique ([ backendName ] ++ backend.tags);
+      }
+      // lib.optionalAttrs (backend.order != null) {
+        inherit (backend) order;
+      };
       model_info = {
         id = "${backendName}-${modelName}";
         mode = backend.modelModes.${modelName} or "chat";
       };
-    })
-    backend.models;
+    }) backend.models;
   modelList = lib.concatLists (lib.mapAttrsToList renderBackend gateway.backends);
   litellmConfig = yaml.generate "litellm-config.yaml" {
     model_list = modelList;
     litellm_settings = {
       drop_params = true;
       overwrite_user_with_key_hash = true;
+      cache = true;
+      cache_params = {
+        type = "redis";
+        host = "os.environ/REDIS_HOST";
+        port = "os.environ/REDIS_PORT";
+      };
     };
     router_settings = {
       routing_strategy = "simple-shuffle";
@@ -46,6 +52,8 @@
       timeout = 600;
       allowed_fails = 2;
       cooldown_time = 60;
+      redis_host = "os.environ/REDIS_HOST";
+      redis_port = "os.environ/REDIS_PORT";
     };
     general_settings = {
       master_key = "os.environ/LITELLM_MASTER_KEY";
@@ -60,11 +68,12 @@
       database_statement_timeout = 120;
       database_lock_timeout = 15;
       use_x_forwarded_for = true;
-      mcp_trusted_proxy_ranges = ["10.89.0.0/24"];
+      mcp_trusted_proxy_ranges = [ "10.89.0.0/24" ];
     };
     mcp_servers = gateway.mcpServers;
   };
-in {
+in
+{
   options.neer.modules.services.ai-inference.litellm = {
     enable = lib.mkEnableOption "LiteLLM authenticated API gateway";
 
@@ -76,7 +85,7 @@ in {
 
     environmentFiles = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "Runtime environment files containing LiteLLM secrets.";
     };
 
@@ -96,7 +105,7 @@ in {
 
             models = lib.mkOption {
               type = lib.types.listOf lib.types.str;
-              default = [];
+              default = [ ];
               description = "Models routed to this backend.";
             };
 
@@ -108,13 +117,13 @@ in {
                   "audio_transcription"
                 ]
               );
-              default = {};
+              default = { };
               description = "LiteLLM operation mode overrides keyed by model name; unspecified models use chat.";
             };
 
             tags = lib.mkOption {
               type = lib.types.listOf lib.types.str;
-              default = [];
+              default = [ ];
               description = "Tags applied to each deployment on this backend. The backend attribute name is always included.";
             };
 
@@ -126,13 +135,13 @@ in {
           };
         }
       );
-      default = {};
+      default = { };
       description = "Authenticated OpenAI-compatible inference backends.";
     };
 
     mcpServers = lib.mkOption {
       type = lib.types.attrsOf lib.types.attrs;
-      default = {};
+      default = { };
       description = "MCP servers exposed through the LiteLLM gateway.";
     };
 
@@ -149,8 +158,22 @@ in {
 
       environmentFiles = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [];
+        default = [ ];
         description = "Runtime environment files containing PostgreSQL initialization secrets.";
+      };
+    };
+
+    redis = {
+      image = lib.mkOption {
+        type = lib.types.str;
+        default = "docker.io/library/redis:7-alpine";
+        description = "Redis image used for LiteLLM shared state and caching.";
+      };
+
+      dataDirectory = lib.mkOption {
+        type = lib.types.str;
+        default = "/var/lib/litellm/redis";
+        description = "Persistent Redis data directory.";
       };
     };
   };
@@ -158,11 +181,11 @@ in {
   config = lib.mkIf (cfg.enable && gateway.enable) {
     assertions = [
       {
-        assertion = gateway.backends != {};
+        assertion = gateway.backends != { };
         message = "ai-inference.litellm requires at least one backend";
       }
       {
-        assertion = lib.all (backend: backend.models != []) (lib.attrValues gateway.backends);
+        assertion = lib.all (backend: backend.models != [ ]) (lib.attrValues gateway.backends);
         message = "Every ai-inference.litellm backend requires at least one model";
       }
       {
@@ -172,31 +195,48 @@ in {
         message = "Every ai-inference.litellm modelModes key must also be listed in that backend's models";
       }
       {
-        assertion = gateway.environmentFiles != [];
+        assertion = gateway.environmentFiles != [ ];
         message = "ai-inference.litellm requires a secret environment file";
       }
       {
-        assertion = gateway.database.environmentFiles != [];
+        assertion = gateway.database.environmentFiles != [ ];
         message = "ai-inference.litellm.database requires a secret environment file";
       }
     ];
 
     systemd.tmpfiles.rules = [
       "d ${gateway.database.dataDirectory} 0700 root root -"
+      "d ${gateway.redis.dataDirectory} 0700 root root -"
     ];
 
     virtualisation.oci-containers.containers = {
       litellm-postgres = {
         image = gateway.database.image;
         autoStart = true;
-        volumes = ["${gateway.database.dataDirectory}:/var/lib/postgresql/data"];
+        volumes = [ "${gateway.database.dataDirectory}:/var/lib/postgresql/data" ];
         environmentFiles = gateway.database.environmentFiles;
+        extraOptions = networkOptions;
+      };
+
+      litellm-redis = {
+        image = gateway.redis.image;
+        autoStart = true;
+        volumes = [ "${gateway.redis.dataDirectory}:/data" ];
+        cmd = [
+          "redis-server"
+          "--appendonly"
+          "yes"
+        ];
         extraOptions = networkOptions;
       };
 
       litellm = {
         image = gateway.image;
         autoStart = true;
+        dependsOn = [
+          "litellm-postgres"
+          "litellm-redis"
+        ];
         cmd = [
           "--config"
           "/app/config.yaml"
@@ -205,13 +245,15 @@ in {
           "--num_workers"
           "1"
         ];
-        volumes = ["${litellmConfig}:/app/config.yaml:ro"];
+        volumes = [ "${litellmConfig}:/app/config.yaml:ro" ];
         environmentFiles = gateway.environmentFiles;
         environment = {
           LITELLM_MODE = "PRODUCTION";
           NO_DOCS = "True";
           NO_REDOC = "True";
           NO_OPENAPI = "True";
+          REDIS_HOST = "litellm-redis";
+          REDIS_PORT = "6379";
         };
         extraOptions = networkOptions;
       };
@@ -219,26 +261,36 @@ in {
 
     systemd.services = {
       podman-litellm-postgres = {
-        requires = ["podman-network-ai.service"];
-        after = ["podman-network-ai.service"];
+        requires = [ "podman-network-ai.service" ];
+        after = [ "podman-network-ai.service" ];
+      };
+
+      podman-litellm-redis = {
+        requires = [ "podman-network-ai.service" ];
+        after = [ "podman-network-ai.service" ];
       };
 
       podman-litellm = {
-        requires = ["podman-network-ai.service"];
-        wants = ["podman-litellm-postgres.service"];
+        requires = [ "podman-network-ai.service" ];
+        wants = [
+          "podman-litellm-postgres.service"
+          "podman-litellm-redis.service"
+        ];
         after = [
           "podman-network-ai.service"
           "podman-litellm-postgres.service"
+          "podman-litellm-redis.service"
         ];
         preStart = lib.mkAfter ''
           for attempt in {1..60}; do
-            if ${config.virtualisation.podman.package}/bin/podman exec litellm-postgres pg_isready -U litellm -d litellm >/dev/null 2>&1; then
+            if ${config.virtualisation.podman.package}/bin/podman exec litellm-postgres pg_isready -U litellm -d litellm >/dev/null 2>&1 \
+              && test "$(${config.virtualisation.podman.package}/bin/podman exec litellm-redis redis-cli ping 2>/dev/null)" = PONG; then
               exit 0
             fi
             ${pkgs.coreutils}/bin/sleep 1
           done
 
-          echo "PostgreSQL did not become ready within 60 seconds" >&2
+          echo "PostgreSQL or Redis did not become ready within 60 seconds" >&2
           exit 1
         '';
       };

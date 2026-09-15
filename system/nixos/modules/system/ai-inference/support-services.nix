@@ -3,15 +3,21 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.services.ai-inference;
   modelDirectory =
-    if cfg.modelCache.enable
-    then cfg.modelCache.sourceDirectory
-    else cfg.modelDirectory;
-  yaml = pkgs.formats.yaml {};
+    if cfg.modelCache.enable then cfg.modelCache.sourceDirectory else cfg.modelDirectory;
+  yaml = pkgs.formats.yaml { };
   searxngConfig = yaml.generate "searxng-settings.yml" {
-    use_default_settings = true;
+    use_default_settings = {
+      engines = {
+        remove = [
+          "ahmia"
+          "torch"
+        ];
+      };
+    };
     general = {
       debug = false;
       instance_name = cfg.supportServices.searxngInstanceName;
@@ -35,9 +41,12 @@
     "--network=${cfg.networkName}"
     "--security-opt=no-new-privileges"
   ];
-in {
+in
+{
   options.neer.modules.services.ai-inference.supportServices = {
-    enable = lib.mkEnableOption "Open WebUI support services" // {default = true;};
+    enable = lib.mkEnableOption "Open WebUI support services" // {
+      default = true;
+    };
 
     searxngInstanceName = lib.mkOption {
       type = lib.types.str;
@@ -49,15 +58,15 @@ in {
     neer.modules.services.ai-inference.peers = lib.mkDefault {
       kokoro = {
         proxy = "http://kokoro-tts:8880";
-        models = ["kokoro"];
+        models = [ "kokoro" ];
       };
       embeddings = {
         proxy = "http://qwen-embedding:8080";
-        models = ["qwen3-embedding-0.6b"];
+        models = [ "qwen3-embedding-0.6b" ];
       };
       reranker = {
         proxy = "http://qwen-reranker:8080";
-        models = ["qwen3-reranker-0.6b"];
+        models = [ "qwen3-reranker-0.6b" ];
       };
     };
 
@@ -77,7 +86,7 @@ in {
       qwen-embedding = {
         image = "ghcr.io/ggml-org/llama.cpp:server";
         autoStart = true;
-        volumes = ["${modelDirectory}:/models:ro"];
+        volumes = [ "${modelDirectory}:/models:ro" ];
         cmd = [
           "-m"
           "/models/retrieval/Qwen3-Embedding-0.6B-Q8_0.gguf"
@@ -103,7 +112,7 @@ in {
       qwen-reranker = {
         image = "ghcr.io/ggml-org/llama.cpp:server";
         autoStart = true;
-        volumes = ["${modelDirectory}:/models:ro"];
+        volumes = [ "${modelDirectory}:/models:ro" ];
         cmd = [
           "-m"
           "/models/retrieval/qwen3-reranker-0.6b-q8_0.gguf"
@@ -130,7 +139,7 @@ in {
       qdrant = {
         image = "docker.io/qdrant/qdrant:latest";
         autoStart = true;
-        volumes = ["/var/lib/qdrant:/qdrant/storage"];
+        volumes = [ "/var/lib/qdrant:/qdrant/storage" ];
         extraOptions = networkOptions;
       };
 
@@ -141,7 +150,7 @@ in {
           "${searxngConfig}:/etc/searxng/settings.yml:ro"
           "/var/lib/searxng/cache:/var/cache/searxng"
         ];
-        environmentFiles = ["/var/lib/searxng/searxng.env"];
+        environmentFiles = [ "/var/lib/searxng/searxng.env" ];
         environment = {
           SEARXNG_BIND_ADDRESS = "0.0.0.0";
           SEARXNG_PORT = "8080";
@@ -156,24 +165,26 @@ in {
     };
 
     systemd.services =
-      lib.genAttrs [
-        "podman-kokoro-tts"
-        "podman-qwen-embedding"
-        "podman-qwen-reranker"
-        "podman-qdrant"
-      ] (name: {
-        requires = ["podman-network-ai.service"];
-        after = ["podman-network-ai.service"];
-        unitConfig.RequiresMountsFor = lib.optionals (lib.elem name [
+      lib.genAttrs
+        [
+          "podman-kokoro-tts"
           "podman-qwen-embedding"
           "podman-qwen-reranker"
-        ]) [modelDirectory];
-      })
+          "podman-qdrant"
+        ]
+        (name: {
+          requires = [ "podman-network-ai.service" ];
+          after = [ "podman-network-ai.service" ];
+          unitConfig.RequiresMountsFor = lib.optionals (lib.elem name [
+            "podman-qwen-embedding"
+            "podman-qwen-reranker"
+          ]) [ modelDirectory ];
+        })
       // {
         ai-searxng-secret = {
           description = "Create the SearXNG secret environment file";
-          requiredBy = ["podman-searxng.service"];
-          before = ["podman-searxng.service"];
+          requiredBy = [ "podman-searxng.service" ];
+          before = [ "podman-searxng.service" ];
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;

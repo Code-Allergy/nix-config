@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.services.ai-inference;
   proxy = cfg.reverseProxy;
   certificateDeployment = proxy.certificateDeployment;
@@ -17,33 +18,47 @@
     "}"
   ];
   accessDirectives =
-    if proxy.allowedRemoteRanges == []
-    then ["\treverse_proxy ${proxy.upstream}"]
-    else [
-      "\troute {"
-      "\t\t@allowed remote_ip ${allowedRemoteRanges}"
-      "\t\treverse_proxy @allowed ${proxy.upstream}"
-      "\t\trespond 403"
-      "\t}"
-    ];
-  caddyConfig = pkgs.writeText "ai-inference-Caddyfile" (lib.concatLines (
-    [
-      "{"
-      "\tadmin off"
-      "}"
-    ]
-    ++ webuiSite
-    ++ [
-      ""
-      "${proxy.host} {"
-      "\ttls /certs/fullchain.pem /certs/privkey.pem"
-      "\tencode zstd gzip"
-      ""
-    ]
-    ++ accessDirectives
-    ++ ["}"]
-  ));
-in {
+    if proxy.allowedRemoteRanges == [ ] then
+      [ "\treverse_proxy ${proxy.upstream}" ]
+    else
+      [
+        "\troute {"
+        "\t\t@allowed remote_ip ${allowedRemoteRanges}"
+        "\t\treverse_proxy @allowed ${proxy.upstream}"
+        "\t\trespond 403"
+        "\t}"
+      ];
+  caddyConfig = pkgs.writeText "ai-inference-Caddyfile" (
+    lib.concatLines (
+      [
+        "{"
+        "\tadmin off"
+        "\tlog default {"
+        "\t\tformat filter {"
+        "\t\t\trequest>headers>Authorization delete"
+        "\t\t\trequest>headers>Proxy-Authorization delete"
+        "\t\t\trequest>headers>Cookie delete"
+        "\t\t\trequest>headers>Set-Cookie delete"
+        "\t\t\trequest>headers>X-Litellm-Api-Key delete"
+        "\t\t\trequest>headers>Mcp-Session-Id delete"
+        "\t\t}"
+        "\t}"
+        "}"
+      ]
+      ++ webuiSite
+      ++ [
+        ""
+        "${proxy.host} {"
+        "\ttls /certs/fullchain.pem /certs/privkey.pem"
+        "\tencode zstd gzip"
+        ""
+      ]
+      ++ accessDirectives
+      ++ [ "}" ]
+    )
+  );
+in
+{
   options.neer.modules.services.ai-inference.reverseProxy = {
     enable = lib.mkEnableOption "Caddy reverse proxy for the AI inference API";
 
@@ -62,8 +77,8 @@ in {
 
     allowedRemoteRanges = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
-      example = ["10.10.10.10/32"];
+      default = [ ];
+      example = [ "10.10.10.10/32" ];
       description = "Client IP ranges allowed to use the API; an empty list allows all clients.";
     };
 
@@ -114,7 +129,7 @@ in {
 
       authorizedKeys = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [];
+        default = [ ];
         description = "Restricted SSH public keys allowed to deploy certificates.";
       };
     };
@@ -123,7 +138,7 @@ in {
   config = lib.mkIf (cfg.enable && proxy.enable) {
     assertions = [
       {
-        assertion = !certificateDeployment.enable || certificateDeployment.authorizedKeys != [];
+        assertion = !certificateDeployment.enable || certificateDeployment.authorizedKeys != [ ];
         message = "ai-inference.reverseProxy.certificateDeployment requires at least one authorized key";
       }
       {
@@ -138,7 +153,7 @@ in {
     };
 
     users.groups = lib.optionalAttrs certificateDeployment.enable {
-      ${certificateDeployment.group} = {};
+      ${certificateDeployment.group} = { };
     };
 
     users.users = lib.optionalAttrs certificateDeployment.enable {
@@ -168,8 +183,11 @@ in {
     '';
 
     networking.firewall = {
-      allowedTCPPorts = [80 443];
-      allowedUDPPorts = [443];
+      allowedTCPPorts = [
+        80
+        443
+      ];
+      allowedUDPPorts = [ 443 ];
     };
 
     systemd.tmpfiles.rules = [
@@ -182,6 +200,9 @@ in {
     virtualisation.oci-containers.containers.ai-reverse-proxy = {
       image = proxy.image;
       autoStart = true;
+      dependsOn =
+        lib.optional cfg.litellm.enable "litellm"
+        ++ lib.optional (cfg.openWebui.enable && proxy.webuiHost != null) "open-webui";
       ports = [
         "80:80"
         "443:443"
@@ -201,8 +222,8 @@ in {
     };
 
     systemd.services.podman-ai-reverse-proxy = {
-      requires = ["podman-network-ai.service"];
-      after = ["podman-network-ai.service"];
+      requires = [ "podman-network-ai.service" ];
+      after = [ "podman-network-ai.service" ];
     };
   };
 }

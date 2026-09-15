@@ -41,10 +41,12 @@ in
       description = "Expose Grafana MCP to all LiteLLM API keys without per-key MCP permissions.";
     };
 
+    allowWrite = lib.mkEnableOption "Grafana MCP write operations";
+
     extraArgs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "--disable-write" ];
-      description = "Additional mcp-grafana arguments; write operations are disabled by default.";
+      default = [ ];
+      description = "Additional mcp-grafana arguments.";
     };
   };
 
@@ -67,7 +69,7 @@ in
       auth_type = "bearer_token";
       auth_value = "os.environ/${grafanaMcp.serverTokenEnvironmentVariable}";
       allow_all_keys = grafanaMcp.allowAllKeys;
-      description = "Read-only Grafana observability tools";
+      description = "Grafana observability tools";
     };
 
     virtualisation.oci-containers.containers.grafana-mcp = {
@@ -81,9 +83,11 @@ in
         "--allowed-hosts"
         "grafana-mcp:8000"
       ]
+      ++ lib.optional (!grafanaMcp.allowWrite) "--disable-write"
       ++ grafanaMcp.extraArgs;
       environment = {
         GRAFANA_URL = grafanaMcp.grafanaUrl;
+        GRAFANA_ORG_ID = "1";
       };
       environmentFiles = grafanaMcp.environmentFiles;
       extraOptions = [

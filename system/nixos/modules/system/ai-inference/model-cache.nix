@@ -3,10 +3,12 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.services.ai-inference;
   cache = cfg.modelCache;
-in {
+in
+{
   options.neer.modules.services.ai-inference.modelCache = {
     enable = lib.mkEnableOption "an on-demand local model cache";
 
@@ -67,7 +69,6 @@ in {
     ];
 
     systemd.tmpfiles.rules = [
-      "d ${cache.sourceDirectory} 0750 root root -"
       "d ${cache.directory} 0750 root root -"
     ];
 
