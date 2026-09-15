@@ -93,6 +93,7 @@ in
       extraOptions = [
         "--network=${cfg.networkName}"
         "--security-opt=no-new-privileges"
+        "--env=${grafanaMcp.serverTokenEnvironmentVariable}="
       ];
     };
 

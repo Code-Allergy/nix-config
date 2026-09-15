@@ -2,14 +2,30 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.neer.modules.services.ai-inference;
   inferenceApiBaseUrl =
-    if cfg.openWebui.apiBaseUrl != null
-    then cfg.openWebui.apiBaseUrl
-    else if cfg.litellm.enable
-    then "http://litellm:4000/v1"
-    else "http://llama-swap:8080/v1";
+    if cfg.openWebui.apiBaseUrl != null then
+      cfg.openWebui.apiBaseUrl
+    else if cfg.litellm.enable then
+      "http://litellm:4000/v1"
+    else
+      "http://llama-swap:8080/v1";
+  toolServerConnections = builtins.toJSON (
+    lib.optional cfg.grafanaMcp.enable {
+      type = "mcp";
+      info = {
+        id = "grafana";
+        name = "Grafana";
+      };
+      auth_type = "none";
+      url = "http://grafana-mcp:8000/mcp";
+      config = {
+        enable = true;
+      };
+    }
+  );
   defaultEnvironment = {
     ENABLE_OLLAMA_API = "false";
 
@@ -55,13 +71,17 @@
     RAG_TOP_K = "15";
 
     ENABLE_PERSISTENT_CONFIG = "false";
+    TOOL_SERVER_CONNECTIONS = toolServerConnections;
   };
-  publicEnvironment = lib.optionalAttrs (cfg.reverseProxy.enable && cfg.reverseProxy.webuiHost != null) {
-    WEBUI_URL = "https://${cfg.reverseProxy.webuiHost}";
-    CORS_ALLOW_ORIGIN = "https://${cfg.reverseProxy.webuiHost}";
-    WEBUI_SESSION_COOKIE_SECURE = "true";
-  };
-in {
+  publicEnvironment =
+    lib.optionalAttrs (cfg.reverseProxy.enable && cfg.reverseProxy.webuiHost != null)
+      {
+        WEBUI_URL = "https://${cfg.reverseProxy.webuiHost}";
+        CORS_ALLOW_ORIGIN = "https://${cfg.reverseProxy.webuiHost}";
+        WEBUI_SESSION_COOKIE_SECURE = "true";
+      };
+in
+{
   options.neer.modules.services.ai-inference.openWebui = {
     enable = lib.mkEnableOption "Open WebUI";
 
@@ -94,13 +114,13 @@ in {
 
     environment = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
-      default = {};
+      default = { };
       description = "Environment overrides for Open WebUI.";
     };
 
     environmentFiles = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "Runtime environment files containing Open WebUI secrets.";
     };
   };
@@ -113,10 +133,12 @@ in {
     virtualisation.oci-containers.containers.open-webui = {
       image = cfg.openWebui.image;
       autoStart = true;
-      volumes = ["${cfg.openWebui.dataDirectory}:/app/backend/data"];
+      volumes = [ "${cfg.openWebui.dataDirectory}:/app/backend/data" ];
       environment = defaultEnvironment // publicEnvironment // cfg.openWebui.environment;
       environmentFiles = cfg.openWebui.environmentFiles;
-      ports = lib.optional (cfg.openWebui.port != null) "${cfg.openWebui.bindAddress}:${toString cfg.openWebui.port}:8080";
+      ports = lib.optional (
+        cfg.openWebui.port != null
+      ) "${cfg.openWebui.bindAddress}:${toString cfg.openWebui.port}:8080";
       extraOptions = [
         "--network=${cfg.networkName}"
         "--security-opt=no-new-privileges"
@@ -124,14 +146,13 @@ in {
     };
 
     systemd.services.podman-open-webui = {
-      requires = ["podman-network-ai.service"];
+      requires = [ "podman-network-ai.service" ];
       wants = lib.optional cfg.litellm.enable "podman-litellm.service";
-      after =
-        [
-          "podman-network-ai.service"
-          "podman-llama-swap.service"
-        ]
-        ++ lib.optional cfg.litellm.enable "podman-litellm.service";
+      after = [
+        "podman-network-ai.service"
+        "podman-llama-swap.service"
+      ]
+      ++ lib.optional cfg.litellm.enable "podman-litellm.service";
     };
   };
 }
