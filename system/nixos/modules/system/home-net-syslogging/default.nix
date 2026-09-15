@@ -122,6 +122,16 @@ in
           loki.write.central.receiver,
         ]
 
+        stage.match {
+          selector = "{syslog_identifier=\"litellm-postgres\"} |~ \"^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9:.]+ [A-Z]+ \\[[0-9]+\\] LOG:\""
+
+          stage.static_labels {
+            values = {
+              severity = "info",
+            }
+          }
+        }
+
         // Container runtimes can write warnings to stderr, causing journald to
         // label them as errors even when the application emits WARNING.
         stage.match {
