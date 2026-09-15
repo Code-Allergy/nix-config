@@ -20,6 +20,8 @@ let
         name = "Grafana";
       };
       auth_type = "none";
+      path = "";
+      key = "";
       url = "http://grafana-mcp:8000/mcp";
       config = {
         enable = true;

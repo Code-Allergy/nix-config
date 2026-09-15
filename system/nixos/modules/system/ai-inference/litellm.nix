@@ -205,8 +205,8 @@ in
     ];
 
     systemd.tmpfiles.rules = [
-      "d ${gateway.database.dataDirectory} 0700 root root -"
-      "d ${gateway.redis.dataDirectory} 0700 root root -"
+      "d ${gateway.database.dataDirectory} 0700 999 999 -"
+      "d ${gateway.redis.dataDirectory} 0700 999 999 -"
     ];
 
     virtualisation.oci-containers.containers = {
